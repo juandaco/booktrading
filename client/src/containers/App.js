@@ -26,7 +26,7 @@ class App extends Component {
         </p>
         {isFetching
           ? <p style={{ color: 'red' }}>Loading</p>
-          : <p style={{ color: 'blue' }}>Your IP address is: {ip}</p>}
+          : <p style={{ color: 'green' }}>Your IP address is: {ip}</p>}
         <RouterDemo />
         <p style={{textAlign: 'center'}}>
           For Syncing React Router with Redux Checkout <br/>

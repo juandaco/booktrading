@@ -24,25 +24,15 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 /*
   Explicit Hot Reloading Reducer (see https://github.com/reactjs/react-redux/releases/tag/v2.0.0)
 */
-function configureStore() {
-  const store = createStore(
-    reducer,
-    // For Redux Dev Tools and Middlware
-    composeEnhancers(applyMiddleware(...middleware)),
-  );
-  if (module.hot) {
-    // Enable Webpack hot module replacement for reducers
-    module.hot.accept('./reducers', () => {
-      const nextRootReducer = require('./reducers');
-      store.replaceReducer(nextRootReducer);
-    });
-  }
-  return store;
-}
+const store = createStore(
+  reducer,
+  // For Redux Dev Tools and Middlware
+  composeEnhancers(applyMiddleware(...middleware)),
+);
 
 render(
   <AppContainer>
-    <Root store={configureStore()} />
+    <Root store={store} />
   </AppContainer>,
   document.getElementById('root'),
 );
@@ -51,13 +41,18 @@ render(
   Enabling Component Hot Reloading
 */
 if (module.hot) {
-  module.hot.accept('./containers/Root', () => {
-    const NextRoot = require('./containers/Root').default;
-    render(
-      <AppContainer>
-        <NextRoot />
-      </AppContainer>,
-      document.getElementById('root'),
-    );
+  module.hot.accept('./reducers', () => {
+    const nextReducer = require('./reducers').default;
+    store.replaceReducer(nextReducer);
+
+    module.hot.accept('./containers/Root', () => {
+      const NextRoot = require('./containers/Root').default;
+      render(
+        <AppContainer>
+          <NextRoot />
+        </AppContainer>,
+        document.getElementById('root'),
+      );
+    });
   });
 }
