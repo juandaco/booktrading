@@ -70,4 +70,8 @@ export default {
       },
     ],
   },
+  ui: {
+    location: 'Home',
+    openDrawer: false,
+  }
 };

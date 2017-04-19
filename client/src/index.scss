@@ -1,3 +1,82 @@
-html, body {
+html,
+body {
   font-family: 'Roboto', sans-serif;
+
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+
+  color: inherit;
+}
+
+header {
+  position: absolute;
+  top: 0;
+
+  width: 100vw;
+  height: 60px;
+
+  background-color: purple;
+}
+
+#app-container {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+}
+
+#home-container {
+  display: flex;
+  flex-direction: column;
+
+  text-align: center;
+
+  align-items: center;
+}
+
+#title-container {
+  // margin-top: -100px;
+  z-index: 1;
+
+  width: 100vw;
+  height: 500px;
+
+  color: white;
+  background-image: linear-gradient(to top, rgba(256,256,256,1), rgba(0,0,0,0)5%),
+  url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/El_Ateneo_bookstore_%285460034464%29.jpg/1280px-El_Ateneo_bookstore_%285460034464%29.jpg);
+  background-position: center top;
+
+  // clip-path: inset(0 0 40% 0);
+}
+
+#main-title {
+  font-size: 5em;
+
+  margin-top: 150px;
+  margin-bottom: 0;
+}
+
+.main-subtitle {
+  margin-top: 0;
+
+  color: rgba(256,256,256,0.8);
+}
+
+#main-sub01 {
+  font-size: 2em;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+#home-button-container {
+  width: 300px;
+  margin-top: 30px;
+  // margin-left: -8px;
+
+  justify-content: space-between;
 }
