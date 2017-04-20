@@ -9,18 +9,19 @@ booksRouter.get('/search', function(req, res) {
   // Error on empty search
   if (!searchTerm) return res.json({ errorMsg: 'Must include a search term' });
 
+  // Google Books API Query URL to perform a Search
   const apiURL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}
     &projection=lite
     &langRestrict=en
     &key=${process.env.GOOGLE_BOOKS_API_KEY}`.replace(/\s/g, '');
-  // Get Search Results
+
   fetch(apiURL)
     .then(resp => resp.json())
     .then(data => {
       let formattedBooks = [];
       data.items.forEach(item => {
         // Get Data for each book Fount
-        fetch(item.selfLink)
+        fetch(`${item.selfLink}?key=${process.env.GOOGLE_BOOKS_API_KEY}`)
           .then(resp => resp.json())
           .then(book => {
             const info = book.volumeInfo;
