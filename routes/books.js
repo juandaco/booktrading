@@ -12,6 +12,7 @@ booksRouter.get('/search', function(req, res) {
   const apiURL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}
     &projection=lite
     &langRestrict=en
+    &filter=ebooks
     &key=${process.env.GOOGLE_BOOKS_API_KEY}`.replace(/\s/g, '');
   fetch(apiURL)
     .then(resp => resp.json())

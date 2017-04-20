@@ -40,7 +40,12 @@ class App extends Component {
     this.setState({ open: !this.state.open });
   };
 
-  closeDrawer = () => this.setState({ open: false });
+  closeDrawer = (e) => {
+    this.setState({ 
+      open: false,
+      location: e.target.innerText,
+    });
+  };
 
   onRequestChange = open => this.setState({ open });
 
@@ -62,27 +67,12 @@ class App extends Component {
               />
             }
           />
-
-          {/*<header>
-            <IconButton
-              style={{
-                color: 'white',
-                position: 'absolute',
-                left: 12,
-                top: 8,
-                zIndex: 2,
-              }}
-              className="main-menu-button"
-              onTouchTap={this.openDrawer}
-              children={<MenuIcon color={'#fff'} />}
-            />
-          </header>*/}
-
           <DrawerContainer
             open={this.state.open}
             closeDrawer={this.closeDrawer}
             onRequestChange={this.onRequestChange}
             isUserLogged={this.state.isUserLogged}
+            setLocation={this.setLocation}
           />
 
           {/* Routes to */}

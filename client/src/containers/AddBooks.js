@@ -46,7 +46,7 @@ class AddBooks extends Component {
         key={book.id}
         id={book.id}
         title={book.title}
-        subtitle={book.subtitle}
+        subtitle={book.author}
         description={book.description}
         coverPhoto={book.imageLink}
         infoLink={book.infoLink}
@@ -54,13 +54,13 @@ class AddBooks extends Component {
     ));
     return (
       <div id="add-books-container">
-        <h1>Add Books</h1>
         <div id="search-container">
           <TextField
             id="text-search"
             value={this.state.searchTerm}
             onChange={this.handleSearchChange}
             onKeyDown={this.handleKeys}
+            autoFocus
           />
           <FlatButton label="Search" onClick={this.searchBooks} />
         </div>

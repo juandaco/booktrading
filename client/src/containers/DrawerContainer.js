@@ -2,7 +2,7 @@ import React from 'react';
 import { Drawer, MenuItem } from 'material-ui';
 import { Link } from 'react-router-dom';
 
-const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged }) => {
+const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged, setLocation}) => {
   return (
     <Drawer
       docked={false}
@@ -10,7 +10,7 @@ const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged }) =
       // width={200}
       onRequestChange={onRequestChange}
     >
-      <Link to="/">
+      <Link to="/" >
         <MenuItem onTouchTap={closeDrawer}>Home</MenuItem>
       </Link>
       <Link to="/browse">
