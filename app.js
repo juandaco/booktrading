@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === 'development') {
   };
   server = https.createServer(sslOptions, app);
 } else if (process.env.NODE_ENV === 'production') {
-  // HTTPS is handled by Heroku
+  // HTTP because HTTPS is handled by Heroku
   server = http.createServer(app);
 } else {
   const err = new Error(
@@ -110,7 +110,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send('error');
 });
 
 const port = process.env.PORT || 4000;

@@ -54,6 +54,7 @@ export default {
   },
   search: {
     inputValue: 'diving bell',
+    isSearching: false,
     results: [
       // Books
       {

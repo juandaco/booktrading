@@ -21,6 +21,9 @@ const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged }) =
             <Link to="/user/books">
               <MenuItem onTouchTap={closeDrawer}>My Books</MenuItem>
             </Link>
+            <Link to="/user/add-books">
+              <MenuItem onTouchTap={closeDrawer}>Add Books</MenuItem>
+            </Link>
             <Link to="/user/trade">
               <MenuItem onTouchTap={closeDrawer}>Trade Requests</MenuItem>
             </Link>

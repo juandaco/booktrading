@@ -18,6 +18,7 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import DrawerContainer from './DrawerContainer';
 import Home from '../components/Home';
 import AllBooks from '../components/AllBooks';
+import AddBooks from '../components/AddBooks';
 import About from '../components/About';
 
 class App extends Component {
@@ -87,8 +88,9 @@ class App extends Component {
           {/* Routes to */}
 
           <Route exact path="/" component={Home} />
-          <Route exact path="/about" component={About} />
           <Route exact path="/browse" component={AllBooks} />
+          <Route exact path="/user/add-books" component={AddBooks} />
+          <Route exact path="/about" component={About} />
         </div>
       </MuiThemeProvider>
     );
