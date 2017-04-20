@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { TextField, FlatButton } from 'material-ui';
 import { fetchSearchBooks } from '../actions/search';
 import { connect } from 'react-redux';
+import BookCard from '../components/BookCard';
 
 class AddBooks extends Component {
   constructor(props) {
@@ -41,12 +42,18 @@ class AddBooks extends Component {
 
   render() {
     const { isSearching, items } = this.props;
-    const bookItems = items.map(book => {
-      return <li key={book.id}>{book.title}</li>;
-    });
+    let bookCards = items.map(book => (
+        <BookCard
+          key={book.id}
+          id={book.id}
+          title={book.title}
+          description={book.description}
+          coverPhoto={book.imageLink}
+        />
+      ));
     return (
       <div id="add-books-container">
-        <h1>Add Your Books</h1>
+        <h1>Add Books</h1>
         <div id="search-container">
           <TextField
             id="text-search"
@@ -54,10 +61,10 @@ class AddBooks extends Component {
             onChange={this.handleSearchChange}
             onKeyDown={this.handleKeys}
           />
-          <FlatButton label="Search" onClick={this.searchBooks}/>
+          <FlatButton label="Search" onClick={this.searchBooks} />
         </div>
         <div id="search-books-container">
-          {isSearching ? <p>Loading</p> : <ul>{bookItems}</ul>}
+          {isSearching ? <p>Loading</p> :  bookCards}
         </div>
       </div>
     );

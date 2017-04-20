@@ -6,35 +6,49 @@ const fetch = require('node-fetch');
 
 booksRouter.get('/search', function(req, res) {
   const searchTerm = req.query.term;
+  // Error on empty search
   if (!searchTerm) return res.json({ errorMsg: 'Must include a search term' });
+
   const apiURL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}
+    &projection=lite
     &langRestrict=en
     &key=${process.env.GOOGLE_BOOKS_API_KEY}`.replace(/\s/g, '');
+  // Get Search Results
   fetch(apiURL)
     .then(resp => resp.json())
     .then(data => {
-      const formattedData = data.items.map(book => {
-        const info = book.volumeInfo;
-        const newBook = {
-          id: book.id,
-          title: info.title,
-          subtitle: info.subtitle || '',
-          author: Array.isArray(info.authors) && info.authors.length
-            ? info.authors[0]
-            : '',
-          description: info.description,
-          pageCount: info.pageCount,
-          imageLink: info.imageLinks ? info.imageLinks.thumbnail : '',
-          isbn: Array.isArray(info.industryIdentifiers) &&
-            info.industryIdentifiers.length
-            ? info.industryIdentifiers[0].identifier
-            : '',
-          infoLink: info.infoLink,
-          publishedDate: info.publishedDate,
-        };
-        return newBook;
+      let formattedBooks = [];
+      data.items.forEach(item => {
+        // Get Data for each book Fount
+        fetch(item.selfLink)
+          .then(resp => resp.json())
+          .then(book => {
+            const info = book.volumeInfo;
+            const newBook = {
+              id: book.id,
+              title: info.title,
+              subtitle: info.subtitle || '',
+              author: Array.isArray(info.authors) && info.authors.length
+                ? info.authors[0]
+                : '',
+              description: info.description,
+              pageCount: info.pageCount,
+              imageLink: info.imageLinks ? info.imageLinks.medium : '',
+              isbn: Array.isArray(info.industryIdentifiers) &&
+                info.industryIdentifiers.length
+                ? info.industryIdentifiers[0].identifier
+                : '',
+              infoLink: info.infoLink,
+              publishedDate: info.publishedDate,
+            };
+            formattedBooks.push(newBook);
+            // Send answer   when done with the last book
+            if (formattedBooks.length === data.items.length) {
+              res.json(formattedBooks);
+            }
+          })
+          .catch(err => console.log(err));
       });
-      res.json(formattedData);
     })
     .catch(err => console.log(err));
 });

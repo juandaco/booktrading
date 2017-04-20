@@ -18,7 +18,7 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 import DrawerContainer from './DrawerContainer';
 import Home from '../components/Home';
 import AllBooks from '../components/AllBooks';
-import AddBooks from '../components/AddBooks';
+import AddBooks from '../containers/AddBooks';
 import About from '../components/About';
 
 class App extends Component {
