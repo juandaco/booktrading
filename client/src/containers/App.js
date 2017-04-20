@@ -17,6 +17,7 @@ import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 // My Components
 import DrawerContainer from './DrawerContainer';
 import Home from '../components/Home';
+import AllBooks from '../components/AllBooks';
 import About from '../components/About';
 
 class App extends Component {
@@ -46,6 +47,7 @@ class App extends Component {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div id="app-container">
+
           <AppBar
             title={this.state.location === 'Home' ? '' : this.state.location}
             style={{
@@ -59,6 +61,7 @@ class App extends Component {
               />
             }
           />
+
           {/*<header>
             <IconButton
               style={{
@@ -73,14 +76,19 @@ class App extends Component {
               children={<MenuIcon color={'#fff'} />}
             />
           </header>*/}
+
           <DrawerContainer
             open={this.state.open}
             closeDrawer={this.closeDrawer}
             onRequestChange={this.onRequestChange}
             isUserLogged={this.state.isUserLogged}
           />
+
+          {/* Routes to */}
+
           <Route exact path="/" component={Home} />
           <Route exact path="/about" component={About} />
+          <Route exact path="/browse" component={AllBooks} />
         </div>
       </MuiThemeProvider>
     );

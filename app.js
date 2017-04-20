@@ -18,6 +18,7 @@ const MongoStore = require('connect-mongo')(session);
 */
 // const authRouter = require('./routes/auth');
 const usersRouter = require('./routes/users');
+const booksRouter = require('./routes/books');
 
 /*
   Initialize Express App based on Environment
@@ -73,6 +74,7 @@ app.use(
 */
 // app.use('/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/books', booksRouter);
 
 /*
   Serve the Single Page App in Production only
