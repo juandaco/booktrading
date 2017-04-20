@@ -1,5 +1,6 @@
 export const SEARCH_BOOK = 'SEARCH_BOOK';
 export const RECEIVE_SEARCH_RESULTS = 'RECEIVE_SEARCH_RESULTS';
+export const SEARCH_ERROR = 'SEARCH_ERROR';
 
 /*
   Normal Sync Actions
@@ -13,6 +14,10 @@ export const receiveSearchResults = items => ({
   items,
 });
 
+export const searchError = () => ({
+  type: SEARCH_ERROR,
+})
+
 /*
   Async Thunk Actions
 */
@@ -21,6 +26,10 @@ export const fetchSearchBooks = term => dispatch => {
   return fetch(`/api/books/search?term=${term}`)
     .then(response => response.json())
     .then(items => {
-      dispatch(receiveSearchResults(items));
+      if (items.errorMsg) {
+        dispatch(searchError());
+      } else {
+        dispatch(receiveSearchResults(items));
+      }
     });
 };

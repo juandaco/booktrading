@@ -7,19 +7,31 @@ import {
   CardText,
 } from 'material-ui/Card';
 import { FlatButton } from 'material-ui';
+// import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import AddIcon from 'material-ui/svg-icons/content/add-circle';
 
-const BookCard = ({ coverPhoto, title, description }) => {
+const buttonStyle = {
+  minWidth: 70,
+};
+
+const BookCard = ({ coverPhoto, title, subtitle, description, infoLink }) => {
   return (
     <Card className="book-card">
       <CardMedia>
-        <img src={coverPhoto} alt={`${title} Cover`} />
+        <img className="book-image" src={coverPhoto} alt={`${title} Cover`} />
       </CardMedia>
-      <CardTitle title={title} />
-      <CardText>
-        {description}
+      <CardTitle title={title} subtitle={subtitle} />
+      <CardText className="book-description">
+        <div dangerouslySetInnerHTML={{ __html: description }} />
       </CardText>
-      <CardActions>
-        <FlatButton label="Add" />
+      <CardActions style={{ textAlign: 'right' }}>
+        <FlatButton label="More" style={buttonStyle} href={infoLink} target="_blank" />
+        <FlatButton
+          label="Add"
+          style={buttonStyle}
+          icon={<AddIcon style={{ width: 19 }} />}
+          labelPosition="before"
+        />
       </CardActions>
     </Card>
   );

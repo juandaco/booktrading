@@ -8,17 +8,20 @@ booksRouter.get('/search', function(req, res) {
   const searchTerm = req.query.term;
   // Error on empty search
   if (!searchTerm) return res.json({ errorMsg: 'Must include a search term' });
-
   // Google Books API Query URL to perform a Search
   const apiURL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}
     &projection=lite
     &langRestrict=en
     &key=${process.env.GOOGLE_BOOKS_API_KEY}`.replace(/\s/g, '');
-
   fetch(apiURL)
     .then(resp => resp.json())
     .then(data => {
       let formattedBooks = [];
+      if (data.totalItems === 0) {
+        return res.json({
+          errorMsg: 'Books not Found'
+        });
+      }
       data.items.forEach(item => {
         // Get Data for each book Fount
         fetch(`${item.selfLink}?key=${process.env.GOOGLE_BOOKS_API_KEY}`)
@@ -34,7 +37,7 @@ booksRouter.get('/search', function(req, res) {
                 : '',
               description: info.description,
               pageCount: info.pageCount,
-              imageLink: info.imageLinks ? info.imageLinks.medium : '',
+              imageLink: info.imageLinks ? info.imageLinks.small : '',
               isbn: Array.isArray(info.industryIdentifiers) &&
                 info.industryIdentifiers.length
                 ? info.industryIdentifiers[0].identifier

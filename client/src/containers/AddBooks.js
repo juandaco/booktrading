@@ -26,7 +26,6 @@ class AddBooks extends Component {
   handleKeys(e) {
     if (e.keyCode === 13) {
       e.target.blur();
-      // Dispatch Action
       this.searchBooks();
     } else if (e.keyCode === 27) {
       this.setState({
@@ -41,16 +40,18 @@ class AddBooks extends Component {
   }
 
   render() {
-    const { isSearching, items } = this.props;
+    const { isSearching, error, items } = this.props;
     let bookCards = items.map(book => (
-        <BookCard
-          key={book.id}
-          id={book.id}
-          title={book.title}
-          description={book.description}
-          coverPhoto={book.imageLink}
-        />
-      ));
+      <BookCard
+        key={book.id}
+        id={book.id}
+        title={book.title}
+        subtitle={book.subtitle}
+        description={book.description}
+        coverPhoto={book.imageLink}
+        infoLink={book.infoLink}
+      />
+    ));
     return (
       <div id="add-books-container">
         <h1>Add Books</h1>
@@ -64,7 +65,9 @@ class AddBooks extends Component {
           <FlatButton label="Search" onClick={this.searchBooks} />
         </div>
         <div id="search-books-container">
-          {isSearching ? <p>Loading</p> :  bookCards}
+          {isSearching
+            ? <p>Loading</p>
+            : error ? <p>Books not found</p> : bookCards}
         </div>
       </div>
     );
@@ -75,11 +78,13 @@ const mapStateToProps = (
   state = {
     isSearching: false,
     items: [],
+    error: false,
   },
 ) => {
   const srch = state.search;
   return {
     isSearching: srch.isSearching,
+    error: srch.error,
     items: srch.items,
   };
 };
