@@ -1,7 +1,5 @@
 export const REQUEST_BOOKS = 'REQUEST_BOOKS';
 export const RECEIVE_BOOKS = 'RECEIVE_BOOKS';
-// export const ADD_BOOK_REQUEST = 'ADD_BOOK_REQUEST';
-// export const ADD_BOOK_CONFIRMATION = 'ADD_BOOK_CONFIRMATION';
 // export const REMOVE_BOOK = 'REMOVE_BOOK';
 
 /*
@@ -16,12 +14,6 @@ export const receiveBooks = items => ({
   type: RECEIVE_BOOKS,
   items,
 });
-
-// export const addBookRequest = (bookID, user) => ({
-//   type: ADD_BOOK_REQUEST,
-//   bookID,
-//   user,
-// });
 
 /*
   Helpers

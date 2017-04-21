@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-// Redux
-import { connect } from 'react-redux';
-import { fetchIP } from '../actions';
 // React Router
 import { Route } from 'react-router';
 // Material UI config
@@ -20,6 +17,7 @@ import Home from '../components/Home';
 import AllBooks from '../components/AllBooks';
 import AddBooks from '../containers/AddBooks';
 import About from '../components/About';
+import SignUp from '../components/SignUp';
 
 class App extends Component {
   constructor(props) {
@@ -40,8 +38,8 @@ class App extends Component {
     this.setState({ open: !this.state.open });
   };
 
-  closeDrawer = (e) => {
-    this.setState({ 
+  closeDrawer = e => {
+    this.setState({
       open: false,
       location: e.target.innerText,
     });
@@ -81,23 +79,11 @@ class App extends Component {
           <Route exact path="/browse" component={AllBooks} />
           <Route exact path="/user/add-books" component={AddBooks} />
           <Route exact path="/about" component={About} />
+          <Route exact path="/signup" component={SignUp} />
         </div>
       </MuiThemeProvider>
     );
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    ip: state.ip,
-    isFetching: state.isFetching,
-  };
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => ({
-  fetchIP: () => {
-    dispatch(fetchIP());
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

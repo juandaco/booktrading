@@ -21,8 +21,7 @@ export default {
     ],
   },
   user: {
-    isLoggedIn: true, // Boolean
-    username: 'juandaco',
+    username: 'juandaco', // Use for isLoggedIn Verification
     // email??? only for Database
     fullName: 'Juan D. Acosta',
     state: 'Illinois',
@@ -53,8 +52,9 @@ export default {
     ],
   },
   search: {
-    inputValue: 'diving bell',
-    isSearching: false,
+    // inputValue: 'diving bell', // Kept in Component
+    isSearching: false, // Display Spinner
+    error: false, // Display Error Message
     results: [
       // Books
       {

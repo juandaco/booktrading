@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { RaisedButton } from 'material-ui';
 import { blue600 } from 'material-ui/styles/colors';
 
@@ -22,17 +23,19 @@ const Home = () => {
         </h5>
       </div>
       <div id="home-button-container">
-        <RaisedButton
-          label="Sign Up"
-          style={buttonStyle}
-          backgroundColor={blue600}
-          labelColor='white'
-        />
+        <Link to="/signup">
+          <RaisedButton
+            label="Sign Up"
+            style={buttonStyle}
+            backgroundColor={blue600}
+            labelColor="white"
+          />
+        </Link>
         <RaisedButton
           label="Sign In"
           style={buttonStyle}
           backgroundColor={blue600}
-          labelColor='white'
+          labelColor="white"
         />
       </div>
     </div>
