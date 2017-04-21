@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux';
-import { newUser } from '../actions/user';
+// import { newUser } from '../actions/user';
 import { TextField, FlatButton } from 'material-ui';
-import { blue600 } from 'material-ui/styles/colors';
+import { blue600, blue400 } from 'material-ui/styles/colors';
+import isEmail from 'validator/lib/isEmail';
+import { isPasswordValid, isUsernameValid } from '../helpers/isPasswordValid';
 
 class SignUp extends Component {
   constructor(props) {
@@ -11,27 +13,53 @@ class SignUp extends Component {
       email: '',
       username: '',
       password: '',
+      errorEmail: false,
+      errorUsername: false,
+      errorPassword: false,
     };
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    if (this.inputValidation()) {
-      const user = {
-        email: this.state.email,
-        username: this.state.username,
-        password: this.state.password,
-      };
+    if (this.isInputValid()) {
+      // const user = {
+      //   email: this.state.email,
+      //   username: this.state.username,
+      //   password: this.state.password,
+      // };
       this.clearState();
+      // CleanUp State 
       // Dispatch action for Creating New User
-      this.props.dispatch(newUser(user));
+      // this.props.dispatch(newUser(user));
+    } else {
+      // Display Error Message
+      console.log('Error Message');
     }
   };
 
-  inputValidation = () => {
-    // Boolean value depending on checks performed
+  isInputValid = () => {
+    let status = true;
+    if (!isEmail(this.state.email)) {
+      this.setState({ errorEmail: true });
+      status = false;
+    } else {
+      this.setState({ errorEmail: false });
+    }
 
-    return true;
+    if (!isUsernameValid(this.state.username)) {
+      this.setState({ errorUsername: true });
+      status = false;
+    } else {
+      this.setState({ errorUsername: false });
+    }
+
+    if (!isPasswordValid(this.state.password)) {
+      this.setState({ errorPassword: true });
+      status = false;
+    } else {
+      this.setState({ errorPassword: false });
+    }
+    return status;
   };
 
   clearState = () => {
@@ -39,6 +67,9 @@ class SignUp extends Component {
       email: '',
       username: '',
       password: '',
+      errorEmail: false,
+      errorUsername: false,
+      errorPassword: false,
     });
   };
 
@@ -63,34 +94,59 @@ class SignUp extends Component {
     });
   };
 
+  handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      this.handleSubmit(e);
+    }
+  };
+
   render() {
     return (
       <div id="signup-container">
-        <form onSubmit={this.handleSubmit}>
-          <TextField
-            id="user-email"
-            hintText="E-mail"
-            onChange={this.handleEmailChange}
-          />
-          <TextField
-            id="username"
-            hintText="Username"
-            onChange={this.handleUsernameChange}
-          />
-          <TextField
-            id="user-password"
-            hintText="Password"
-            type="password"
-            onChange={this.handlePasswordChange}
-          />
-          <FlatButton
-            id="signup-button"
-            label="Create Account"
-            type="submit"
-            backgroundColor={blue600}
-            labelStyle={{ color: 'white' }}
-          />
-        </form>
+        <TextField
+          id="user-email"
+          className="signup-field"
+          hintText="E-mail"
+          errorText={this.state.errorEmail ? 'Please add a valid email' : ''}
+          value={this.state.email}
+          onChange={this.handleEmailChange}
+          onKeyPress={this.handleKeyPress}
+        />
+        <TextField
+          id="username"
+          className="signup-field"
+          hintText="Username"
+          errorText={
+            this.state.errorUsername
+              ? 'The username must be at least 4 characters long'
+              : ''
+          }
+          value={this.state.username}
+          onChange={this.handleUsernameChange}
+          onKeyPress={this.handleKeyPress}
+        />
+        <TextField
+          id="user-password"
+          className="signup-field"
+          hintText="Password"
+          value={this.state.password}
+          type="password"
+          errorText={
+            this.state.errorPassword
+              ? 'The password must contain at least 8 characters, a Capital Letter, a Number and a Special Symbol'
+              : ''
+          }
+          onChange={this.handlePasswordChange}
+          onKeyPress={this.handleKeyPress}
+        />
+        <FlatButton
+          id="signup-button"
+          label="Create Account"
+          backgroundColor={blue600}
+          hoverColor={blue400}
+          labelStyle={{ color: 'white' }}
+          onTouchTap={this.handleSubmit}
+        />
         {/*
           Error Messages
         */}

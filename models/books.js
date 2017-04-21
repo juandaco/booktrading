@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Customize to your Application Needs
 const Book = new Schema(
   {
     bookID: {

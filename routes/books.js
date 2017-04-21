@@ -2,7 +2,8 @@ require('dotenv').config();
 const express = require('express');
 const booksRouter = express.Router();
 const fetch = require('node-fetch');
-// const Books = require('../models/users');
+const Books = require('../models/books');
+const Users = require('../models/users');
 
 // Search  Google Books API
 booksRouter.get('/search', function(req, res) {
@@ -12,26 +13,26 @@ booksRouter.get('/search', function(req, res) {
   // Google Books API Query URL to perform a Search
   const apiURL = `https://www.googleapis.com/books/v1/volumes?q=${searchTerm}
     &projection=lite
-    &langRestrict=en
-    &filter=ebooks
-    &key=${process.env.GOOGLE_BOOKS_API_KEY}`.replace(/\s/g, '');
+    &printType=books
+    &orderBy=relevance
+    &langRestrict=en`.replace(/\s/g, '');
   fetch(apiURL)
     .then(resp => resp.json())
     .then(data => {
       let formattedBooks = [];
       if (data.totalItems === 0) {
         return res.json({
-          errorMsg: 'Books not Found'
+          errorMsg: 'Books not Found',
         });
       }
       data.items.forEach(item => {
         // Get Data for each book Found
-        fetch(`${item.selfLink}?key=${process.env.GOOGLE_BOOKS_API_KEY}`)
+        fetch(item.selfLink)
           .then(resp => resp.json())
           .then(book => {
             const info = book.volumeInfo;
             const newBook = {
-              id: book.id,
+              bookID: book.id,
               title: info.title,
               subtitle: info.subtitle || '',
               author: Array.isArray(info.authors) && info.authors.length
@@ -59,14 +60,47 @@ booksRouter.get('/search', function(req, res) {
     .catch(err => console.log(err));
 });
 
-booksRouter.post('/:bookID', function(req, res) {
-  // Add Book to the Books Collections AND to the User in session
+// Add Books
+booksRouter.post('/', function(req, res) {
+  // Verify User LoggedIn first Security
+  let newBook = req.body.book;
+  /*
+    Verify if User has the Book,
+     - If it doesn't proceed to add Book
+     - If it does return error message
+  */
+
+  // Add Book to Collection or Update the Owners List
+  Books.findOne({ bookID: newBook.bookID }, function(err, book) {
+    if (err) throw err;
+    if (!book) {
+      // The owner should be taken from the Express Session
+      newBook['owners'] = [req.body.owner];
+      book = new Books(newBook);
+      book.save(newBook, function(err, data) {
+        if (err) throw err;
+      });
+    } else {
+      book.owners.push(req.body.owner);
+    }
+    res.json({
+      okMsg: 'Book Added',
+    });
+  });
 });
 
 booksRouter.delete('/:bookID', function(req, res) {
   // Delete book from the Book collection AND from the User in session
+  /*
+    Logic Steps 
+      1. Verify User LoggedIn Security (Express Middleware)
+      2. Verify User Ownership
+        a. Remove from User owned Books
+      3. Remove User From Book owners field
+        a. If no owners left in Book, Delete Book from Collection
+      4. Send confirmation Message
+  */
 });
-
 
 booksRouter.get('/:page', function(req, res) {
   // Get Books from the collections by page
@@ -74,7 +108,5 @@ booksRouter.get('/:page', function(req, res) {
     items: ['temp', 'working', 'demo'],
   });
 });
-
-booksRouter.delete('/:bookID', function(req, res) {});
 
 module.exports = booksRouter;

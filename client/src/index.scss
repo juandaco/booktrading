@@ -114,12 +114,16 @@ header {
   display: flex;
   flex-direction: column;
   margin-top: 100px;
+  align-items: center;
 
   width: 300px;
 
-  text-align: center;
+}
+
+.signup-field {
+  margin: 10px auto;
 }
 
 #signup-button {
-  align-self: right;
+  margin-top: 50px !important;
 }
