@@ -4,6 +4,7 @@ const booksRouter = express.Router();
 const fetch = require('node-fetch');
 // const Books = require('../models/users');
 
+// Search  Google Books API
 booksRouter.get('/search', function(req, res) {
   const searchTerm = req.query.term;
   // Error on empty search
@@ -24,7 +25,7 @@ booksRouter.get('/search', function(req, res) {
         });
       }
       data.items.forEach(item => {
-        // Get Data for each book Fount
+        // Get Data for each book Found
         fetch(`${item.selfLink}?key=${process.env.GOOGLE_BOOKS_API_KEY}`)
           .then(resp => resp.json())
           .then(book => {
@@ -58,10 +59,17 @@ booksRouter.get('/search', function(req, res) {
     .catch(err => console.log(err));
 });
 
-booksRouter.post('/:bookID', function(req, res) {});
+booksRouter.post('/:bookID', function(req, res) {
+  // Add Book to the Books Collections AND to the User in session
+});
+
+booksRouter.delete('/:bookID', function(req, res) {
+  // Delete book from the Book collection AND from the User in session
+});
+
 
 booksRouter.get('/:page', function(req, res) {
-  // Get from the DataBase
+  // Get Books from the collections by page
   res.json({
     items: ['temp', 'working', 'demo'],
   });
