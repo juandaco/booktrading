@@ -3,7 +3,7 @@ const express = require('express');
 const booksRouter = express.Router();
 const fetch = require('node-fetch');
 const Books = require('../models/books');
-const Users = require('../models/users');
+const User = require('../models/user');
 
 // Search  Google Books API
 booksRouter.get('/search', function(req, res) {
@@ -69,7 +69,6 @@ booksRouter.post('/', function(req, res) {
      - If it doesn't proceed to add Book
      - If it does return error message
   */
-
   // Add Book to Collection or Update the Owners List
   Books.findOne({ bookID: newBook.bookID }, function(err, book) {
     if (err) throw err;

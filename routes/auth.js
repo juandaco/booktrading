@@ -1,65 +1,52 @@
 const express = require('express');
 const authRouter = express.Router();
-const passportGithub = require('../auth/github');
-const passportTwitter = require('../auth/twitter');
-const passportFacebook = require('../auth/facebook');
-const passportGoogle = require('../auth/google');
-const path = require('path');
+const passportLocal = require('../auth/local');
+const User = require('../models/user');
 
-// Post authentication Middleware
-function popupCloser(req, res) {
-  if (req.user) {
-    const popCloser = path.resolve('./auth/popup-closer.html');
-    res.sendFile(popCloser);
-  } else {
-    res.json({
-      message: 'Not users found'
+/*
+  Local
+*/
+authRouter.post(
+  '/login',
+  passportLocal.authenticate('local', {
+    successRedirect: '/',
+    failureRedireact: '/signup',
+  })
+);
+
+authRouter.post('/signup', function(req, res, next) {
+  // Send Error if username or passsword field not found
+  if (!req.body.username || !req.body.password) {
+    const errorMsg = 'Need username and password to sign up';
+    res.status(400).json({
+      errorMsg,
     });
   }
-}
+  //
+  User.findOne({ username: req.body.username }).then(function(user) {
+    if (!user) {
+      let newUser = new User();
 
-/*
-  Github
-*/
-authRouter.get('/github', passportGithub.authenticate('github'));
-authRouter.get(
-  '/github/callback',
-  passportGithub.authenticate('github'),
-  popupCloser
-);
+      newUser.username = req.body.username;
+      newUser.password = newUser.generateHash(req.body.password);
 
-/*
-  Twitter
-*/
-authRouter.get('/twitter', passportTwitter.authenticate('twitter'));
-authRouter.get(
-  '/twitter/callback',
-  passportTwitter.authenticate('twitter'),
-  popupCloser
-);
-
-/*
-  Facebook
-*/
-authRouter.get('/facebook', passportFacebook.authenticate('facebook'));
-authRouter.get(
-  '/facebook/callback',
-  passportFacebook.authenticate('facebook'),
-  popupCloser
-);
-
-/*
-  Google
-*/
-authRouter.get(
-  '/google',
-  passportGoogle.authenticate('google', { scope: ['profile'] })
-);
-
-authRouter.get(
-  '/google/callback',
-  passportGoogle.authenticate('google'),
-  popupCloser
-);
+      newUser
+        .save()
+        .then(user => {
+          if (user)
+            res.json({
+              message: 'User Correctly Created',
+            });
+        })
+        .catch(err => {
+          return next(err);
+        });
+    } else {
+      res.json({
+        message: 'User already exists',
+      });
+    }
+  });
+});
 
 module.exports = authRouter;

@@ -28,12 +28,9 @@ class SignUp extends Component {
       //   password: this.state.password,
       // };
       this.clearState();
-      // CleanUp State 
+      // CleanUp State
       // Dispatch action for Creating New User
       // this.props.dispatch(newUser(user));
-    } else {
-      // Display Error Message
-      console.log('Error Message');
     }
   };
 
@@ -103,6 +100,7 @@ class SignUp extends Component {
   render() {
     return (
       <div id="signup-container">
+
         <TextField
           id="user-email"
           className="signup-field"
@@ -112,19 +110,19 @@ class SignUp extends Component {
           onChange={this.handleEmailChange}
           onKeyPress={this.handleKeyPress}
         />
+
         <TextField
           id="username"
           className="signup-field"
           hintText="Username"
           errorText={
-            this.state.errorUsername
-              ? 'The username must be at least 4 characters long'
-              : ''
+            this.state.errorUsername ? 'Must be at least 4 characters long' : ''
           }
           value={this.state.username}
           onChange={this.handleUsernameChange}
           onKeyPress={this.handleKeyPress}
         />
+
         <TextField
           id="user-password"
           className="signup-field"
@@ -133,12 +131,13 @@ class SignUp extends Component {
           type="password"
           errorText={
             this.state.errorPassword
-              ? 'The password must contain at least 8 characters, a Capital Letter, a Number and a Special Symbol'
+              ? 'Must contain at least 8 characters, a Capital Letter, a Number, a Special Symbol and'
               : ''
           }
           onChange={this.handlePasswordChange}
           onKeyPress={this.handleKeyPress}
         />
+
         <FlatButton
           id="signup-button"
           label="Create Account"

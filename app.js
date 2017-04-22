@@ -9,15 +9,15 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const favicon = require('serve-favicon');
 const session = require('express-session');
-// const passport = require('passport');
+const passport = require('passport');
 const mongoose = require('mongoose');
 const MongoStore = require('connect-mongo')(session);
 
 /*
   Load Routes
 */
-// const authRouter = require('./routes/auth');
-const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
+const usersRouter = require('./routes/user');
 const booksRouter = require('./routes/books');
 
 /*
@@ -61,23 +61,23 @@ app.use(cookieParser(sessionSecret));
 app.use(
   session({
     secret: sessionSecret,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })
 );
-// app.use(passport.initialize());
-// app.use(passport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 
 /*
   User Routes
 */
-// app.use('/auth', authRouter);
-app.use('/api/users', usersRouter);
+app.use('/auth', authRouter);
+app.use('/api/user', usersRouter);
 app.use('/api/books', booksRouter);
 
 /*
-  Serve the Single Page App in Production only
+  Serve the Single Page App from React Build in Production
 */
 if (process.env.NODE_ENV === 'production') {
   app.use(favicon(path.join(__dirname, 'client/build', 'favicon.ico')));
@@ -85,34 +85,30 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /*
-  WebSocket Setup (Uncomment if used, delete in not)
+  Catch 404 (Not found) and forward to error handler
 */
-// const io = require('socket.io')(server);
-// io.on('connection', function(socket) {
-//   socket.emit('test', { hello: 'Testing Socket' });
-//   socket.on('my other event', function (data) {
-//     console.log(data);
-//   });
-// });
-
-// catch 404 and forward to error handler
 app.use(function(req, res, next) {
   const err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
-// error handler
+/*
+  Error Handler
+*/
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
+  // Send Error Message
+  console.log(err);
   res.status(err.status || 500);
   res.send('error');
 });
 
+/*
+  Port Listenning Setup
+*/
 const port = process.env.PORT || 4000;
 server.listen(port, function listening() {
   console.log('Listening on %d', server.address().port);

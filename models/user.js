@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('bcrypt');
 
 const BookTrade = {
   bookID: String,
@@ -8,11 +9,14 @@ const BookTrade = {
 
 const User = new Schema(
   {
-    email: {
+    username: {
       type: String,
       required: true,
     },
-    username: String,
+    password: {
+      type: String,
+      required: true,
+    },
     fullName: String,
     state: String,
     city: String,
@@ -24,5 +28,12 @@ const User = new Schema(
     timestamps: true,
   }
 );
+
+User.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+User.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 module.exports = mongoose.model('User', User);
