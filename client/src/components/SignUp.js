@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../actions/user';
+import { hideError } from '../actions/ui';
 import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
-import { TextField, FlatButton } from 'material-ui';
+import { TextField, FlatButton, Dialog } from 'material-ui';
 import { blue600, blue400 } from 'material-ui/styles/colors';
 
 class SignUp extends Component {
@@ -23,7 +24,7 @@ class SignUp extends Component {
         username: this.state.username,
         password: this.state.password,
       };
-      this.props.dispatch(signUp(user, this.props.history));
+      this.props.signUp(user, this.props.history);
     }
   };
 
@@ -104,12 +105,39 @@ class SignUp extends Component {
           onTouchTap={this.handleSubmit}
         />
 
-        {/*
-          Error Messages
-        */}
+        <Dialog
+          title="Dialog With Actions"
+          actions={
+            <FlatButton
+              label="OK"
+              backgroundColor={blue600}
+              hoverColor={blue400}
+              labelStyle={{ color: 'white' }}
+              onClick={this.props.hideError}
+            />
+          }
+          modal={true}
+          open={this.props.errorDialog}
+        >
+          {this.props.errorMsg}
+        </Dialog>
       </div>
     );
   }
 }
 
-export default connect()(SignUp);
+const mapStateToProps = state => ({
+  errorDialog: state.ui.errorDialog,
+  errorMsg: state.ui.errorMsg,
+});
+
+const mapDispatchToProps = dispatch => ({
+  signUp: (user, history) => {
+    dispatch(signUp(user, history));
+  },
+  hideError: () => {
+    dispatch(hideError());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

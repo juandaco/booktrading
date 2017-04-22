@@ -74,5 +74,7 @@ export default {
   ui: {
     location: 'Home',
     openDrawer: false,
+    errorDialog: false,
+    errorMsg: '',
   }
 };

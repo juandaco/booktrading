@@ -1,4 +1,5 @@
 import defaultUserState from '../helpers/defaultUserState';
+import { showError } from '../actions/ui';
 
 export const NEW_USER = 'NEW_USER';
 export const LOGIN_USER = 'LOGIN_USER';
@@ -45,12 +46,11 @@ export const signUp = (newUser, history) => dispatch => {
           username: newUser.username,
         };
         dispatch(loginUser(formattedUser));
-      } else {
-        console.log('Error Message for User Exists');
+      } else if (user.errorMsg) {
+        dispatch(showError(user.errorMsg));
       }
     })
     .catch(err => {
-      console.log(err);
       dispatch(loginFailed());
     });
 };
