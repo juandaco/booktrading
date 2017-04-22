@@ -11,10 +11,12 @@ passport.use(
         return done(err);
       }
       if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+        console.log('Incorrect Username');
+        return done(null, false);
       }
       if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+        console.log('Incorrect Password');
+        return done(null, false);
       }
       return done(null, user);
     });

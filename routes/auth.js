@@ -8,10 +8,13 @@ const User = require('../models/user');
 */
 authRouter.post(
   '/login',
-  passportLocal.authenticate('local', {
-    successRedirect: '/',
-    failureRedireact: '/signup',
-  })
+  passportLocal.authenticate('local'),
+  function(req, res) {
+    console.log(req.user);
+    res.json({
+      user: req.user
+    });
+  }
 );
 
 authRouter.post('/signup', function(req, res, next) {
@@ -26,7 +29,6 @@ authRouter.post('/signup', function(req, res, next) {
   User.findOne({ username: req.body.username }).then(function(user) {
     if (!user) {
       let newUser = new User();
-
       newUser.username = req.body.username;
       newUser.password = newUser.generateHash(req.body.password);
 
