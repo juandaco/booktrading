@@ -1,6 +1,9 @@
+import defaultUserState from '../helpers/defaultUserState';
+
 export const NEW_USER = 'NEW_USER';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
+export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 export const ADD_BOOK_REQUEST = 'ADD_BOOK_REQUEST';
 export const ADD_BOOK_CONFIRMATION = 'ADD_BOOK_CONFIRMATION';
@@ -23,8 +26,8 @@ export const addBookConfirmation = () => ({
   type: ADD_BOOK_CONFIRMATION,
 });
 
-export const newUser = newUser => dispatch => {
-  const request = new Request(`/api/items/`, {
+export const signUp = (newUser, history) => dispatch => {
+  const request = new Request(`/auth/signup`, {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json',
@@ -33,6 +36,21 @@ export const newUser = newUser => dispatch => {
     credentials: 'include', // Authenticated
   });
   return fetch(request)
-    .then(user => dispatch(loginUser(user)))
-    .catch(() => dispatch(loginFailed()));
+    .then(resp => resp.json())
+    .then(user => {
+      if (user.message) {
+        history.push('/');
+        const formattedUser = {
+          ...defaultUserState,
+          username: newUser.username,
+        };
+        dispatch(loginUser(formattedUser));
+      } else {
+        console.log('Error Message for User Exists');
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      dispatch(loginFailed());
+    });
 };

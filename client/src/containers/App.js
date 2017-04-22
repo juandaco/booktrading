@@ -34,6 +34,11 @@ class App extends Component {
     injectTapEventPlugin();
   }
 
+  componentDidMount() {
+    // Verify User logged from the Server Session
+
+  }
+
   openDrawer = () => {
     this.setState({ open: !this.state.open });
   };

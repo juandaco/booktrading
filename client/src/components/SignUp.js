@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
-// import { newUser } from '../actions/user';
+import { connect } from 'react-redux';
+import { signUp } from '../actions/user';
+import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
 import { TextField, FlatButton } from 'material-ui';
 import { blue600, blue400 } from 'material-ui/styles/colors';
-import isEmail from 'validator/lib/isEmail';
-import { isPasswordValid, isUsernameValid } from '../helpers/isPasswordValid';
 
 class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
       username: '',
       password: '',
-      errorEmail: false,
       errorUsername: false,
       errorPassword: false,
     };
@@ -22,34 +19,22 @@ class SignUp extends Component {
   handleSubmit = e => {
     e.preventDefault();
     if (this.isInputValid()) {
-      // const user = {
-      //   email: this.state.email,
-      //   username: this.state.username,
-      //   password: this.state.password,
-      // };
-      this.clearState();
-      // CleanUp State
-      // Dispatch action for Creating New User
-      // this.props.dispatch(newUser(user));
+      const user = {
+        username: this.state.username,
+        password: this.state.password,
+      };
+      this.props.dispatch(signUp(user, this.props.history));
     }
   };
 
   isInputValid = () => {
     let status = true;
-    if (!isEmail(this.state.email)) {
-      this.setState({ errorEmail: true });
-      status = false;
-    } else {
-      this.setState({ errorEmail: false });
-    }
-
     if (!isUsernameValid(this.state.username)) {
       this.setState({ errorUsername: true });
       status = false;
     } else {
       this.setState({ errorUsername: false });
     }
-
     if (!isPasswordValid(this.state.password)) {
       this.setState({ errorPassword: true });
       status = false;
@@ -57,24 +42,6 @@ class SignUp extends Component {
       this.setState({ errorPassword: false });
     }
     return status;
-  };
-
-  clearState = () => {
-    this.setState({
-      email: '',
-      username: '',
-      password: '',
-      errorEmail: false,
-      errorUsername: false,
-      errorPassword: false,
-    });
-  };
-
-  handleEmailChange = e => {
-    e.preventDefault();
-    this.setState({
-      email: e.target.value,
-    });
   };
 
   handleUsernameChange = e => {
@@ -100,16 +67,6 @@ class SignUp extends Component {
   render() {
     return (
       <div id="signup-container">
-
-        <TextField
-          id="user-email"
-          className="signup-field"
-          hintText="E-mail"
-          errorText={this.state.errorEmail ? 'Please add a valid email' : ''}
-          value={this.state.email}
-          onChange={this.handleEmailChange}
-          onKeyPress={this.handleKeyPress}
-        />
 
         <TextField
           id="username"
@@ -146,6 +103,7 @@ class SignUp extends Component {
           labelStyle={{ color: 'white' }}
           onTouchTap={this.handleSubmit}
         />
+
         {/*
           Error Messages
         */}
@@ -154,4 +112,4 @@ class SignUp extends Component {
   }
 }
 
-export default SignUp;
+export default connect()(SignUp);

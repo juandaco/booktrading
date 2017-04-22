@@ -6,13 +6,11 @@ const User = require('../models/user');
 /*
   Local
 */
-authRouter.post(
-  '/login',
-  passportLocal.authenticate('local'),
+authRouter.post('/login',
+  passportLocal.authenticate('local'), 
   function(req, res) {
-    console.log(req.user);
     res.json({
-      user: req.user
+      user: req.user.username,
     });
   }
 );
@@ -45,7 +43,7 @@ authRouter.post('/signup', function(req, res, next) {
         });
     } else {
       res.json({
-        message: 'User already exists',
+        errorMsg: 'User already exists',
       });
     }
   });
