@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { sendLogOut } from '../actions/user';
 import { RaisedButton } from 'material-ui';
 import { white, blue600 } from 'material-ui/styles/colors';
 
@@ -7,7 +9,7 @@ const buttonStyle = {
   margin: 15,
 };
 
-const Home = () => {
+const Home = ({ isUserLogged, logOut, history }) => {
   return (
     <div id="home-container">
       <div id="title-container">
@@ -23,23 +25,38 @@ const Home = () => {
         </h5>
       </div>
       <div id="home-button-container">
-        <Link to="/signup">
-          <RaisedButton
-            label="Sign Up"
-            style={buttonStyle}
-            backgroundColor={blue600}
-            labelColor={white}
-          />
-        </Link>
-        <RaisedButton
-          label="Sign In"
-          style={buttonStyle}
-          backgroundColor={blue600}
-          labelColor={white}
-        />
+        {isUserLogged
+          ? null
+           : <div>
+              <Link to="/signup">
+                <RaisedButton
+                  label="Sign Up"
+                  style={buttonStyle}
+                  backgroundColor={blue600}
+                  labelColor={white}
+                />
+              </Link>
+              <Link to="/login">
+                <RaisedButton
+                  label="Login"
+                  style={buttonStyle}
+                  backgroundColor={blue600}
+                  labelColor={white}
+                />
+              </Link>
+            </div>}
       </div>
     </div>
   );
 };
 
-export default Home;
+export default connect(
+  state => ({
+    isUserLogged: Boolean(state.user.username),
+  }),
+  dispatch => ({
+    logOut: history => {
+      dispatch(sendLogOut(history));
+    },
+  }),
+)(Home);

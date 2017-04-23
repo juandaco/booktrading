@@ -22,6 +22,9 @@ header {
   background-color: purple;
 }
 
+/*
+  App Component
+*/
 #app-container {
   display: flex;
   flex-direction: column;
@@ -29,6 +32,9 @@ header {
   align-items: center;
 }
 
+/*
+  Home Component
+*/
 #home-container {
   display: flex;
   flex-direction: column;
@@ -81,6 +87,9 @@ header {
   justify-content: space-between;
 }
 
+/*
+  AddBooks Component
+*/
 #add-books-container {
   display: flex;
   flex-direction: column;
@@ -110,20 +119,40 @@ header {
   text-align: justify;
 }
 
+/*
+  SignUp Component
+*/
 #signup-container {
   display: flex;
   flex-direction: column;
-  margin-top: 100px;
-  align-items: center;
 
   width: 300px;
+  margin-top: 100px;
 
+  align-items: center;
 }
 
-.signup-field {
+.form-field {
   margin: 10px auto;
 }
 
 #signup-button {
+  margin-top: 30px !important;
+}
+
+/*
+  Login Component
+*/
+#login-container {
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 100px;
+
+  align-items: center;
+}
+
+#login-button {
+  max-width: 100px;
   margin-top: 30px !important;
 }

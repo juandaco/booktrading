@@ -1,21 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { signUp } from '../actions/user';
+import { sendLogin } from '../actions/user';
 import { hideError } from '../actions/ui';
-import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
 import { TextField, FlatButton, Dialog } from 'material-ui';
 import { blue600, blue400 } from 'material-ui/styles/colors';
 
-class SignUp extends Component {
+class LogIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
       username: '',
       password: '',
-      passwordConfirm: '',
       errorUsername: false,
       errorPassword: false,
-      errorPasswordConfirm: false,
     };
   }
 
@@ -34,7 +31,15 @@ class SignUp extends Component {
         this.props.hideError();
       }
     }
-  }
+  };
+
+  isInputValid = () => {
+    if (this.state.username.length && this.state.password.length) {
+      return true;
+    } else {
+      return false;
+    }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -44,31 +49,8 @@ class SignUp extends Component {
         password: this.state.password,
       };
       e.target.blur();
-      this.props.signUp(user, this.props.history);
+      this.props.sendLogin(user, this.props.history);
     }
-  };
-
-  isInputValid = () => {
-    let status = true;
-    if (!isUsernameValid(this.state.username)) {
-      this.setState({ errorUsername: true });
-      status = false;
-    } else {
-      this.setState({ errorUsername: false });
-    }
-    if (!isPasswordValid(this.state.password)) {
-      this.setState({ errorPassword: true });
-      status = false;
-    } else {
-      this.setState({ errorPassword: false });
-    }
-    if (this.state.password !== this.state.passwordConfirm) {
-      this.setState({ errorPasswordConfirm: true });
-      status = false;
-    } else {
-      this.setState({ errorPasswordConfirm: false });
-    }
-    return status;
   };
 
   handleUsernameChange = e => {
@@ -85,13 +67,6 @@ class SignUp extends Component {
     });
   };
 
-  handlePasswordConfirmChange = e => {
-    e.preventDefault();
-    this.setState({
-      passwordConfirm: e.target.value,
-    });
-  };
-
   handleKeyPress = e => {
     if (e.key === 'Enter') {
       this.handleSubmit(e);
@@ -100,10 +75,10 @@ class SignUp extends Component {
 
   render() {
     return (
-      <div id="signup-container">
+      <div id="login-container">
 
         <TextField
-          className="signup-field"
+          className="form-field"
           hintText="Username"
           errorText={
             this.state.errorUsername ? 'Must be at least 4 characters long' : ''
@@ -127,21 +102,9 @@ class SignUp extends Component {
           onKeyPress={this.handleKeyPress}
         />
 
-        <TextField
-          className="form-field"
-          hintText="Confirm Password"
-          value={this.state.passwordConfirm}
-          type="password"
-          errorText={
-            this.state.errorPasswordConfirm ? `Password doesn't match` : ''
-          }
-          onChange={this.handlePasswordConfirmChange}
-          onKeyPress={this.handleKeyPress}
-        />
-
         <FlatButton
-          id="signup-button"
-          label="Create Account"
+          id="login-button"
+          label="Login"
           backgroundColor={blue600}
           hoverColor={blue400}
           labelStyle={{ color: 'white' }}
@@ -149,7 +112,6 @@ class SignUp extends Component {
         />
 
         <Dialog
-          title="Something Wrong"
           actions={
             <FlatButton
               label="OK"
@@ -174,12 +136,12 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: (user, history) => {
-    dispatch(signUp(user, history));
+  sendLogin: (user, history) => {
+    dispatch(sendLogin(user, history));
   },
   hideError: () => {
     dispatch(hideError());
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

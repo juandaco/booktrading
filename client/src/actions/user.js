@@ -18,6 +18,10 @@ export const loginFailed = () => ({
   type: LOGIN_FAILED,
 });
 
+export const logOutUser = () => ({
+  type: LOGOUT_USER,
+});
+
 export const addBookRequest = bookID => ({
   type: ADD_BOOK_REQUEST,
   bookID,
@@ -56,4 +60,59 @@ export const signUp = (newUser, history) => dispatch => {
     .catch(err => {
       dispatch(loginFailed());
     });
+};
+
+export const getUserInSession = history => dispatch => {
+  return fetch('/auth/user-session', {
+    accept: 'application/json',
+    credentials: 'include',
+  })
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.user) {
+        history.push('/');
+        dispatch(loginUser(resp.user));
+      }
+    })
+    .catch(err => console.log(err));
+};
+
+export const sendLogin = (user, history) => dispatch => {
+  const request = new Request(`/auth/login`, {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify(user),
+    credentials: 'include', // Authenticated
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.user) {
+        history.push('/');
+        dispatch(loginUser(resp.user));
+      } else if (resp.errorMsg) {
+        dispatch(showError(resp.errorMsg));
+      }
+    })
+    .catch(err => {
+      dispatch(loginFailed());
+    });
+};
+
+export const sendLogout = () => dispatch => {
+  return fetch('/auth/logout', {
+    method: 'POST',
+    accept: 'application/json',
+    credentials: 'inclued',
+  })
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        history.push('/');
+        dispatch(logOutUser());
+      }
+    })
+    .catch(err => console.log(err));
 };

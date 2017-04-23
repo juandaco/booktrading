@@ -1,8 +1,15 @@
 import React from 'react';
-import { Drawer, MenuItem } from 'material-ui';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Drawer, MenuItem } from 'material-ui';
 
-const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged, setLocation}) => {
+const DrawerContainer = ({
+  open,
+  closeDrawer,
+  onRequestChange,
+  isUserLogged,
+  setLocation,
+}) => {
   return (
     <Drawer
       docked={false}
@@ -10,11 +17,13 @@ const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged, set
       // width={200}
       onRequestChange={onRequestChange}
     >
-      <Link to="/" >
+      <Link to="/">
         <MenuItem onTouchTap={closeDrawer}>Home</MenuItem>
       </Link>
       <Link to="/browse">
-        <MenuItem focusState="focused" onTouchTap={closeDrawer}>All Books</MenuItem>
+        <MenuItem focusState="focused" onTouchTap={closeDrawer}>
+          All Books
+        </MenuItem>
       </Link>
       {isUserLogged
         ? <div>
@@ -39,4 +48,6 @@ const DrawerContainer = ({ open, closeDrawer, onRequestChange, isUserLogged, set
   );
 };
 
-export default DrawerContainer;
+export default connect(state => ({
+  isUserLogged: Boolean(state.ui.username),
+}))(DrawerContainer);

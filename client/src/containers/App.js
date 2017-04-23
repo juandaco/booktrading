@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 // React Router
 import { Route } from 'react-router';
+// React Redux
+import { connect } from 'react-redux';
+import { getUserInSession } from '../actions/user';
 // Material UI config
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { MuiThemeProvider, getMuiTheme } from 'material-ui/styles';
@@ -18,6 +21,7 @@ import AllBooks from '../components/AllBooks';
 import AddBooks from '../containers/AddBooks';
 import About from '../components/About';
 import SignUp from '../components/SignUp';
+import LogIn from '../components/LogIn';
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +40,7 @@ class App extends Component {
 
   componentDidMount() {
     // Verify User logged from the Server Session
-
+    this.props.getUserInSession(this.props.history);
   }
 
   openDrawer = () => {
@@ -74,7 +78,6 @@ class App extends Component {
             open={this.state.open}
             closeDrawer={this.closeDrawer}
             onRequestChange={this.onRequestChange}
-            isUserLogged={this.state.isUserLogged}
             setLocation={this.setLocation}
           />
 
@@ -84,10 +87,25 @@ class App extends Component {
           <Route exact path="/user/add-books" component={AddBooks} />
           <Route exact path="/about" component={About} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/login" component={LogIn} />
         </div>
       </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (
+  state = {
+    location: 'Home',
+  },
+) => ({
+  location: state.location,
+});
+
+const mapDispatchToProps = dispatch => ({
+  getUserInSession: history => {
+    dispatch(getUserInSession(history));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

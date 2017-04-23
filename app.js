@@ -61,7 +61,7 @@ app.use(cookieParser(sessionSecret));
 app.use(
   session({
     secret: sessionSecret,
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
   })

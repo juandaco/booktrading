@@ -8,7 +8,7 @@ import defaultUserState from '../helpers/defaultUserState';
 const user = (state = defaultUserState, action) => {
   switch (action.type) {
     case LOGIN_USER:
-      return action.user;
+      return Object.assign({}, state, action.user);
     case LOGIN_FAILED:
     case LOGOUT_USER:
       return defaultUserState;

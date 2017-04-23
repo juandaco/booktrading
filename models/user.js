@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const BookTrade = {
   bookID: String,
   owner: String,
+  status: Boolean,
 };
 
 const User = new Schema(
@@ -22,7 +23,6 @@ const User = new Schema(
     city: String,
     ownedBooks: [String], // By BookID
     tradeRequests: [BookTrade],
-    acceptedTradeRequests: [BookTrade],
   },
   {
     timestamps: true,

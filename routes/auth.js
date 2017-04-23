@@ -4,17 +4,8 @@ const passportLocal = require('../auth/local');
 const User = require('../models/user');
 
 /*
-  Local
+  Local Strategy
 */
-authRouter.post('/login',
-  passportLocal.authenticate('local'), 
-  function(req, res) {
-    res.json({
-      user: req.user.username,
-    });
-  }
-);
-
 authRouter.post('/signup', function(req, res, next) {
   // Send Error if username or passsword field not found
   if (!req.body.username || !req.body.password) {
@@ -47,6 +38,77 @@ authRouter.post('/signup', function(req, res, next) {
       });
     }
   });
+});
+
+authRouter.post('/login', function(req, res, next) {
+  passportLocal.authenticate('local', function(err, user, info) {
+    if (err) {
+      return next(err);
+    }
+    if (!user) {
+      console.log(info);
+      return res.json({
+        errorMsg: 'Incorrect Username or Password',
+      });
+    }
+    req.logIn(user, function(err) {
+      if (err) {
+        return res.status(500).json({
+          errorMsg: 'Could not log in user',
+        });
+      }
+      // Remove Private User data befor sending User Info
+      let formattedUser = Object.assign({}, user._doc);
+      delete formattedUser._id;
+      delete formattedUser.__v;
+      delete formattedUser.updatedAt;
+      delete formattedUser.createdAt;
+      delete formattedUser.password;
+      return res.json({
+        user: formattedUser,
+      });
+    });
+  })(req, res, next);
+});
+
+authRouter.get('/logout', function(req, res) {
+  if (req.isAuthenticated()) {
+    req.logout();
+    req.session.destroy();
+    res.json({
+      message: 'User logged out',
+    });
+  } else {
+    res.json({
+      errorMsg: 'User not logged in',
+    });
+  }
+});
+
+authRouter.get('/user-session', function(req, res) {
+  if (req.isAuthenticated()) {
+    User.findById(
+      { _id: req.user._id },
+      {
+        _id: false,
+        __v: false,
+        updatedAt: false,
+        createdAt: false,
+        password: false,
+      },
+      function(err, user) {
+        console.log(user);
+        if (err) throw err;
+        res.json({
+          user,
+        });
+      }
+    );
+  } else {
+    res.status(401).json({
+      errorMsg: 'You need to login first',
+    });
+  }
 });
 
 module.exports = authRouter;
