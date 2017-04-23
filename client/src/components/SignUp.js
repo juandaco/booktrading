@@ -12,9 +12,28 @@ class SignUp extends Component {
     this.state = {
       username: '',
       password: '',
+      passwordConfirm: '',
       errorUsername: false,
       errorPassword: false,
+      errorPasswordConfirm: false,
     };
+  }
+
+  componentWillMount() {
+    window.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  handleKeyDown = e => {
+    if (this.props.errorDialog) {
+      e.preventDefault();
+      if (e.keyCode === 27 || e.keyCode === 13) {
+        this.props.hideError();
+      }
+    }
   }
 
   handleSubmit = e => {
@@ -24,6 +43,7 @@ class SignUp extends Component {
         username: this.state.username,
         password: this.state.password,
       };
+      e.target.blur();
       this.props.signUp(user, this.props.history);
     }
   };
@@ -42,6 +62,12 @@ class SignUp extends Component {
     } else {
       this.setState({ errorPassword: false });
     }
+    if (this.state.password !== this.state.passwordConfirm) {
+      this.setState({ errorPasswordConfirm: true });
+      status = false;
+    } else {
+      this.setState({ errorPasswordConfirm: false });
+    }
     return status;
   };
 
@@ -59,6 +85,13 @@ class SignUp extends Component {
     });
   };
 
+  handlePasswordConfirmChange = e => {
+    e.preventDefault();
+    this.setState({
+      passwordConfirm: e.target.value,
+    });
+  };
+
   handleKeyPress = e => {
     if (e.key === 'Enter') {
       this.handleSubmit(e);
@@ -70,7 +103,6 @@ class SignUp extends Component {
       <div id="signup-container">
 
         <TextField
-          id="username"
           className="signup-field"
           hintText="Username"
           errorText={
@@ -82,17 +114,28 @@ class SignUp extends Component {
         />
 
         <TextField
-          id="user-password"
           className="signup-field"
           hintText="Password"
           value={this.state.password}
           type="password"
           errorText={
             this.state.errorPassword
-              ? 'Must contain at least 8 characters, a Capital Letter, a Number, a Special Symbol and'
+              ? 'Password Rules: 8 characters minimum, a Capital Letter, a Number, and no Spaces'
               : ''
           }
           onChange={this.handlePasswordChange}
+          onKeyPress={this.handleKeyPress}
+        />
+
+        <TextField
+          className="signup-field"
+          hintText="Confirm Password"
+          value={this.state.passwordConfirm}
+          type="password"
+          errorText={
+            this.state.errorPasswordConfirm ? `Password doesn't match` : ''
+          }
+          onChange={this.handlePasswordConfirmChange}
           onKeyPress={this.handleKeyPress}
         />
 
@@ -116,7 +159,6 @@ class SignUp extends Component {
               onClick={this.props.hideError}
             />
           }
-          modal={true}
           open={this.props.errorDialog}
         >
           {this.props.errorMsg}

@@ -27,6 +27,9 @@ export const addBookConfirmation = () => ({
   type: ADD_BOOK_CONFIRMATION,
 });
 
+/*
+  Async Complex Actions
+*/
 export const signUp = (newUser, history) => dispatch => {
   const request = new Request(`/auth/signup`, {
     method: 'POST',

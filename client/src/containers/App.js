@@ -8,7 +8,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // Material UI Components
 import { AppBar, IconButton } from 'material-ui';
 // Material UI Colors
-import { blue600 } from 'material-ui/styles/colors';
+import { white, blue600 } from 'material-ui/styles/colors';
 // Material UI Icons
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
 // My Components
@@ -66,7 +66,7 @@ class App extends Component {
             iconElementLeft={
               <IconButton
                 onTouchTap={this.openDrawer}
-                children={<MenuIcon color={'#fff'} />}
+                children={<MenuIcon color={white} />}
               />
             }
           />
@@ -78,8 +78,7 @@ class App extends Component {
             setLocation={this.setLocation}
           />
 
-          {/* Routes to */}
-
+          {/* Routes */}
           <Route exact path="/" component={Home} />
           <Route exact path="/browse" component={AllBooks} />
           <Route exact path="/user/add-books" component={AddBooks} />

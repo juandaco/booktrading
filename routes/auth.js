@@ -43,7 +43,7 @@ authRouter.post('/signup', function(req, res, next) {
         });
     } else {
       res.json({
-        errorMsg: 'User already exists',
+        errorMsg: 'This username already exists, please choose another option',
       });
     }
   });
