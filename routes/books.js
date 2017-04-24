@@ -74,7 +74,8 @@ booksRouter.post('/', function(req, res) {
     if (err) throw err;
     if (!book) {
       // The owner should be taken from the Express Session
-      newBook['owners'] = [req.body.owner];
+      // newBook['owners'] = [req.body.owner];
+      newBook['owners'] = [req.user.username];
       book = new Books(newBook);
       book.save(newBook, function(err, data) {
         if (err) throw err;

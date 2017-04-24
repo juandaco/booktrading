@@ -10,34 +10,28 @@ class AddBooks extends Component {
     this.state = {
       searchTerm: '',
     };
-    // Function Bindings
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleKeys = this.handleKeys.bind(this);
-    this.searchBooks = this.searchBooks.bind(this);
   }
 
-  handleSearchChange(e) {
+  handleSearchChange = e => {
     e.preventDefault();
     this.setState({
       searchTerm: e.target.value,
     });
-  }
+  };
 
-  handleKeys(e) {
+  handleSearchClick = () => this.props.searchBooks(this.state.searchTerm);
+
+  handleKeys = e => {
     if (e.keyCode === 13) {
       e.target.blur();
-      this.searchBooks();
+      this.props.searchBooks(this.state.searchTerm);
     } else if (e.keyCode === 27) {
       this.setState({
         searchTerm: '',
       });
       e.target.blur();
     }
-  }
-
-  searchBooks() {
-    this.props.dispatch(fetchSearchBooks(this.state.searchTerm));
-  }
+  };
 
   render() {
     const { isSearching, error, items } = this.props;
@@ -62,7 +56,7 @@ class AddBooks extends Component {
             onKeyDown={this.handleKeys}
             autoFocus
           />
-          <FlatButton label="Search" onClick={this.searchBooks} />
+          <FlatButton label="Search" onClick={this.handleSearchClick} />
         </div>
         <div id="search-books-container">
           {isSearching
@@ -89,4 +83,10 @@ const mapStateToProps = (
   };
 };
 
-export default connect(mapStateToProps)(AddBooks);
+const mapDispatchToProps = dispatch => ({
+  searchBooks: term => {
+    dispatch(fetchSearchBooks(term));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddBooks);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../actions/user';
-import { setLocation, hideError } from '../actions/ui';
+import { hideError } from '../actions/ui';
 import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
 import { TextField, FlatButton, Dialog } from 'material-ui';
 import { blue600, blue400 } from 'material-ui/styles/colors';
@@ -34,7 +34,7 @@ class SignUp extends Component {
         this.props.hideError();
       }
     }
-  }
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -44,9 +44,8 @@ class SignUp extends Component {
         password: this.state.password,
       };
       e.target.blur();
-      const { signUp, setLocationHome } = this.props;
+      const { signUp } = this.props;
       signUp(user, this.props.history);
-      setLocationHome();
     }
   };
 
@@ -178,9 +177,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   signUp: (user, history) => {
     dispatch(signUp(user, history));
-  },
-  setLocationHome: () => {
-    dispatch(setLocation('Home'))
   },
   hideError: () => {
     dispatch(hideError());
