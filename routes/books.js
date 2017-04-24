@@ -96,7 +96,7 @@ booksRouter.post('/', verifyUser, function(req, res) {
     });
 });
 
-booksRouter.delete('/:bookID', verifyUser, function(req, res) {
+booksRouter.delete('/', verifyUser, function(req, res) {
   // Delete book from the Book collection AND from the User in session
   /*
     Logic Steps 
@@ -109,11 +109,13 @@ booksRouter.delete('/:bookID', verifyUser, function(req, res) {
   */
 });
 
-booksRouter.get('/:page', function(req, res) {
-  Books.find().lean().exec(function(err, books){
-    if (err) throw err;
-    res.json(books);
-  });
+booksRouter.get('/', function(req, res) {
+  Books.find({}, { _id: false, updatedAt: false, createdAt: false, __v: false })
+    .lean()
+    .exec(function(err, books) {
+      if (err) throw err;
+      res.json(books);
+    });
 });
 
 module.exports = booksRouter;

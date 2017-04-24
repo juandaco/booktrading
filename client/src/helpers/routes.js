@@ -2,6 +2,7 @@ import React from 'react';
 // My Components
 import Home from '../components/Home';
 import AllBooks from '../components/AllBooks';
+import MyBooks from '../components/MyBooks';
 import AddBooks from '../containers/AddBooks';
 import About from '../components/About';
 import SignUp from '../components/SignUp';
@@ -23,7 +24,7 @@ export default [
   {
     path: '/user/books',
     exact: true,
-    main: null,
+    main: MyBooks,
     title: () => <span>My Books</span>,
   },
   {

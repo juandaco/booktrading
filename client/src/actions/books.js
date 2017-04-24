@@ -31,10 +31,10 @@ const shouldFetchBooks = state => {
 /*
   Async Thunk Action Creators
 */
-export const fetchBooks = page => (dispatch, getState) => {
+export const fetchBooks = () => (dispatch, getState) => {
   if (shouldFetchBooks(getState())) {
-    dispatch(requestBooks(page));
-    return fetch(`/api/books/${page}`)
+    dispatch(requestBooks());
+    return fetch('/api/books')
       .then(body => body.json())
       .then(books => {
         dispatch(receiveBooks(books));

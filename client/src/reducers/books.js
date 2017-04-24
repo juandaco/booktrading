@@ -14,7 +14,6 @@ const books = (
       return {
         ...state,
         isFetching: true,
-        page: action.page,
       };
     case RECEIVE_BOOKS: 
       return {

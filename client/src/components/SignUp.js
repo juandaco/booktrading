@@ -112,6 +112,7 @@ class SignUp extends Component {
           value={this.state.username}
           onChange={this.handleUsernameChange}
           onKeyPress={this.handleKeyPress}
+          autoFocus
         />
 
         <TextField

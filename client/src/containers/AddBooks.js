@@ -50,7 +50,7 @@ class AddBooks extends Component {
       />
     ));
     return (
-      <div id="add-books-container">
+      <div className="books-container">
         <div id="search-container">
           <TextField
             id="text-search"
