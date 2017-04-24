@@ -9,9 +9,9 @@ class AllBooks extends Component {
   }
 
   render() {
-    const { isFetching, items } = this.props;
+    const { isFetching, books } = this.props;
 
-    let bookItems = items.map(book => (
+    let bookItems = books.map(book => (
       <BookCard key={book.bookID} book={book}/>
     ));
     return (
@@ -30,12 +30,12 @@ const mapStateToProps = (
   state = {
     isFetching: true,
     page: 0,
-    items: [],
+    books: [],
   },
 ) => ({
   isFetching: state.books.isFetching,
   page: state.books.page,
-  items: state.books.items,
+  books: state.books.items,
 });
 
 export default connect(mapStateToProps)(AllBooks);

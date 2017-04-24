@@ -12,7 +12,7 @@ class MyBooks extends Component {
     const { isFetching, userBooks } = this.props;
 
     let bookItems = userBooks.map(book => (
-      <BookCard key={book.bookID} book={book} />
+      <BookCard key={book.bookID} book={book} removeButton />
     ));
     return (
       <div className="books-container">

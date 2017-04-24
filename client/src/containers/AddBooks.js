@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { TextField, FlatButton } from 'material-ui';
 import { fetchSearchBooks, clearSearch } from '../actions/search';
-import { sendAddBook } from '../actions/user';
 import { connect } from 'react-redux';
 import BookCard from '../components/BookCard';
 
@@ -44,9 +43,8 @@ class AddBooks extends Component {
       <BookCard
         key={book.bookID}
         id={book.bookID}
-        addBook={this.props.addBook}
-        owned={this.props.userBooks.includes(book.bookID)}
         book={book}
+        addButton={!this.props.userBooks.includes(book.bookID)}
       />
     ));
     return (
@@ -89,9 +87,6 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = dispatch => ({
-  addBook: book => {
-    dispatch(sendAddBook(book));
-  },
   searchBooks: term => {
     dispatch(fetchSearchBooks(term));
   },

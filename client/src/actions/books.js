@@ -1,7 +1,7 @@
 export const REQUEST_BOOKS = 'REQUEST_BOOKS';
 export const RECEIVE_BOOKS = 'RECEIVE_BOOKS';
 export const ADD_BOOK = 'ADD_BOOK';
-// export const REMOVE_BOOK = 'REMOVE_BOOK';
+export const REMOVE_BOOK = 'REMOVE_BOOK';
 
 /*
   Simple Action Creators
@@ -19,6 +19,11 @@ export const receiveBooks = items => ({
 export const addBook = book => ({
   type: ADD_BOOK,
   book,
+});
+
+export const removeBook = bookID => ({
+  type: REMOVE_BOOK,
+  bookID,
 });
 
 /*

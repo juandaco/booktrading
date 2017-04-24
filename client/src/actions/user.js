@@ -1,6 +1,6 @@
 import defaultUserState from '../helpers/defaultUserState';
 import { showError } from '../actions/ui';
-import { addBook } from '../actions/books';
+import { addBook, removeBook } from '../actions/books';
 
 export const NEW_USER = 'NEW_USER';
 export const LOGIN_USER = 'LOGIN_USER';
@@ -8,6 +8,7 @@ export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
 export const ADD_USER_BOOK = 'ADD_USER_BOOK';
+export const REMOVE_USER_BOOK = 'REMOVE_USER_BOOK';
 
 export const loginUser = user => ({
   type: LOGIN_USER,
@@ -24,6 +25,11 @@ export const logOutUser = () => ({
 
 export const addUserBook = bookID => ({
   type: ADD_USER_BOOK,
+  bookID,
+});
+
+export const removeUserBook = bookID => ({
+  type: REMOVE_USER_BOOK,
   bookID,
 });
 
@@ -126,6 +132,27 @@ export const sendAddBook = book => dispatch => {
       if (resp.message) {
         dispatch(addBook(book));
         dispatch(addUserBook(book.bookID));
+      }
+    })
+    .catch(err => console.log(err));
+};
+
+export const sendRemoveBook = book => dispatch => {
+  const request = new Request('/api/books', {
+    method: 'DELETE',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({ bookID: book.bookID }),
+    credentials: 'include',
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        dispatch(removeUserBook(book.bookID));
+        const isLastUser = book.owners.length <= 1;
+        if (isLastUser) dispatch(removeBook(book.bookID));
       }
     })
     .catch(err => console.log(err));

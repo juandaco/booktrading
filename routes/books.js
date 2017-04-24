@@ -98,9 +98,34 @@ booksRouter.post('/', verifyUser, function(req, res) {
 
 booksRouter.delete('/', verifyUser, function(req, res) {
   // Delete book from the Book collection AND from the User in session
+  User.updateOne(
+    { _id: req.user._id },
+    { $pull: { ownedBooks: req.body.bookID } }
+  )
+    .then(resp => {
+      // Error Checking
+      if (!resp.ok || !resp.nModified) throw new Error('');
+      // Update the Books Collection
+      Books.findOneAndUpdate(
+        { bookID: req.body.bookID },
+        { $pull: { owners: req.user.username } }
+      ).then(book => {
+        if (book.owners.length === 1) {
+          book.remove();
+        }
+        res.json({
+          message: 'Book Deleted',
+        });
+      });
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({
+        errorMsg: 'Book Not Deleted',
+      });
+    });
   /*
     Logic Steps 
-      1. Verify User LoggedIn Security (Express Middleware)
       2. Verify User Ownership
         a. Remove from User owned Books
       3. Remove User From Book owners field

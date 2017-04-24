@@ -1,4 +1,9 @@
-import { REQUEST_BOOKS, RECEIVE_BOOKS, ADD_BOOK } from '../actions/books';
+import {
+  REQUEST_BOOKS,
+  RECEIVE_BOOKS,
+  ADD_BOOK,
+  REMOVE_BOOK,
+} from '../actions/books';
 
 const books = (
   state = {
@@ -15,20 +20,22 @@ const books = (
         ...state,
         isFetching: true,
       };
-    case RECEIVE_BOOKS: 
+    case RECEIVE_BOOKS:
       return {
         ...state,
         isFetching: false,
         items: action.items,
-      }
-    case ADD_BOOK: 
+      };
+    case ADD_BOOK:
       return {
         ...state,
-        items: [
-          ...state.items,
-          action.book,
-        ],
-      } 
+        items: [...state.items, action.book],
+      };
+    case REMOVE_BOOK:
+      return {
+        ...state,
+        items: state.items.filter(item => item.bookID !== action.bookID),
+      };
     default:
       return state;
   }
