@@ -4,6 +4,7 @@ const booksRouter = express.Router();
 const fetch = require('node-fetch');
 const Books = require('../models/books');
 const User = require('../models/user');
+const verifyUser = require('../middleware/verifyUser');
 
 // Search  Google Books API
 booksRouter.get('/search', function(req, res) {
@@ -15,7 +16,8 @@ booksRouter.get('/search', function(req, res) {
     &projection=lite
     &printType=books
     &orderBy=relevance
-    &langRestrict=en`.replace(/\s/g, '');
+    &langRestrict=en
+    &key=${process.env.GOOGLE_BOOKS_API_KEY}`.replace(/\s/g, '');
   fetch(apiURL)
     .then(resp => resp.json())
     .then(data => {
@@ -27,7 +29,7 @@ booksRouter.get('/search', function(req, res) {
       }
       data.items.forEach(item => {
         // Get Data for each book Found
-        fetch(item.selfLink)
+        fetch(`${item.selfLink}?key=${process.env.GOOGLE_BOOKS_API_KEY}`)
           .then(resp => resp.json())
           .then(book => {
             const info = book.volumeInfo;
@@ -61,35 +63,40 @@ booksRouter.get('/search', function(req, res) {
 });
 
 // Add Books
-booksRouter.post('/', function(req, res) {
-  // Verify User LoggedIn first Security
+booksRouter.post('/', verifyUser, function(req, res) {
+  // Add Book to User
   let newBook = req.body.book;
-  /*
-    Verify if User has the Book,
-     - If it doesn't proceed to add Book
-     - If it does return error message
-  */
-  // Add Book to Collection or Update the Owners List
-  Books.findOne({ bookID: newBook.bookID }, function(err, book) {
-    if (err) throw err;
-    if (!book) {
-      // The owner should be taken from the Express Session
-      // newBook['owners'] = [req.body.owner];
-      newBook['owners'] = [req.user.username];
-      book = new Books(newBook);
-      book.save(newBook, function(err, data) {
+  User.updateOne(
+    { _id: req.user._id },
+    { $addToSet: { ownedBooks: newBook.bookID } }
+  )
+    .then(resp => {
+      // Add to Book Collection or Update the Owners List
+      Books.findOne({ bookID: newBook.bookID }, function(err, book) {
         if (err) throw err;
+        if (!book) {
+          newBook['owners'] = [req.user.username];
+          book = new Books(newBook);
+        } else {
+          book.owners.push(req.user.username);
+        }
+        book.save(newBook, function(err, data) {
+          if (err) throw err;
+        });
+        res.json({
+          message: 'Book Added',
+        });
       });
-    } else {
-      book.owners.push(req.body.owner);
-    }
-    res.json({
-      okMsg: 'Book Added',
+    })
+    .catch(err => {
+      console.log(err);
+      res.json({
+        errorMsg: 'Something went wrong',
+      });
     });
-  });
 });
 
-booksRouter.delete('/:bookID', function(req, res) {
+booksRouter.delete('/:bookID', verifyUser, function(req, res) {
   // Delete book from the Book collection AND from the User in session
   /*
     Logic Steps 

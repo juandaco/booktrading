@@ -2,6 +2,7 @@ const express = require('express');
 const authRouter = express.Router();
 const passportLocal = require('../auth/local');
 const User = require('../models/user');
+const verifyUser = require('../middleware/verifyUser');
 
 /*
   Local Strategy
@@ -14,13 +15,11 @@ authRouter.post('/signup', function(req, res, next) {
       errorMsg,
     });
   }
-  //
   User.findOne({ username: req.body.username }).then(function(user) {
     if (!user) {
       let newUser = new User();
       newUser.username = req.body.username;
       newUser.password = newUser.generateHash(req.body.password);
-
       newUser
         .save()
         .then(user => {
@@ -71,43 +70,31 @@ authRouter.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-authRouter.post('/logout', function(req, res) {
-  if (req.isAuthenticated()) {
-    req.logout();
-    req.session.destroy();
-    res.json({
-      message: 'User logged out',
-    });
-  } else {
-    res.json({
-      errorMsg: 'User not logged in',
-    });
-  }
+authRouter.post('/logout', verifyUser, function(req, res) {
+  req.logout();
+  req.session.destroy();
+  res.json({
+    message: 'User logged out',
+  });
 });
 
-authRouter.get('/user-session', function(req, res) {
-  if (req.isAuthenticated()) {
-    User.findById(
-      { _id: req.user._id },
-      {
-        _id: false,
-        __v: false,
-        updatedAt: false,
-        createdAt: false,
-        password: false,
-      },
-      function(err, user) {
-        if (err) throw err;
-        res.json({
-          user,
-        });
-      }
-    );
-  } else {
-    res.json({
-      errorMsg: 'You need to login first',
-    });
-  }
+authRouter.get('/user-session', verifyUser, function(req, res) {
+  User.findById(
+    { _id: req.user._id },
+    {
+      _id: false,
+      __v: false,
+      updatedAt: false,
+      createdAt: false,
+      password: false,
+    },
+    function(err, user) {
+      if (err) throw err;
+      res.json({
+        user,
+      });
+    }
+  );
 });
 
 module.exports = authRouter;

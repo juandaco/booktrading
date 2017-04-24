@@ -6,9 +6,7 @@ export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
-export const ADD_BOOK_REQUEST = 'ADD_BOOK_REQUEST';
-export const ADD_BOOK_CONFIRMATION = 'ADD_BOOK_CONFIRMATION';
-
+export const ADD_BOOK = 'ADD_BOOK_REQUEST';
 
 export const loginUser = user => ({
   type: LOGIN_USER,
@@ -23,15 +21,10 @@ export const logOutUser = () => ({
   type: LOGOUT_USER,
 });
 
-export const addBookRequest = bookID => ({
-  type: ADD_BOOK_REQUEST,
+export const addBook = bookID => ({
+  type: ADD_BOOK,
   bookID,
 });
-
-export const addBookConfirmation = () => ({
-  type: ADD_BOOK_CONFIRMATION,
-});
-
 
 /*
   Async Complex Actions
@@ -110,8 +103,27 @@ export const sendLogout = () => dispatch => {
   })
     .then(body => body.json())
     .then(resp => {
-      if (resp.message) {
+      if (resp.message || resp.errorMsg) {
         dispatch(logOutUser());
+      }
+    })
+    .catch(err => console.log(err));
+};
+
+export const sendAddBook = book => dispatch => {
+  const request = new Request('/api/books', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({ book }),
+    credentials: 'include',
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        dispatch(addBook(book.bookID));
       }
     })
     .catch(err => console.log(err));

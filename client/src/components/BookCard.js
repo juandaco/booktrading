@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-  Card,
-  CardActions,
-  CardMedia,
-} from 'material-ui/Card';
+import { Card, CardActions, CardMedia } from 'material-ui/Card';
 import { FlatButton } from 'material-ui';
 import AddIcon from 'material-ui/svg-icons/content/add-circle';
 import { blue600 } from 'material-ui/styles/colors';
@@ -14,13 +10,14 @@ const buttonStyle = {
 
 const labelStyle = {
   color: blue600,
-}
+};
 
-const BookCard = ({ coverPhoto, title, subtitle, infoLink, addBook, bookID }) => {
+const BookCard = ({ addBook, book, owned }) => {
+  const {imageLink, title, infoLink, } = book;
   return (
     <Card className="book-card">
       <CardMedia>
-        <img className="book-image" src={coverPhoto} alt={`${title} Cover`} />
+        <img className="book-image" src={imageLink} alt={`${title} Cover`} />
       </CardMedia>
       <CardActions style={{ textAlign: 'right' }}>
         <FlatButton
@@ -30,14 +27,16 @@ const BookCard = ({ coverPhoto, title, subtitle, infoLink, addBook, bookID }) =>
           target="_blank"
           labelStyle={labelStyle}
         />
-        <FlatButton
-          label="Add"
-          style={buttonStyle}
-          icon={<AddIcon style={{ width: 19, }} color={blue600} />}
-          labelPosition="before"
-          labelStyle={labelStyle}
-          onTouchTap={() => addBook(bookID)}
-        />
+        {owned
+          ? null
+          : <FlatButton
+              label="Add"
+              style={buttonStyle}
+              icon={<AddIcon style={{ width: 19 }} color={blue600} />}
+              labelPosition="before"
+              labelStyle={labelStyle}
+              onTouchTap={() => addBook(book)}
+            />}
       </CardActions>
     </Card>
   );

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, FlatButton } from 'material-ui';
-import { fetchSearchBooks } from '../actions/search';
+import { fetchSearchBooks, clearSearch } from '../actions/search';
+import { sendAddBook } from '../actions/user';
 import { connect } from 'react-redux';
 import BookCard from '../components/BookCard';
 
@@ -10,6 +11,10 @@ class AddBooks extends Component {
     this.state = {
       searchTerm: '',
     };
+  }
+
+  componentWillUnmount() {
+    this.props.clearSearch();
   }
 
   handleSearchChange = e => {
@@ -39,13 +44,9 @@ class AddBooks extends Component {
       <BookCard
         key={book.bookID}
         id={book.bookID}
-        title={book.title}
-        subtitle={book.author}
-        description={book.description}
-        coverPhoto={book.imageLink}
-        infoLink={book.infoLink}
         addBook={this.props.addBook}
-        bookID={book.bookID}
+        owned={this.props.userBooks.includes(book.bookID)}
+        book={book}
       />
     ));
     return (
@@ -75,6 +76,7 @@ const mapStateToProps = (
     isSearching: false,
     items: [],
     error: false,
+    userBooks: [],
   },
 ) => {
   const srch = state.search;
@@ -82,16 +84,20 @@ const mapStateToProps = (
     isSearching: srch.isSearching,
     error: srch.error,
     items: srch.items,
+    userBooks: state.user.ownedBooks,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  addBook: bookID => {
-    console.log('BookID', bookID);
+  addBook: book => {
+    dispatch(sendAddBook(book));
   },
   searchBooks: term => {
     dispatch(fetchSearchBooks(term));
   },
+  clearSearch: () => {
+    dispatch(clearSearch());
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBooks);

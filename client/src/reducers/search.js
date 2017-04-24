@@ -2,6 +2,7 @@ import {
   SEARCH_BOOK,
   RECEIVE_SEARCH_RESULTS,
   SEARCH_ERROR,
+  CLEAR_SEARCH,
 } from '../actions/search';
 
 const search = (
@@ -32,6 +33,12 @@ const search = (
         isSearching: false,
         error: true,
       };
+    case CLEAR_SEARCH:
+      return {
+        ...state,
+        isSearching: false,
+        items: [],
+      }
     default:
       return state;
   }
