@@ -1,4 +1,4 @@
-import { REQUEST_BOOKS, RECEIVE_BOOKS } from '../actions/books';
+import { REQUEST_BOOKS, RECEIVE_BOOKS, ADD_BOOK } from '../actions/books';
 
 const books = (
   state = {
@@ -22,6 +22,14 @@ const books = (
         isFetching: false,
         items: action.items,
       }
+    case ADD_BOOK: 
+      return {
+        ...state,
+        items: [
+          ...state.items,
+          action.book,
+        ],
+      } 
     default:
       return state;
   }

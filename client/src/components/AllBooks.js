@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../actions/books';
+import BookCard from './BookCard';
 
 class AllBooks extends Component {
   componentDidMount() {
@@ -8,19 +9,14 @@ class AllBooks extends Component {
   }
 
   render() {
-    const { isFetching, page, items } = this.props;
+    const { isFetching, items } = this.props;
 
-    let bookItems;
-    if (Array.isArray(items) && items.length)
-      bookItems = items.map(book => {
-        return <li key={book}>{book}</li>
-        // return <li key={book.id}>{book.title}</li>;
-      });
-
+    let bookItems = items.map(book => (
+      <BookCard key={book.bookID} book={book}/>
+    ));
     return (
       <div>
         <h1>AllBooks</h1>
-        <p>{page}</p>
         {isFetching
           ? <p>Loading</p>
           : <ul>
@@ -31,11 +27,13 @@ class AllBooks extends Component {
   }
 }
 
-const mapStateToProps = (state = {
-  isFetching: true,
-  page: 0,
-  items: []
-}) => ({
+const mapStateToProps = (
+  state = {
+    isFetching: true,
+    page: 0,
+    items: [],
+  },
+) => ({
   isFetching: state.books.isFetching,
   page: state.books.page,
   items: state.books.items,

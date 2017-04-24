@@ -1,12 +1,13 @@
 import defaultUserState from '../helpers/defaultUserState';
 import { showError } from '../actions/ui';
+import { addBook } from '../actions/books';
 
 export const NEW_USER = 'NEW_USER';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
-export const ADD_BOOK = 'ADD_BOOK_REQUEST';
+export const ADD_USER_BOOK = 'ADD_USER_BOOK';
 
 export const loginUser = user => ({
   type: LOGIN_USER,
@@ -21,8 +22,8 @@ export const logOutUser = () => ({
   type: LOGOUT_USER,
 });
 
-export const addBook = bookID => ({
-  type: ADD_BOOK,
+export const addUserBook = bookID => ({
+  type: ADD_USER_BOOK,
   bookID,
 });
 
@@ -123,7 +124,8 @@ export const sendAddBook = book => dispatch => {
     .then(body => body.json())
     .then(resp => {
       if (resp.message) {
-        dispatch(addBook(book.bookID));
+        dispatch(addBook(book));
+        dispatch(addUserBook(book.bookID));
       }
     })
     .catch(err => console.log(err));

@@ -1,5 +1,6 @@
 export const REQUEST_BOOKS = 'REQUEST_BOOKS';
 export const RECEIVE_BOOKS = 'RECEIVE_BOOKS';
+export const ADD_BOOK = 'ADD_BOOK';
 // export const REMOVE_BOOK = 'REMOVE_BOOK';
 
 /*
@@ -13,6 +14,11 @@ export const requestBooks = page => ({
 export const receiveBooks = items => ({
   type: RECEIVE_BOOKS,
   items,
+});
+
+export const addBook = book => ({
+  type: ADD_BOOK,
+  book,
 });
 
 /*
@@ -29,9 +35,9 @@ export const fetchBooks = page => (dispatch, getState) => {
   if (shouldFetchBooks(getState())) {
     dispatch(requestBooks(page));
     return fetch(`/api/books/${page}`)
-      .then(response => response.json())
-      .then(json => {
-        dispatch(receiveBooks(json.items));
+      .then(body => body.json())
+      .then(books => {
+        dispatch(receiveBooks(books));
       });
   }
 };

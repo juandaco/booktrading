@@ -110,9 +110,9 @@ booksRouter.delete('/:bookID', verifyUser, function(req, res) {
 });
 
 booksRouter.get('/:page', function(req, res) {
-  // Get Books from the collections by page
-  res.json({
-    items: ['temp', 'working', 'demo'],
+  Books.find().lean().exec(function(err, books){
+    if (err) throw err;
+    res.json(books);
   });
 });
 

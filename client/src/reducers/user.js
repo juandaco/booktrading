@@ -2,7 +2,7 @@ import {
    LOGIN_USER,
    LOGIN_FAILED,
    LOGOUT_USER,
-   ADD_BOOK,
+   ADD_USER_BOOK,
 } from '../actions/user';
 import defaultUserState from '../helpers/defaultUserState';
 
@@ -13,7 +13,7 @@ const user = (state = defaultUserState, action) => {
     case LOGIN_FAILED:
     case LOGOUT_USER:
       return defaultUserState;
-    case ADD_BOOK:
+    case ADD_USER_BOOK:
       return {
         ...state,
         ownedBooks: [...state.ownedBooks, action.bookID],
