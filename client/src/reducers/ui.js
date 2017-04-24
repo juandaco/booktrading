@@ -1,13 +1,11 @@
 import {
-  SET_LOCATION,
   TOGGLE_DRAWER,
   SHOW_ERROR,
   HIDE_ERROR,
-} from '../actions/ui';
+  } from '../actions/ui';
 
 function ui(
   state = {
-    location: 'Home',
     openDrawer: false,
     errorDialog: false,
     errorMsg: '',
@@ -15,11 +13,6 @@ function ui(
   action,
 ) {
   switch (action.type) {
-    case SET_LOCATION:
-      return {
-        ...state,
-        location: action.location,
-      };
     case TOGGLE_DRAWER:
       return {
         ...state,

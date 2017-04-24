@@ -71,7 +71,7 @@ authRouter.post('/login', function(req, res, next) {
   })(req, res, next);
 });
 
-authRouter.get('/logout', function(req, res) {
+authRouter.post('/logout', function(req, res) {
   if (req.isAuthenticated()) {
     req.logout();
     req.session.destroy();
@@ -97,7 +97,6 @@ authRouter.get('/user-session', function(req, res) {
         password: false,
       },
       function(err, user) {
-        console.log(user);
         if (err) throw err;
         res.json({
           user,
@@ -105,7 +104,7 @@ authRouter.get('/user-session', function(req, res) {
       }
     );
   } else {
-    res.status(401).json({
+    res.json({
       errorMsg: 'You need to login first',
     });
   }

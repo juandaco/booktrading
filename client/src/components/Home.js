@@ -9,7 +9,11 @@ const buttonStyle = {
   margin: 15,
 };
 
-const Home = ({ isUserLogged, logOut, history }) => {
+const Home = ({
+  isUserLogged,
+  logOut,
+  history,
+}) => {
   return (
     <div id="home-container">
       <div id="title-container">
@@ -27,7 +31,7 @@ const Home = ({ isUserLogged, logOut, history }) => {
       <div id="home-button-container">
         {isUserLogged
           ? null
-           : <div>
+          : <div>
               <Link to="/signup">
                 <RaisedButton
                   label="Sign Up"

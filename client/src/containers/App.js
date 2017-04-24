@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 // React Router
-import { Route } from 'react-router';
+import { Route, withRouter } from 'react-router';
 // React Redux
 import { connect } from 'react-redux';
+// Redux Actions
 import { getUserInSession } from '../actions/user';
+import { toggleDrawer } from '../actions/ui';
 // Material UI config
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { MuiThemeProvider, getMuiTheme } from 'material-ui/styles';
@@ -14,25 +16,11 @@ import { AppBar, IconButton } from 'material-ui';
 import { white, blue600 } from 'material-ui/styles/colors';
 // Material UI Icons
 import MenuIcon from 'material-ui/svg-icons/navigation/menu';
-// My Components
+// Components
 import DrawerContainer from './DrawerContainer';
-import Home from '../components/Home';
-import AllBooks from '../components/AllBooks';
-import AddBooks from '../containers/AddBooks';
-import About from '../components/About';
-import SignUp from '../components/SignUp';
-import LogIn from '../components/LogIn';
+import routes from '../helpers/routes';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isUserLogged: true,
-      open: false,
-      location: 'Home',
-    };
-  }
-
   componentWillMount() {
     // Inside the Lifecycle hook to fix the Hot Reloading Issue
     injectTapEventPlugin();
@@ -43,52 +31,44 @@ class App extends Component {
     this.props.getUserInSession(this.props.history);
   }
 
-  openDrawer = () => {
-    this.setState({ open: !this.state.open });
-  };
-
-  closeDrawer = e => {
-    this.setState({
-      open: false,
-      location: e.target.innerText,
-    });
-  };
-
-  onRequestChange = open => this.setState({ open });
-
   render() {
+    const { toggleDrawer } = this.props;
+    const isHome = this.props.location.pathname === '/';
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
         <div id="app-container">
 
           <AppBar
-            title={this.state.location === 'Home' ? '' : this.state.location}
+            title={routes.map((route, index) => (
+            <Route 
+              key={index}
+              path={route.path}
+              exact={route.exact}
+              component={route.title}
+            />
+          ))}
             style={{
               backgroundColor: blue600,
-              height: this.state.location === 'Home' ? 0 : 60,
+              height: isHome ? 0 : 60,
             }}
             iconElementLeft={
               <IconButton
-                onTouchTap={this.openDrawer}
+                onTouchTap={toggleDrawer}
                 children={<MenuIcon color={white} />}
               />
             }
           />
-          <DrawerContainer
-            open={this.state.open}
-            closeDrawer={this.closeDrawer}
-            onRequestChange={this.onRequestChange}
-            setLocation={this.setLocation}
-          />
 
-          {/* Routes */}
-          <Route exact path="/" component={Home} />
-          <Route exact path="/browse" component={AllBooks} />
-          <Route exact path="/user/add-books" component={AddBooks} />
-          <Route exact path="/about" component={About} />
-          <Route exact path="/signup" component={SignUp} />
-          <Route exact path="/login" component={LogIn} />
-        </div>
+          <DrawerContainer />
+          {routes.map((route, index) => (
+            <Route 
+              key={index}
+              path={route.path}
+              exact={route.exact}
+              component={route.main}
+            />
+          ))}
+          </div>
       </MuiThemeProvider>
     );
   }
@@ -96,16 +76,19 @@ class App extends Component {
 
 const mapStateToProps = (
   state = {
-    location: 'Home',
+    openDrawer: false,
   },
 ) => ({
-  location: state.location,
+  openDrawer: state.ui.openDrawer,
 });
 
 const mapDispatchToProps = dispatch => ({
   getUserInSession: history => {
     dispatch(getUserInSession(history));
   },
+  toggleDrawer: () => {
+    dispatch(toggleDrawer());
+  },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

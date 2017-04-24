@@ -1,53 +1,93 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { sendLogout } from '../actions/user';
+import { toggleDrawer } from '../actions/ui';
 import { Link } from 'react-router-dom';
-import { Drawer, MenuItem } from 'material-ui';
+import { Drawer, List, ListItem } from 'material-ui';
 
-const DrawerContainer = ({
-  open,
-  closeDrawer,
-  onRequestChange,
-  isUserLogged,
-  setLocation,
-}) => {
-  return (
-    <Drawer
-      docked={false}
-      open={open}
-      // width={200}
-      onRequestChange={onRequestChange}
-    >
-      <Link to="/">
-        <MenuItem onTouchTap={closeDrawer}>Home</MenuItem>
-      </Link>
-      <Link to="/browse">
-        <MenuItem focusState="focused" onTouchTap={closeDrawer}>
-          All Books
-        </MenuItem>
-      </Link>
-      {isUserLogged
-        ? <div>
-            <Link to="/user/books">
-              <MenuItem onTouchTap={closeDrawer}>My Books</MenuItem>
-            </Link>
-            <Link to="/user/add-books">
-              <MenuItem onTouchTap={closeDrawer}>Add Books</MenuItem>
-            </Link>
-            <Link to="/user/trade">
-              <MenuItem onTouchTap={closeDrawer}>Trade Requests</MenuItem>
-            </Link>
-            <Link to="/user/pofile">
-              <MenuItem onTouchTap={closeDrawer}>Profile</MenuItem>
-            </Link>
-          </div>
-        : null}
-      <Link to="/about">
-        <MenuItem onTouchTap={closeDrawer}>About</MenuItem>
-      </Link>
-    </Drawer>
-  );
-};
+class DrawerContainer extends Component {
+  handleToggleDrawer = e => {
+    const { toggleDrawer } = this.props;
+    toggleDrawer();
+  };
 
-export default connect(state => ({
-  isUserLogged: Boolean(state.ui.username),
-}))(DrawerContainer);
+  handleLogOut = () => {
+    const { logOut, toggleDrawer } = this.props;
+    logOut();
+    toggleDrawer();
+  };
+
+  render() {
+    const { isUserLogged, openDrawer, toggleDrawer } = this.props;
+    return (
+      <Drawer docked={false} open={openDrawer} onRequestChange={toggleDrawer}>
+        <List>
+          <Link to="/">
+            <ListItem primaryText="Home" onTouchTap={this.handleToggleDrawer} />
+          </Link>
+          <Link to="/browse">
+            <ListItem
+              primaryText="All Books"
+              onTouchTap={this.handleToggleDrawer}
+            />
+          </Link>
+          {isUserLogged
+            ? <div>
+                <Link to="/user/books">
+                  <ListItem
+                    primaryText="My Books"
+                    onTouchTap={this.handleToggleDrawer}
+                  />
+                </Link>
+                <Link to="/user/add-books">
+                  <ListItem
+                    primaryText="Add Books"
+                    onTouchTap={this.handleToggleDrawer}
+                  />
+                </Link>
+                <Link to="/user/trade">
+                  <ListItem
+                    primaryText="Trade Requests"
+                    onTouchTap={this.handleToggleDrawer}
+                  />
+                </Link>
+                <Link to="/user/profile">
+                  <ListItem
+                    primaryText="Profile"
+                    onTouchTap={this.handleToggleDrawer}
+                  />
+                </Link>
+                <Link to="/">
+                  <ListItem
+                    primaryText="Logout"
+                    onTouchTap={this.handleLogOut}
+                  />
+                </Link>
+              </div>
+            : null}
+          <Link to="/about">
+            <ListItem
+              primaryText="About"
+              onTouchTap={this.handleToggleDrawer}
+            />
+          </Link>
+        </List>
+      </Drawer>
+    );
+  }
+}
+
+export default connect(
+  state => ({
+    isUserLogged: Boolean(state.user.username),
+    openDrawer: state.ui.openDrawer,
+  }),
+  dispatch => ({
+    toggleDrawer: () => {
+      dispatch(toggleDrawer());
+    },
+    logOut: () => {
+      dispatch(sendLogout());
+    },
+  }),
+)(DrawerContainer);

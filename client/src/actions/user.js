@@ -104,13 +104,11 @@ export const sendLogin = (user, history) => dispatch => {
 export const sendLogout = () => dispatch => {
   return fetch('/auth/logout', {
     method: 'POST',
-    accept: 'application/json',
-    credentials: 'inclued',
+    credentials: 'include',
   })
     .then(body => body.json())
     .then(resp => {
       if (resp.message) {
-        history.push('/');
         dispatch(logOutUser());
       }
     })
