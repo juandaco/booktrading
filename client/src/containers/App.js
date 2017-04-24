@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // React Router
-import { Route, withRouter } from 'react-router';
+import { Route } from 'react-router';
 // React Redux
 import { connect } from 'react-redux';
 // Redux Actions
@@ -40,13 +40,13 @@ class App extends Component {
 
           <AppBar
             title={routes.map((route, index) => (
-            <Route 
-              key={index}
-              path={route.path}
-              exact={route.exact}
-              component={route.title}
-            />
-          ))}
+              <Route
+                key={index}
+                path={route.path}
+                exact={route.exact}
+                component={route.title}
+              />
+            ))}
             style={{
               backgroundColor: blue600,
               height: isHome ? 0 : 60,
@@ -61,14 +61,14 @@ class App extends Component {
 
           <DrawerContainer />
           {routes.map((route, index) => (
-            <Route 
+            <Route
               key={index}
               path={route.path}
               exact={route.exact}
               component={route.main}
             />
           ))}
-          </div>
+        </div>
       </MuiThemeProvider>
     );
   }
@@ -91,4 +91,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
+export default connect(mapStateToProps, mapDispatchToProps)(App);

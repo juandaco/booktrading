@@ -37,13 +37,15 @@ class AddBooks extends Component {
     const { isSearching, error, items } = this.props;
     let bookCards = items.map(book => (
       <BookCard
-        key={book.id}
-        id={book.id}
+        key={book.bookID}
+        id={book.bookID}
         title={book.title}
         subtitle={book.author}
         description={book.description}
         coverPhoto={book.imageLink}
         infoLink={book.infoLink}
+        addBook={this.props.addBook}
+        bookID={book.bookID}
       />
     ));
     return (
@@ -84,6 +86,9 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = dispatch => ({
+  addBook: bookID => {
+    console.log('BookID', bookID);
+  },
   searchBooks: term => {
     dispatch(fetchSearchBooks(term));
   },

@@ -16,7 +16,7 @@ const labelStyle = {
   color: blue600,
 }
 
-const BookCard = ({ coverPhoto, title, subtitle, infoLink }) => {
+const BookCard = ({ coverPhoto, title, subtitle, infoLink, addBook, bookID }) => {
   return (
     <Card className="book-card">
       <CardMedia>
@@ -36,6 +36,7 @@ const BookCard = ({ coverPhoto, title, subtitle, infoLink }) => {
           icon={<AddIcon style={{ width: 19, }} color={blue600} />}
           labelPosition="before"
           labelStyle={labelStyle}
+          onTouchTap={() => addBook(bookID)}
         />
       </CardActions>
     </Card>
