@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RaisedButton } from 'material-ui';
-import { white, blue600 } from 'material-ui/styles/colors';
 
 const buttonStyle = {
   margin: 15,
@@ -31,16 +30,12 @@ const Home = ({ isUserLogged, logOut, history }) => {
                 <RaisedButton
                   label="Sign Up"
                   style={buttonStyle}
-                  backgroundColor={blue600}
-                  labelColor={white}
                 />
               </Link>
               <Link to="/login">
                 <RaisedButton
                   label="Login"
                   style={buttonStyle}
-                  backgroundColor={blue600}
-                  labelColor={white}
                 />
               </Link>
             </div>}

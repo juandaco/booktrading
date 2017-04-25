@@ -33,7 +33,6 @@ booksRouter.get('/search', function(req, res) {
           .then(resp => resp.json())
           .then(book => {
             const info = book.volumeInfo;
-            console.log(info.industryIdentifiers);
             const newBook = {
               bookID: book.id,
               title: info.title,

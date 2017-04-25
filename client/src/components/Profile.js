@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { updateProfile } from '../actions/user';
-import { TextField, FlatButton } from 'material-ui';
-import { white, blue600, blue400 } from 'material-ui/styles/colors';
+import { sendProfileUpdate } from '../actions/user';
+import { TextField, RaisedButton } from 'material-ui';
 
 class Profile extends Component {
   constructor(props) {
@@ -14,14 +13,17 @@ class Profile extends Component {
     };
   }
 
-  handleUpdate = () => {
-    const profile = {
-      fullName: this.state.fullName || this.props.fullName,
-      city: this.state.city || this.props.city,
-      stateLocation: this.state.stateLocation || this.props.stateLocation,
-    };
-    this.props.updateProfile(profile);
-    this.clearState();
+  handleUpdate = e => {
+    e.preventDefault();
+    if (this.state.fullName || this.state.city || this.state.stateLocation) {
+      const profile = {
+        fullName: this.state.fullName || this.props.fullName,
+        city: this.state.city || this.props.city,
+        stateLocation: this.state.stateLocation || this.props.stateLocation,
+      };
+      this.props.updateProfile(profile);
+      this.clearState();
+    }
   };
 
   clearState = () => {
@@ -34,8 +36,7 @@ class Profile extends Component {
 
   handleKeyPress = e => {
     if (e.key === 'Enter') {
-      e.preventDefault();
-      this.handleUpdate();
+      this.handleUpdate(e);
     }
   };
 
@@ -44,38 +45,45 @@ class Profile extends Component {
       <div className="component-container">
         <div id="profile-container">
           <form onSubmit={this.handleUpdate}>
+
             <TextField
               name="full-name"
-              hintText={
-                this.props.fullName ? this.props.fullName : 'Full Name '
-              }
+              hintText={this.props.fullName ? this.props.fullName : 'Full Name'}
+              floatingLabelText="Full Name"
+              floatingLabelFixed
               onChange={e => this.setState({ fullName: e.target.value })}
               onKeyPress={this.handleKeyPress}
               value={this.state.fullName}
             />
+
             <TextField
               name="city"
               hintText={this.props.city ? this.props.city : 'City'}
+              floatingLabelText="City"
+              floatingLabelFixed
               onChange={e => this.setState({ city: e.target.value })}
               onKeyPress={this.handleKeyPress}
               value={this.state.city}
             />
+
             <TextField
               name="state"
               hintText={
                 this.props.stateLocation ? this.props.stateLocation : 'State'
               }
+              floatingLabelText="State"
+              floatingLabelFixed
               onChange={e => this.setState({ stateLocation: e.target.value })}
               onKeyPress={this.handleKeyPress}
               value={this.state.stateLocation}
             />
-            <FlatButton
-              id="signup-button"
+
+            <RaisedButton
               label="Update"
               type="submit"
-              backgroundColor={blue600}
-              hoverColor={blue400}
-              labelStyle={{ color: white }}
+              style={{
+                marginTop: 30,
+              }}
             />
           </form>
         </div>
@@ -92,7 +100,7 @@ export default connect(
   }),
   dispatch => ({
     updateProfile: profile => {
-      dispatch(updateProfile(profile));
+      dispatch(sendProfileUpdate(profile));
     },
   }),
 )(Profile);

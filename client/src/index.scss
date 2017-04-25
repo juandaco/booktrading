@@ -118,7 +118,7 @@ a {
   margin: 10px auto;
 }
 
-#signup-button {
+.signup-button {
   margin-top: 30px !important;
 }
 
@@ -134,7 +134,7 @@ a {
   align-items: center;
 }
 
-#login-button {
+.login-button {
   max-width: 100px;
   margin-top: 30px !important;
 }
@@ -146,4 +146,15 @@ a {
   margin-top: 100px;
 
   text-align: center;
+}
+
+
+.search-container {
+  margin-top: 30px;  
+  margin-bottom: 20px;
+}
+
+.search-text {
+  width: 200px;
+
 }

@@ -91,7 +91,7 @@ export const sendLogin = (user, history) => dispatch => {
       'Content-Type': 'application/json',
     }),
     body: JSON.stringify(user),
-    credentials: 'include', // Authenticated
+    credentials: 'include', 
   });
   return fetch(request)
     .then(body => body.json())
@@ -161,4 +161,23 @@ export const sendRemoveBook = book => dispatch => {
       }
     })
     .catch(err => console.log(err));
+};
+
+export const sendProfileUpdate = profile => dispatch => {
+  const request = new Request('/api/user/', {
+    method: 'PUT',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify(profile),
+    credentials: 'include',
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        dispatch(updateProfile(profile));
+      }
+    })
+    .catch(err => console.log(err));  
 };

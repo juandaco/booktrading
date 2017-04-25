@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { signUp } from '../actions/user';
 import { hideError } from '../actions/ui';
 import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
-import { TextField, FlatButton, Dialog } from 'material-ui';
-import { blue600, blue400 } from 'material-ui/styles/colors';
+import { TextField, RaisedButton } from 'material-ui';
+import ErrorDialog from './ErrorDialog';
 
 class SignUp extends Component {
   constructor(props) {
@@ -141,30 +141,18 @@ class SignUp extends Component {
           onKeyPress={this.handleKeyPress}
         />
 
-        <FlatButton
-          id="signup-button"
+        <RaisedButton
+          className="signup-button"
           label="Create Account"
-          backgroundColor={blue600}
-          hoverColor={blue400}
-          labelStyle={{ color: 'white' }}
           onTouchTap={this.handleSubmit}
         />
 
-        <Dialog
+        <ErrorDialog
           title="Something Wrong"
-          actions={
-            <FlatButton
-              label="OK"
-              backgroundColor={blue600}
-              hoverColor={blue400}
-              labelStyle={{ color: 'white' }}
-              onClick={this.props.hideError}
-            />
-          }
+          text={this.props.errorMsg}
           open={this.props.errorDialog}
-        >
-          {this.props.errorMsg}
-        </Dialog>
+          closeDialog={this.props.hideError}
+        />
       </div>
     );
   }

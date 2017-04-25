@@ -19,7 +19,7 @@ const User = new Schema(
       required: true,
     },
     fullName: String,
-    state: String,
+    stateLocation: String,
     city: String,
     ownedBooks: [String], // By BookID
     tradeRequests: [BookTrade],

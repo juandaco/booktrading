@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { TextField, FlatButton } from 'material-ui';
+import { TextField, FlatButton, CircularProgress } from 'material-ui';
 import { fetchSearchBooks, clearSearch } from '../actions/search';
 import { connect } from 'react-redux';
 import BookCard from '../components/BookCard';
+import SearchIcon from 'material-ui/svg-icons/action/search';
 
 class AddBooks extends Component {
   constructor(props) {
@@ -49,19 +50,24 @@ class AddBooks extends Component {
     ));
     return (
       <div className="component-container">
-        <div id="search-container">
+        <div className="search-container">
           <TextField
-            id="text-search"
+            className="search-text"
             value={this.state.searchTerm}
             onChange={this.handleSearchChange}
             onKeyDown={this.handleKeys}
             autoFocus
           />
-          <FlatButton label="Search" onClick={this.handleSearchClick} />
+          <FlatButton
+            label="Search"
+            icon={<SearchIcon />}
+            labelPosition="after"
+            onClick={this.handleSearchClick}
+          />
         </div>
         <div className="books-container">
           {isSearching
-            ? <p>Loading</p>
+            ? <CircularProgress size={80} thickness={5} />
             : error ? <p>Books not found</p> : bookCards}
         </div>
       </div>
@@ -92,7 +98,7 @@ const mapDispatchToProps = dispatch => ({
   },
   clearSearch: () => {
     dispatch(clearSearch());
-  }
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddBooks);
