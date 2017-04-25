@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../actions/user';
-import { hideError } from '../actions/ui';
+import { hideDialog } from '../actions/ui';
 import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
 import { TextField, RaisedButton } from 'material-ui';
-import ErrorDialog from './ErrorDialog';
+import InfoDialog from './InfoDialog';
 
 class SignUp extends Component {
   constructor(props) {
@@ -28,10 +28,10 @@ class SignUp extends Component {
   }
 
   handleKeyDown = e => {
-    if (this.props.errorDialog) {
+    if (this.props.dialog) {
       e.preventDefault();
       if (e.keyCode === 27 || e.keyCode === 13) {
-        this.props.hideError();
+        this.props.hideDialog();
       }
     }
   };
@@ -147,28 +147,23 @@ class SignUp extends Component {
           onTouchTap={this.handleSubmit}
         />
 
-        <ErrorDialog
-          title="Something Wrong"
-          text={this.props.errorMsg}
-          open={this.props.errorDialog}
-          closeDialog={this.props.hideError}
-        />
+        <InfoDialog title="Something Wrong" />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  errorDialog: state.ui.errorDialog,
-  errorMsg: state.ui.errorMsg,
+  dialog: state.ui.dialog,
+  dialogText: state.ui.dialogText,
 });
 
 const mapDispatchToProps = dispatch => ({
   signUp: (user, history) => {
     dispatch(signUp(user, history));
   },
-  hideError: () => {
-    dispatch(hideError());
+  hideDialog: () => {
+    dispatch(hideDialog());
   },
 });
 

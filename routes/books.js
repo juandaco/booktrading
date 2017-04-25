@@ -5,6 +5,7 @@ const fetch = require('node-fetch');
 const Books = require('../models/books');
 const User = require('../models/user');
 const verifyUser = require('../middleware/verifyUser');
+const getISBN = require('../helpers/getISBN');
 
 // Search  Google Books API
 booksRouter.get('/search', function(req, res) {
@@ -33,6 +34,7 @@ booksRouter.get('/search', function(req, res) {
           .then(resp => resp.json())
           .then(book => {
             const info = book.volumeInfo;
+            const isbn = getISBN(info.industryIdentifiers);
             const newBook = {
               bookID: book.id,
               title: info.title,
@@ -43,10 +45,7 @@ booksRouter.get('/search', function(req, res) {
               description: info.description,
               pageCount: info.pageCount,
               imageLink: info.imageLinks ? info.imageLinks.small : '',
-              isbn: Array.isArray(info.industryIdentifiers) &&
-                info.industryIdentifiers.length
-                ? info.industryIdentifiers[1].identifier
-                : '',
+              isbn,
               infoLink: info.infoLink,
               publishedDate: info.publishedDate,
             };

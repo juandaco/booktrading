@@ -1,24 +1,31 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../actions/books';
+import { showDialog, } from '../actions/ui';
 import BookCard from './BookCard';
+import InfoDialog from './InfoDialog';
 
 class AllBooks extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchBooks());
+    this.props.fetchBooks();
   }
 
   render() {
-    const { isFetching, books } = this.props;
+    const { isFetching, books, showDialog, } = this.props;
 
     let bookItems = books.map(book => (
-      <BookCard key={`all-${book.bookID}`} book={book} />
+      <BookCard
+        key={`all-${book.bookID}`}
+        book={book}
+        showDialog={showDialog}
+      />
     ));
     return (
       <div className="component-container">
         <div className="books-container">
           {isFetching ? <p>Loading</p> : bookItems}
         </div>
+        <InfoDialog />
       </div>
     );
   }
@@ -36,4 +43,13 @@ const mapStateToProps = (
   books: state.books.items,
 });
 
-export default connect(mapStateToProps)(AllBooks);
+const mapDispatchToProps = dispatch => ({
+  fetchBooks: () => {
+    dispatch(fetchBooks());
+  },
+  showDialog: () => {
+    dispatch(showDialog());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(AllBooks);

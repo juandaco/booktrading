@@ -2,10 +2,15 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../actions/books';
 import BookCard from './BookCard';
+import InfoDialog from './InfoDialog';
 
 class MyBooks extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchBooks());
+    this.props.fetchBooks();
+  }
+
+  componentWillUnmount() {
+    this.props.hideDialog();
   }
 
   render() {
@@ -17,6 +22,7 @@ class MyBooks extends Component {
     return (
       <div className="books-container">
         {isFetching ? <p>Loading</p> : bookItems}
+        <InfoDialog /> 
       </div>
     );
   }
@@ -34,4 +40,10 @@ const mapStateToProps = (
   ),
 });
 
-export default connect(mapStateToProps)(MyBooks);
+const mapDispatchToProps = dispatch => ({
+  fetchBooks: () => {
+    dispatch(fetchBooks());
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyBooks);

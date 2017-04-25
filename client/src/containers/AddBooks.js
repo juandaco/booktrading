@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { TextField, FlatButton, CircularProgress } from 'material-ui';
-import { fetchSearchBooks, clearSearch } from '../actions/search';
 import { connect } from 'react-redux';
-import BookCard from '../components/BookCard';
+import { fetchSearchBooks, clearSearch } from '../actions/search';
+import { TextField, FlatButton, CircularProgress } from 'material-ui';
 import SearchIcon from 'material-ui/svg-icons/action/search';
+import BookCard from '../components/BookCard';
+import InfoDialog from '../components/InfoDialog';
 
 class AddBooks extends Component {
   constructor(props) {
@@ -53,6 +54,7 @@ class AddBooks extends Component {
         <div className="search-container">
           <TextField
             className="search-text"
+            name="search-text"
             value={this.state.searchTerm}
             onChange={this.handleSearchChange}
             onKeyDown={this.handleKeys}
@@ -67,9 +69,10 @@ class AddBooks extends Component {
         </div>
         <div className="books-container">
           {isSearching
-            ? <CircularProgress size={80} thickness={5} />
+            ? <CircularProgress style={{ marginTop: 70 }} size={60} thickness={5} />
             : error ? <p>Books not found</p> : bookCards}
         </div>
+        <InfoDialog />
       </div>
     );
   }

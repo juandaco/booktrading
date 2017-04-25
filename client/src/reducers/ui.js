@@ -1,14 +1,14 @@
 import {
   TOGGLE_DRAWER,
-  SHOW_ERROR,
-  HIDE_ERROR,
+  SHOW_DIALOG,
+  HIDE_DIALOG,
   } from '../actions/ui';
 
 function ui(
   state = {
     openDrawer: false,
-    errorDialog: false,
-    errorMsg: '',
+    dialog: false,
+    dialogText: '',
   },
   action,
 ) {
@@ -18,17 +18,17 @@ function ui(
         ...state,
         openDrawer: !state.openDrawer,
       };
-    case SHOW_ERROR:
+    case SHOW_DIALOG:
       return {
         ...state,
-        errorDialog: true,
-        errorMsg: action.message,
+        dialog: true,
+        dialogText: action.message,
       };
-    case HIDE_ERROR:
+    case HIDE_DIALOG:
       return {
         ...state,
-        errorDialog: false,
-        errorMsg: '',
+        dialog: false,
+        dialogText: '',
       };
     default:
       return state;

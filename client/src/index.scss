@@ -83,22 +83,50 @@ a {
   display: flex;
   flex-direction: row;
 
+  margin-top: 30px;
+
   align-items: flex-start;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .book-card {
-  width: 300px;
+  position: relative;
+
+  display: flex;
+
+  min-width: 290px;
+  min-height: 400px;
   margin: 15px;
+
+  align-items: flex-start;
+  direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .book-image {
-  height: 400px;
+  width: 300px;
+  max-height: 400px;
 }
 
-.book-description {
-  text-align: justify;
+.book-info {
+  width: 280px;
+  margin: 10px;
+  padding-top: 0;
+}
+
+.buttons-card-container {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+
+  float: right;
+
+  height: 40px;
+  margin-right: 5px;
+
+  align-self: flex-end;
 }
 
 /*
@@ -142,7 +170,7 @@ a {
 
 
 #profile-container {
-  width: 300px; 
+  width: 300px;
   margin-top: 100px;
 
   text-align: center;
@@ -150,11 +178,10 @@ a {
 
 
 .search-container {
-  margin-top: 30px;  
+  margin-top: 30px;
   margin-bottom: 20px;
 }
 
 .search-text {
   width: 200px;
-
 }

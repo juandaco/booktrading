@@ -1,5 +1,5 @@
 import defaultUserState from '../helpers/defaultUserState';
-import { showError } from '../actions/ui';
+import { showDialog } from '../actions/ui';
 import { addBook, removeBook } from '../actions/books';
 
 export const NEW_USER = 'NEW_USER';
@@ -61,7 +61,7 @@ export const signUp = (newUser, history) => dispatch => {
         };
         dispatch(loginUser(formattedUser));
       } else if (user.errorMsg) {
-        dispatch(showError(user.errorMsg));
+        dispatch(showDialog(user.errorMsg));
       }
     })
     .catch(err => {
@@ -100,7 +100,7 @@ export const sendLogin = (user, history) => dispatch => {
         history.push('/');
         dispatch(loginUser(resp.user));
       } else if (resp.errorMsg) {
-        dispatch(showError(resp.errorMsg));
+        dispatch(showDialog(resp.errorMsg));
       }
     })
     .catch(err => {
