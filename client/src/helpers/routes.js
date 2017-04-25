@@ -4,6 +4,7 @@ import Home from '../components/Home';
 import AllBooks from '../components/AllBooks';
 import MyBooks from '../components/MyBooks';
 import AddBooks from '../containers/AddBooks';
+import Profile from '../components/Profile';
 import About from '../components/About';
 import SignUp from '../components/SignUp';
 import LogIn from '../components/LogIn';
@@ -42,7 +43,7 @@ export default [
   {
     path: '/user/profile',
     exact: true,
-    main: null,
+    main: Profile,
     title: () => <span>Profile</span>,
   },
   {

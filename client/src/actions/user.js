@@ -6,7 +6,7 @@ export const NEW_USER = 'NEW_USER';
 export const LOGIN_USER = 'LOGIN_USER';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 export const LOGOUT_USER = 'LOGOUT_USER';
-export const UPDATE_USER_DATA = 'UPDATE_USER_DATA';
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const ADD_USER_BOOK = 'ADD_USER_BOOK';
 export const REMOVE_USER_BOOK = 'REMOVE_USER_BOOK';
 
@@ -31,6 +31,11 @@ export const addUserBook = bookID => ({
 export const removeUserBook = bookID => ({
   type: REMOVE_USER_BOOK,
   bookID,
+});
+
+export const updateProfile = profile => ({
+  type: UPDATE_PROFILE,
+  profile,
 });
 
 /*

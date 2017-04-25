@@ -1,9 +1,10 @@
 import {
-   LOGIN_USER,
-   LOGIN_FAILED,
-   LOGOUT_USER,
-   ADD_USER_BOOK,
-   REMOVE_USER_BOOK,
+  LOGIN_USER,
+  LOGIN_FAILED,
+  LOGOUT_USER,
+  ADD_USER_BOOK,
+  REMOVE_USER_BOOK,
+  UPDATE_PROFILE,
 } from '../actions/user';
 import defaultUserState from '../helpers/defaultUserState';
 
@@ -23,6 +24,14 @@ const user = (state = defaultUserState, action) => {
       return {
         ...state,
         ownedBooks: state.ownedBooks.filter(book => book !== action.bookID),
+      };
+    case UPDATE_PROFILE:
+      const { fullName, city, stateLocation } = action.profile;
+      return {
+        ...state,
+        fullName,
+        city,
+        stateLocation,
       };
     default:
       return state;

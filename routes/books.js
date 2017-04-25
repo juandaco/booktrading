@@ -33,6 +33,7 @@ booksRouter.get('/search', function(req, res) {
           .then(resp => resp.json())
           .then(book => {
             const info = book.volumeInfo;
+            console.log(info.industryIdentifiers);
             const newBook = {
               bookID: book.id,
               title: info.title,
@@ -45,7 +46,7 @@ booksRouter.get('/search', function(req, res) {
               imageLink: info.imageLinks ? info.imageLinks.small : '',
               isbn: Array.isArray(info.industryIdentifiers) &&
                 info.industryIdentifiers.length
-                ? info.industryIdentifiers[0].identifier
+                ? info.industryIdentifiers[1].identifier
                 : '',
               infoLink: info.infoLink,
               publishedDate: info.publishedDate,
@@ -75,10 +76,11 @@ booksRouter.post('/', verifyUser, function(req, res) {
       Books.findOne({ bookID: newBook.bookID }, function(err, book) {
         if (err) throw err;
         if (!book) {
-          newBook['owners'] = [req.user.username];
+          newBook['owners'] = req.user.username;
           book = new Books(newBook);
         } else {
-          book.owners.push(req.user.username);
+          if (!book.owners.includes(req.user.username))
+            book.owners.push(req.user.username);
         }
         book.save(newBook, function(err, data) {
           if (err) throw err;
@@ -97,13 +99,13 @@ booksRouter.post('/', verifyUser, function(req, res) {
 });
 
 booksRouter.delete('/', verifyUser, function(req, res) {
-  // Delete book from the Book collection AND from the User in session
+  // Delete book from User in session
   User.updateOne(
     { _id: req.user._id },
     { $pull: { ownedBooks: req.body.bookID } }
   )
     .then(resp => {
-      // Error Checking
+      // Error Checking befor Deleting Book
       if (!resp.ok || !resp.nModified) throw new Error('');
       // Update the Books Collection
       Books.findOneAndUpdate(
@@ -124,14 +126,6 @@ booksRouter.delete('/', verifyUser, function(req, res) {
         errorMsg: 'Book Not Deleted',
       });
     });
-  /*
-    Logic Steps 
-      2. Verify User Ownership
-        a. Remove from User owned Books
-      3. Remove User From Book owners field
-        a. If no owners left in Book, Delete Book from Collection
-      4. Send confirmation Message
-  */
 });
 
 booksRouter.get('/', function(req, res) {

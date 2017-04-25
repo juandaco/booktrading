@@ -13,7 +13,7 @@ const Book = new Schema(
     description: String,
     pageCount: Number,
     imageLink: String,
-    isbn: Number,
+    isbn: String,
     infoLink: String,
     publishedDate: Date,
     owners: {

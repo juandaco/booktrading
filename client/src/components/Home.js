@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { sendLogOut } from '../actions/user';
 import { RaisedButton } from 'material-ui';
 import { white, blue600 } from 'material-ui/styles/colors';
 
@@ -9,11 +8,7 @@ const buttonStyle = {
   margin: 15,
 };
 
-const Home = ({
-  isUserLogged,
-  logOut,
-  history,
-}) => {
+const Home = ({ isUserLogged, logOut, history }) => {
   return (
     <div id="home-container">
       <div id="title-container">
@@ -54,13 +49,6 @@ const Home = ({
   );
 };
 
-export default connect(
-  state => ({
-    isUserLogged: Boolean(state.user.username),
-  }),
-  dispatch => ({
-    logOut: history => {
-      dispatch(sendLogOut(history));
-    },
-  }),
-)(Home);
+export default connect(state => ({
+  isUserLogged: Boolean(state.user.username),
+}))(Home);

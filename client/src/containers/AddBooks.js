@@ -41,14 +41,14 @@ class AddBooks extends Component {
     const { isSearching, error, items } = this.props;
     let bookCards = items.map(book => (
       <BookCard
-        key={book.bookID}
+        key={`add-${book.bookID}`}
         id={book.bookID}
         book={book}
         addButton={!this.props.userBooks.includes(book.bookID)}
       />
     ));
     return (
-      <div className="books-container">
+      <div className="component-container">
         <div id="search-container">
           <TextField
             id="text-search"
@@ -59,7 +59,7 @@ class AddBooks extends Component {
           />
           <FlatButton label="Search" onClick={this.handleSearchClick} />
         </div>
-        <div id="search-books-container">
+        <div className="books-container">
           {isSearching
             ? <p>Loading</p>
             : error ? <p>Books not found</p> : bookCards}

@@ -12,15 +12,13 @@ class AllBooks extends Component {
     const { isFetching, books } = this.props;
 
     let bookItems = books.map(book => (
-      <BookCard key={book.bookID} book={book}/>
+      <BookCard key={`all-${book.bookID}`} book={book} />
     ));
     return (
-      <div className="books-container">
-        {isFetching
-          ? <p>Loading</p>
-          : <ul>
-              {bookItems}
-            </ul>}
+      <div className="component-container">
+        <div className="books-container">
+          {isFetching ? <p>Loading</p> : bookItems}
+        </div>
       </div>
     );
   }

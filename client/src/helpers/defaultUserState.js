@@ -1,7 +1,7 @@
 export default {
   username: '',
   fullName: '',
-  state: '',
+  stateLocation: '',
   city: '',
   ownedBooks: [],
   tradeRequests: [],

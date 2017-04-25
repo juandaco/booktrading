@@ -104,7 +104,7 @@ class SignUp extends Component {
       <div id="signup-container">
 
         <TextField
-          className="signup-field"
+          className="form-field"
           hintText="Username"
           errorText={
             this.state.errorUsername ? 'Must be at least 4 characters long' : ''
