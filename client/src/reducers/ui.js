@@ -1,38 +1,45 @@
-import {
-  TOGGLE_DRAWER,
-  SHOW_DIALOG,
-  HIDE_DIALOG,
-  } from '../actions/ui';
+import { combineReducers } from 'redux';
+import { TOGGLE_DRAWER, SHOW_DIALOG, HIDE_DIALOG } from '../actions/ui';
 
-function ui(
+function dialog(
   state = {
-    openDrawer: false,
-    dialog: false,
-    dialogText: '',
+    show: false,
+    title: '',
+    subtitle: '',
+    text: '',
   },
   action,
 ) {
   switch (action.type) {
-    case TOGGLE_DRAWER:
-      return {
-        ...state,
-        openDrawer: !state.openDrawer,
-      };
     case SHOW_DIALOG:
       return {
-        ...state,
-        dialog: true,
-        dialogText: action.message,
+        show: true,
+        title: action.title,
+        subtitle: action.subtitle,
+        text: action.text,
       };
     case HIDE_DIALOG:
       return {
         ...state,
-        dialog: false,
-        dialogText: '',
+        show: false,
       };
     default:
       return state;
   }
 }
+
+function drawer(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_DRAWER:
+      return !state;
+    default:
+      return state;
+  }
+}
+
+const ui = combineReducers({
+  dialog,
+  drawer,
+});
 
 export default ui;

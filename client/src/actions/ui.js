@@ -6,9 +6,11 @@ export const toggleDrawer = () => ({
   type: TOGGLE_DRAWER,
 });
 
-export const showDialog = message => ({
+export const showDialog = (title, subtitle, text) => ({
   type: SHOW_DIALOG,
-  message,
+  title,
+  subtitle,
+  text,
 });
 
 export const hideDialog = () => ({

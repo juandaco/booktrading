@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { Drawer, List, ListItem } from 'material-ui';
 
 class DrawerContainer extends Component {
-  handleToggleDrawer = e => {
+  handleToggleDrawer = () => {
     const { toggleDrawer } = this.props;
     toggleDrawer();
   };
@@ -18,9 +18,9 @@ class DrawerContainer extends Component {
   };
 
   render() {
-    const { isUserLogged, openDrawer, toggleDrawer } = this.props;
+    const { isUserLogged, drawer, toggleDrawer } = this.props;
     return (
-      <Drawer docked={false} open={openDrawer} onRequestChange={toggleDrawer}>
+      <Drawer docked={false} open={drawer} onRequestChange={toggleDrawer}>
         <List>
           <Link to="/">
             <ListItem primaryText="Home" onTouchTap={this.handleToggleDrawer} />
@@ -80,7 +80,7 @@ class DrawerContainer extends Component {
 export default connect(
   state => ({
     isUserLogged: Boolean(state.user.username),
-    openDrawer: state.ui.openDrawer,
+    drawer: state.ui.drawer,
   }),
   dispatch => ({
     toggleDrawer: () => {

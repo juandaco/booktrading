@@ -25,7 +25,7 @@ class LogIn extends Component {
   }
 
   handleKeyDown = e => {
-    if (this.props.dialog) {
+    if (this.props.showDialog) {
       e.preventDefault();
       if (e.keyCode === 27 || e.keyCode === 13) {
         this.props.hideDialog();
@@ -48,7 +48,7 @@ class LogIn extends Component {
         username: this.state.username,
         password: this.state.password,
       };
-      e.target.blur();
+      // e.target.blur();
       this.props.sendLogin(user, this.props.history);
     }
   };
@@ -109,15 +109,14 @@ class LogIn extends Component {
           onTouchTap={this.handleSubmit}
         />
 
-        <InfoDialog title="Something Wrong" />
+        <InfoDialog />
       </div>
     );
   }
 }
 
 const mapStateToProps = state => ({
-  dialog: state.ui.dialog,
-  dialogText: state.ui.dialogText,
+  showDialog: state.ui.dialog.show,
 });
 
 const mapDispatchToProps = dispatch => ({

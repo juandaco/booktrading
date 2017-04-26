@@ -57,14 +57,6 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = (
-  state = {
-    openDrawer: false,
-  },
-) => ({
-  openDrawer: state.ui.openDrawer,
-});
-
 const mapDispatchToProps = dispatch => ({
   getUserInSession: history => {
     dispatch(getUserInSession(history));
@@ -74,4 +66,4 @@ const mapDispatchToProps = dispatch => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

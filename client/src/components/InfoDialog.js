@@ -24,21 +24,21 @@ class InfoDialog extends Component {
   };
 
   render() {
-    const { title, dialogText, dialog, hideDialog } = this.props;
-    const isComplex = /<\w+\/?>/g.test(dialogText);
+    const { title, subtitle, text, show, hideDialog } = this.props;
+    const isComplex = /<\w+\/?>/g.test(text);
     let formattedText;
     if (isComplex) {
       formattedText = (
         <div
           style={{ textAlign: 'justify ' }}
-          dangerouslySetInnerHTML={{ __html: dialogText }}
+          dangerouslySetInnerHTML={{ __html: text }}
         />
       );
     }
     return (
       <Dialog
         className="info-dialog"
-        title={title || null}
+        title={title}
         actions={
           <FlatButton
             label="OK"
@@ -48,13 +48,13 @@ class InfoDialog extends Component {
             onClick={hideDialog}
           />
         }
-        open={dialog}
+        open={show}
         onRequestClose={() => this.props.hideDialog()}
         autoScrollBodyContent={true}
         actionsContainerStyle={{ border: 'none' }}
         titleStyle={{ border: 'none' }}
       >
-        {isComplex ? formattedText : dialogText}
+        {isComplex ? formattedText : text}
       </Dialog>
     );
   }
@@ -62,8 +62,10 @@ class InfoDialog extends Component {
 
 export default connect(
   state => ({
-    dialog: state.ui.dialog,
-    dialogText: state.ui.dialogText,
+    show: state.ui.dialog.show,
+    title: state.ui.dialog.title,
+    subtitle: state.ui.dialog.subtitle,
+    text: state.ui.dialog.text,
   }),
   dispatch => ({
     hideDialog: () => {

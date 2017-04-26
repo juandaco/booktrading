@@ -74,7 +74,7 @@ const BookCard = ({
           secondary
           style={buttonStyle}
           labelPosition="before"
-          onTouchTap={() => showDialog(description)}
+          onTouchTap={() => showDialog(title, subtitle, description)}
         />
         {addButton
           ? <FlatButton
@@ -109,7 +109,7 @@ export default connect(null, dispatch => ({
   removeBook: bookID => {
     dispatch(sendRemoveBook(bookID));
   },
-  showDialog: message => {
-    dispatch(showDialog(message));
+  showDialog: (title, subtitle, text) => {
+    dispatch(showDialog(title, subtitle, text));
   },
 }))(BookCard);
