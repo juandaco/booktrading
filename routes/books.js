@@ -76,16 +76,20 @@ booksRouter.post('/', verifyUser, function(req, res) {
         if (!book) {
           newBook['owners'] = req.user.username;
           book = new Books(newBook);
+          book.save(newBook, function(err, data) {
+            if (err) throw err;
+            res.json({
+              message: 'Book Added',
+            });
+          });
         } else {
-          if (!book.owners.includes(req.user.username))
+          if (!book.owners.includes(req.user.username)) {
             book.owners.push(req.user.username);
+            res.json({
+              message: 'User Added',
+            });
+          }
         }
-        book.save(newBook, function(err, data) {
-          if (err) throw err;
-        });
-        res.json({
-          message: 'Book Added',
-        });
       });
     })
     .catch(err => {

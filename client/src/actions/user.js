@@ -1,5 +1,5 @@
 import { showDialog } from '../actions/ui';
-import { addBook, removeBook } from '../actions/books';
+import { addBook, removeBook, addUserToBook, removeUserFromBook } from '../actions/books';
 
 export const NEW_USER = 'NEW_USER';
 export const LOGIN_USER = 'LOGIN_USER';
@@ -47,7 +47,7 @@ export const sendLogin = (user, history) => dispatch => {
       'Content-Type': 'application/json',
     }),
     body: JSON.stringify(user),
-    credentials: 'include', 
+    credentials: 'include',
   });
   return fetch(request)
     .then(body => body.json())
@@ -116,7 +116,7 @@ export const sendLogout = () => dispatch => {
     .catch(err => console.log(err));
 };
 
-export const sendAddBook = book => dispatch => {
+export const sendAddBook = book => (dispatch, getState) => {
   const request = new Request('/api/books', {
     method: 'POST',
     headers: new Headers({
@@ -128,9 +128,13 @@ export const sendAddBook = book => dispatch => {
   return fetch(request)
     .then(body => body.json())
     .then(resp => {
-      if (resp.message) {
+      const username = getState().user.username;
+      if (resp.message) dispatch(addUserBook(book.bookID));
+      if (resp.message === 'Book Added') {
+        book.owners = [username];
         dispatch(addBook(book));
-        dispatch(addUserBook(book.bookID));
+      } else if (resp.message === 'User Added') {
+        dispatch(addUserToBook(book.bookID, username));
       }
     })
     .catch(err => console.log(err));
@@ -173,5 +177,5 @@ export const sendProfileUpdate = profile => dispatch => {
         dispatch(updateProfile(profile));
       }
     })
-    .catch(err => console.log(err));  
+    .catch(err => console.log(err));
 };

@@ -34,7 +34,7 @@ const BookCard = ({
     publishedDate,
     description,
   } = book;
-  let year = '';  
+  let year = '';
   if (typeof publishedDate === 'string') year = publishedDate.substring(0, 4);
   return (
     <Paper className="book-card">
@@ -66,7 +66,7 @@ const BookCard = ({
           <strong>Year: </strong> {year} <br />
           <strong>ISBN:</strong> {isbn} <br />
         </p>
-        
+
       </div>
       <div className="buttons-card-container">
         <FlatButton
