@@ -140,7 +140,7 @@ export const sendAddBook = book => (dispatch, getState) => {
     .catch(err => console.log(err));
 };
 
-export const sendRemoveBook = book => dispatch => {
+export const sendRemoveBook = book => (dispatch, getState) => {
   const request = new Request('/api/books', {
     method: 'DELETE',
     headers: new Headers({
@@ -154,8 +154,12 @@ export const sendRemoveBook = book => dispatch => {
     .then(resp => {
       if (resp.message) {
         dispatch(removeUserBook(book.bookID));
-        const isLastUser = book.owners.length <= 1;
-        if (isLastUser) dispatch(removeBook(book.bookID));
+      }
+      if (resp.message === 'Book Deleted') {
+        dispatch(removeBook(book.bookID));
+      } else if (resp.message === 'Owner Deleted') {
+        const username = getState().user.username;
+        dispatch(removeUserFromBook(book.bookID, username));
       }
     })
     .catch(err => console.log(err));

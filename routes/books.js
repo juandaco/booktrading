@@ -114,11 +114,15 @@ booksRouter.delete('/', verifyUser, function(req, res) {
         { bookID: req.body.bookID },
         { $pull: { owners: req.user.username } }
       ).then(book => {
+        console.log(book);
         if (book.owners.length === 1) {
           book.remove();
+          return res.json({
+            message: 'Book Deleted',
+          });
         }
         res.json({
-          message: 'Book Deleted',
+          message: 'Owner Deleted',
         });
       });
     })
