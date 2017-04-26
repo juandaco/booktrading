@@ -74,7 +74,7 @@ booksRouter.post('/', verifyUser, function(req, res) {
       Books.findOne({ bookID: newBook.bookID }, function(err, book) {
         if (err) throw err;
         if (!book) {
-          newBook['owners'] = req.user.username;
+          newBook.owners = [req.user.username];
           book = new Books(newBook);
           book.save(newBook, function(err, data) {
             if (err) throw err;
@@ -85,8 +85,11 @@ booksRouter.post('/', verifyUser, function(req, res) {
         } else {
           if (!book.owners.includes(req.user.username)) {
             book.owners.push(req.user.username);
-            res.json({
-              message: 'User Added',
+            book.save(function(err, data) {
+              if (err) throw err;
+              res.json({
+                message: 'User Added',
+              });
             });
           }
         }
@@ -110,17 +113,17 @@ booksRouter.delete('/', verifyUser, function(req, res) {
       // Error Checking befor Deleting Book
       if (!resp.nModified) throw new Error('');
       // Update the Books Collection
-      Books.findOne(
-        { bookID: req.body.bookID }
-      ).then(book => {
+      Books.findOne({ bookID: req.body.bookID }).then(book => {
         if (book.owners.length === 1) {
           book.remove();
           res.json({
             message: 'Book Deleted',
           });
         } else {
-          const bookIndex = book.owners.findIndex(book => book.bookID === req.body.bookID);
-          if (bookIndex > -1 ) book.owners.splice(bookIndex, 1);
+          const bookIndex = book.owners.findIndex(
+            book => book.bookID === req.body.bookID
+          );
+          if (bookIndex > -1) book.owners.splice(bookIndex, 1);
           book.save(function(err) {
             res.json({
               message: 'Owner Deleted',
