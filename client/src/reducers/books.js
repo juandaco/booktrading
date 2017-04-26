@@ -53,7 +53,9 @@ const books = (
         ...state,
         items: state.items.map(item => {
           if (item.bookID === action.bookID) {
-            item.owners.filter(owner => owner !== action.username);
+            const newItem = Object.assign({}, item);
+            newItem.owners = item.owners.filter(owner => owner !== action.username);
+            return newItem;
           }
           return item;
         }),
