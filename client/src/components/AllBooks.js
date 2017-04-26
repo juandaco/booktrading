@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../actions/books';
-import { showDialog, } from '../actions/ui';
+import { showDialog } from '../actions/ui';
+import { CircularProgress } from 'material-ui';
 import BookCard from './BookCard';
 import InfoDialog from './InfoDialog';
 
@@ -11,7 +12,7 @@ class AllBooks extends Component {
   }
 
   render() {
-    const { isFetching, books, showDialog, } = this.props;
+    const { isFetching, books, showDialog } = this.props;
 
     let bookItems = books.map(book => (
       <BookCard
@@ -23,7 +24,13 @@ class AllBooks extends Component {
     return (
       <div className="component-container">
         <div className="books-container">
-          {isFetching ? <p>Loading</p> : bookItems}
+          {isFetching
+            ? <CircularProgress
+                style={{ marginTop: 70 }}
+                size={60}
+                thickness={5}
+              />
+            : bookItems}
         </div>
         <InfoDialog />
       </div>

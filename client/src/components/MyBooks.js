@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../actions/books';
+import { CircularProgress } from 'material-ui';
 import BookCard from './BookCard';
 import InfoDialog from './InfoDialog';
 
 class MyBooks extends Component {
   componentDidMount() {
     this.props.fetchBooks();
-  }
-
-  componentWillUnmount() {
-    this.props.hideDialog();
   }
 
   render() {
@@ -21,8 +18,14 @@ class MyBooks extends Component {
     ));
     return (
       <div className="books-container">
-        {isFetching ? <p>Loading</p> : bookItems}
-        <InfoDialog /> 
+        {isFetching
+          ? <CircularProgress
+              style={{ marginTop: 70 }}
+              size={60}
+              thickness={5}
+            />
+          : bookItems}
+        <InfoDialog />
       </div>
     );
   }

@@ -5,6 +5,7 @@ import { TextField, FlatButton, CircularProgress } from 'material-ui';
 import SearchIcon from 'material-ui/svg-icons/action/search';
 import BookCard from '../components/BookCard';
 import InfoDialog from '../components/InfoDialog';
+import { white, blue600, blue300 } from 'material-ui/styles/colors';
 
 class AddBooks extends Component {
   constructor(props) {
@@ -25,10 +26,12 @@ class AddBooks extends Component {
     });
   };
 
-  handleSearchClick = () => this.props.searchBooks(this.state.searchTerm);
+  handleSearchClick = () => {
+    if (this.state.searchTerm) this.props.searchBooks(this.state.searchTerm);
+  };
 
   handleKeys = e => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && this.state.searchTerm) {
       e.target.blur();
       this.props.searchBooks(this.state.searchTerm);
     } else if (e.keyCode === 27) {
@@ -62,14 +65,21 @@ class AddBooks extends Component {
           />
           <FlatButton
             label="Search"
-            icon={<SearchIcon />}
+            icon={<SearchIcon color={white} />}
             labelPosition="after"
+            backgroundColor={blue600}
+            hoverColor={blue300}
+            labelStyle={{ color: white }}
             onClick={this.handleSearchClick}
           />
         </div>
         <div className="books-container">
           {isSearching
-            ? <CircularProgress style={{ marginTop: 70 }} size={60} thickness={5} />
+            ? <CircularProgress
+                style={{ marginTop: 70 }}
+                size={60}
+                thickness={5}
+              />
             : error ? <p>Books not found</p> : bookCards}
         </div>
         <InfoDialog />

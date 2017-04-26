@@ -13,10 +13,7 @@ import { blue600 } from 'material-ui/styles/colors';
 
 const buttonStyle = {
   minWidth: 70,
-};
-
-const labelStyle = {
-  color: blue600,
+  marginLeft: 5,
 };
 
 const BookCard = ({
@@ -69,36 +66,33 @@ const BookCard = ({
           <strong>Year: </strong> {year} <br />
           <strong>ISBN:</strong> {isbn} <br />
         </p>
-        {/*<div
-          style={{ textAlign: 'justify ' }}
-          dangerouslySetInnerHTML={{ __html: description }}
-        />*/}
+        
       </div>
       <div className="buttons-card-container">
         <FlatButton
           label="More Info"
+          secondary
           style={buttonStyle}
           labelPosition="before"
-          labelStyle={labelStyle}
           onTouchTap={() => showDialog(description)}
         />
         {addButton
           ? <FlatButton
               label="Add"
+              secondary
               style={buttonStyle}
               icon={<AddIcon style={{ width: 19 }} color={blue600} />}
               labelPosition="before"
-              labelStyle={labelStyle}
               onTouchTap={() => addBook(book)}
             />
           : null}
         {removeButton
           ? <FlatButton
               label="remove"
+              secondary
               style={buttonStyle}
               icon={<RemoveIcon style={{ width: 19 }} color={blue600} />}
               labelPosition="before"
-              labelStyle={labelStyle}
               onTouchTap={() => removeBook(book)}
             />
           : null}

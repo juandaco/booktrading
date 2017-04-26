@@ -17,6 +17,9 @@ const muiTheme = getMuiTheme({
     color: blue600,
     textColor: white,
   },
+  flatButton: {
+    secondaryTextColor: blue600,
+  },
   textField: {
     focusColor: blue300,
   }

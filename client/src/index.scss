@@ -97,15 +97,21 @@ a {
 
   min-width: 290px;
   min-height: 400px;
-  margin: 15px;
+  margin: 15px; 
 
   align-items: flex-start;
   direction: row;
   flex-wrap: wrap;
   justify-content: center;
 }
+@media (max-width: 630px) {
+  .book-card {
+    width: 310px;
+  }
+}
 
 .book-image {
+  margin: 5px;
   width: 300px;
   max-height: 400px;
 }
@@ -113,6 +119,7 @@ a {
 .book-info {
   width: 280px;
   margin: 10px;
+  margin-bottom: 30px;
   padding-top: 0;
 }
 
