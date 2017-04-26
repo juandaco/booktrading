@@ -9,6 +9,9 @@
 # build (Remove for production deployment)
 /build
 
+# Debugging
+.chrome/
+
 # remove CSS from development
 /src/*.css
 /src/*.css.map
