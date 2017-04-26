@@ -11,10 +11,11 @@ class MyBooks extends Component {
   }
 
   render() {
-    const { isFetching, userBooks } = this.props;
+    const { username, isFetching, userBooks } = this.props;
 
     let bookItems = userBooks.map(book => (
-      <BookCard key={`my-${book.bookID}`} book={book} removeButton />
+      // Unique Keys for Book Cards
+      <BookCard key={`my-${username}-${book.bookID}`} book={book} removeButton />
     ));
     return (
       <div className="books-container">
@@ -33,10 +34,12 @@ class MyBooks extends Component {
 
 const mapStateToProps = (
   state = {
+    username: '',
     isFetching: false,
     userBooks: [],
   },
 ) => ({
+  username: state.user.username,
   isFetching: state.books.isFetching,
   userBooks: state.books.items.filter(book =>
     state.user.ownedBooks.includes(book.bookID),

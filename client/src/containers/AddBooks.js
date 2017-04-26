@@ -43,10 +43,10 @@ class AddBooks extends Component {
   };
 
   render() {
-    const { isSearching, error, items } = this.props;
+    const { username, isSearching, error, items } = this.props;
     let bookCards = items.map(book => (
       <BookCard
-        key={`add-${book.bookID}`}
+        key={`add-${username}-${book.bookID}`}
         id={book.bookID}
         book={book}
         addButton={!this.props.userBooks.includes(book.bookID)}
@@ -90,6 +90,7 @@ class AddBooks extends Component {
 
 const mapStateToProps = (
   state = {
+    username: '',
     isSearching: false,
     items: [],
     error: false,
@@ -98,6 +99,7 @@ const mapStateToProps = (
 ) => {
   const srch = state.search;
   return {
+    username: state.user.username,
     isSearching: srch.isSearching,
     error: srch.error,
     items: srch.items,

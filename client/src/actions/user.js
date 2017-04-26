@@ -1,4 +1,3 @@
-import defaultUserState from '../helpers/defaultUserState';
 import { showDialog } from '../actions/ui';
 import { addBook, removeBook } from '../actions/books';
 
@@ -41,49 +40,6 @@ export const updateProfile = profile => ({
 /*
   Async Complex Actions
 */
-export const signUp = (newUser, history) => dispatch => {
-  const request = new Request(`/auth/signup`, {
-    method: 'POST',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-    body: JSON.stringify(newUser),
-    credentials: 'include', // Authenticated
-  });
-  return fetch(request)
-    .then(resp => resp.json())
-    .then(user => {
-      if (user.message) {
-        history.push('/');
-        const formattedUser = {
-          ...defaultUserState,
-          username: newUser.username,
-        };
-        dispatch(loginUser(formattedUser));
-      } else if (user.errorMsg) {
-        dispatch(showDialog(user.errorMsg));
-      }
-    })
-    .catch(err => {
-      dispatch(loginFailed());
-    });
-};
-
-export const getUserInSession = history => dispatch => {
-  return fetch('/auth/user-session', {
-    accept: 'application/json',
-    credentials: 'include',
-  })
-    .then(body => body.json())
-    .then(resp => {
-      if (resp.user) {
-        // history.push('/');
-        dispatch(loginUser(resp.user));
-      }
-    })
-    .catch(err => console.log(err));
-};
-
 export const sendLogin = (user, history) => dispatch => {
   const request = new Request(`/auth/login`, {
     method: 'POST',
@@ -106,6 +62,44 @@ export const sendLogin = (user, history) => dispatch => {
     .catch(err => {
       dispatch(loginFailed());
     });
+};
+
+export const signUp = (newUser, history) => dispatch => {
+  const request = new Request(`/auth/signup`, {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify(newUser),
+    credentials: 'include', // Authenticated
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        dispatch(sendLogin(newUser, history));
+      } else if (resp.errorMsg) {
+        dispatch(showDialog(resp.errorMsg));
+      }
+    })
+    .catch(err => {
+      dispatch(loginFailed());
+    });
+};
+
+export const getUserInSession = history => dispatch => {
+  return fetch('/auth/user-session', {
+    accept: 'application/json',
+    credentials: 'include',
+  })
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.user) {
+        // history.push('/');
+        dispatch(loginUser(resp.user));
+      }
+    })
+    .catch(err => console.log(err));
 };
 
 export const sendLogout = () => dispatch => {

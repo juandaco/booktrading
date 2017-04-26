@@ -12,11 +12,11 @@ class AllBooks extends Component {
   }
 
   render() {
-    const { isFetching, books, showDialog } = this.props;
+    const { username, isFetching, books, showDialog } = this.props;
 
     let bookItems = books.map(book => (
       <BookCard
-        key={`all-${book.bookID}`}
+        key={`all-${username}-${book.bookID}`}
         book={book}
         showDialog={showDialog}
       />
@@ -40,11 +40,13 @@ class AllBooks extends Component {
 
 const mapStateToProps = (
   state = {
+    username: '',
     isFetching: true,
     page: 0,
     books: [],
   },
 ) => ({
+  username: state.user.username,
   isFetching: state.books.isFetching,
   page: state.books.page,
   books: state.books.items,
