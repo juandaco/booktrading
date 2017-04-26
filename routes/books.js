@@ -115,16 +115,19 @@ booksRouter.delete('/', verifyUser, function(req, res) {
       // Update the Books Collection
       Books.findOne({ bookID: req.body.bookID }).then(book => {
         if (book.owners.length === 1) {
-          book.remove();
-          res.json({
-            message: 'Book Deleted',
+          book.remove(function(err) {
+            if (err) throw err;
+            res.json({
+              message: 'Book Deleted',
+            });
           });
         } else {
-          const bookIndex = book.owners.findIndex(
-            book => book.bookID === req.body.bookID
+          const ownerIndex = book.owners.findIndex(
+            owner => owner === req.user.username
           );
-          if (bookIndex > -1) book.owners.splice(bookIndex, 1);
+          if (ownerIndex > -1) book.owners.splice(ownerIndex, 1);
           book.save(function(err) {
+            if (err) throw err;
             res.json({
               message: 'Owner Deleted',
             });
