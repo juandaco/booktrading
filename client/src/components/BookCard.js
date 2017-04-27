@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { sendAddBook, sendRemoveBook } from '../actions/user';
-// import { showTradeDialog } from '../actions/trade';
-import { showInfoDialog } from '../actions/ui';
+import { showInfoDialog, sendShowTradeDialog } from '../actions/ui';
 // Material UI
 import { Paper } from 'material-ui';
 import { FlatButton } from 'material-ui';
@@ -27,10 +26,10 @@ const BookCard = ({
   removeButton,
   showInfoDialog,
   tradeButton,
-  tradeDialog
+  sendShowTradeDialog,
 }) => {
   const {
-    imageLink,
+    bookID,
     title,
     subtitle,
     author,
@@ -38,6 +37,7 @@ const BookCard = ({
     isbn,
     publishedDate,
     description,
+    imageLink,
   } = book;
   let year = '';
   if (typeof publishedDate === 'string') year = publishedDate.substring(0, 4);
@@ -109,7 +109,7 @@ const BookCard = ({
               style={buttonStyle}
               icon={<TradeIcon style={{ width: 19 }} color={blue600} />}
               labelPosition="before"
-              // onTouchTap={() => showTradeDialog(book.bookID, book.owners)}
+              onTouchTap={() => sendShowTradeDialog(bookID)}
             />
           : null}
       </div>
@@ -128,7 +128,7 @@ export default connect(null, dispatch => ({
   showInfoDialog: (title, subtitle, text) => {
     dispatch(showInfoDialog(title, subtitle, text));
   },
-  // showTradeDialog: owners => {
-  //   dispatch(showTradeDialog(owners));
-  // }
+  sendShowTradeDialog: bookID => {
+    dispatch(sendShowTradeDialog(bookID));
+  },
 }))(BookCard);

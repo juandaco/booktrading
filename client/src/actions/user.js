@@ -171,7 +171,7 @@ export const sendRemoveBook = book => (dispatch, getState) => {
 };
 
 export const sendProfileUpdate = profile => dispatch => {
-  const request = new Request('/api/user/', {
+  const request = new Request('/api/users/current', {
     method: 'PUT',
     headers: new Headers({
       'Content-Type': 'application/json',

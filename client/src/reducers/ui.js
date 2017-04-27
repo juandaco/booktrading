@@ -1,5 +1,20 @@
 import { combineReducers } from 'redux';
-import { TOGGLE_DRAWER, SHOW_INFO_DIALOG, HIDE_INFO_DIALOG } from '../actions/ui';
+import {
+  TOGGLE_DRAWER,
+  SHOW_INFO_DIALOG,
+  HIDE_INFO_DIALOG,
+  SHOW_TRADE_DIALOG,
+  HIDE_TRADE_DIALOG,
+} from '../actions/ui';
+
+function drawer(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_DRAWER:
+      return !state;
+    default:
+      return state;
+  }
+}
 
 function infoDialog(
   state = {
@@ -28,18 +43,35 @@ function infoDialog(
   }
 }
 
-function drawer(state = false, action) {
+const tradeDialog = (
+  state = {
+    show: false,
+    bookID: '',
+    owners: [],
+  },
+  action,
+) => {
   switch (action.type) {
-    case TOGGLE_DRAWER:
-      return !state;
+    case SHOW_TRADE_DIALOG:
+      return {
+        show: true,
+        bookID: action.bookID,
+        owners: action.owners,
+      };
+    case HIDE_TRADE_DIALOG:
+      return {
+        ...state,
+        show: false,
+      };
     default:
       return state;
   }
-}
+};
 
 const ui = combineReducers({
-  infoDialog,
   drawer,
+  infoDialog,
+  tradeDialog,
 });
 
 export default ui;

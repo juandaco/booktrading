@@ -17,7 +17,7 @@ const MongoStore = require('connect-mongo')(session);
   Load Routes
 */
 const authRouter = require('./routes/auth');
-const usersRouter = require('./routes/user');
+const usersRouter = require('./routes/users');
 const booksRouter = require('./routes/books');
 
 /*
@@ -73,7 +73,7 @@ app.use(passport.session());
   User Routes
 */
 app.use('/auth', authRouter);
-app.use('/api/user', usersRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/books', booksRouter);
 
 /*

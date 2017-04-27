@@ -77,7 +77,7 @@ class TradeDialog extends Component {
       >
         <RadioButtonGroup
           name="owner-choice"
-          defaultSelected={owners[0].username}
+          defaultSelected={owners.length ? owners[0].username : ''}
           children={ownerChoice}
         />
       </Dialog>
@@ -86,27 +86,19 @@ class TradeDialog extends Component {
 }
 
 export default connect(
-  state => ({
-    show: false,
-    bookID: '67jaa80thAAFdf',
-    owners: [
-      {
-        username: 'juandaco',
-        city: 'Chicago',
-        stateLocation: 'Illinois',
-      },
-      {
-        username: 'synt4rt',
-        city: '',
-        stateLocation: 'Florida',
-      },
-      {
-        username: 'l4c0sta',
-        city: 'Dallas',
-        stateLocation: 'Texas',
-      },
-    ],
-  }),
+  (
+    state = {
+      show: false,
+      bookID: '',
+      owners: [],
+    },
+  ) => {
+    return {
+      show: state.ui.tradeDialog.show,
+      bookID: state.ui.tradeDialog.bookID,
+      owners: state.ui.tradeDialog.owners,
+    };
+  },
   dispatch => ({
     hideTradeDialog: () => {
       dispatch(hideTradeDialog());
