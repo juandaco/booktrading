@@ -35,10 +35,20 @@ class InfoDialog extends Component {
         />
       );
     }
+    let formattedTitle;
+    if (subtitle) {
+      formattedTitle = (
+        <div style={{ paddingBottom: 10}}>
+          <h3 style={{ margin: 0 }}>{title}</h3>
+          <h6 style={{ margin: 0, color: 'darkgrey'}}>{subtitle}</h6>
+        </div>
+      );
+    }
     return (
       <Dialog
         className="info-dialog"
-        title={title}
+        title={formattedTitle || title}
+        titleStyle={{ border: 'none', }}
         actions={
           <FlatButton
             label="OK"
@@ -52,7 +62,6 @@ class InfoDialog extends Component {
         onRequestClose={() => this.props.hideDialog()}
         autoScrollBodyContent={true}
         actionsContainerStyle={{ border: 'none' }}
-        titleStyle={{ border: 'none' }}
       >
         {isComplex ? formattedText : text}
       </Dialog>

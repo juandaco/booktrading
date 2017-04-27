@@ -97,7 +97,7 @@ a {
 
   min-width: 290px;
   min-height: 400px;
-  margin: 15px; 
+  margin: 15px;
 
   align-items: flex-start;
   direction: row;
@@ -111,16 +111,15 @@ a {
 }
 
 .book-image {
-  margin: 5px;
   width: 300px;
   max-height: 400px;
+  margin: 5px;
 }
 
 .book-info {
-  width: 280px;
-  margin: 10px;
-  margin-bottom: 30px;
-  padding-top: 0;
+  width: 230px;
+  margin: 10px 0px 30px 0;
+  padding: 0 10px 0px 15px;
 }
 
 .buttons-card-container {
