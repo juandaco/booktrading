@@ -1,12 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { sendAddBook, sendRemoveBook } from '../actions/user';
-import { showDialog } from '../actions/ui';
+// import { showTradeDialog } from '../actions/trade';
+import { showInfoDialog } from '../actions/ui';
 // Material UI
 import { Paper } from 'material-ui';
 import { FlatButton } from 'material-ui';
 import AddIcon from 'material-ui/svg-icons/content/add-circle';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle';
+import InfoIcon from 'material-ui/svg-icons/action/info';
+import TradeIcon from 'material-ui/svg-icons/social/group-add';
 // import RemoveIcon from 'material-ui/svg-icons/navigation/close';
 // import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import { blue600 } from 'material-ui/styles/colors';
@@ -22,7 +25,9 @@ const BookCard = ({
   addButton,
   removeBook,
   removeButton,
-  showDialog,
+  showInfoDialog,
+  tradeButton,
+  tradeDialog
 }) => {
   const {
     imageLink,
@@ -70,11 +75,12 @@ const BookCard = ({
       </div>
       <div className="buttons-card-container">
         <FlatButton
-          label="More Info"
+          label="Info"
           secondary
           style={buttonStyle}
+          icon={<InfoIcon style={{ width: 19 }} color={blue600} />}
           labelPosition="before"
-          onTouchTap={() => showDialog(title, subtitle, description)}
+          onTouchTap={() => showInfoDialog(title, subtitle, description)}
         />
         {addButton
           ? <FlatButton
@@ -88,12 +94,22 @@ const BookCard = ({
           : null}
         {removeButton
           ? <FlatButton
-              label="remove"
+              label="Remove"
               secondary
               style={buttonStyle}
               icon={<RemoveIcon style={{ width: 19 }} color={blue600} />}
               labelPosition="before"
               onTouchTap={() => removeBook(book)}
+            />
+          : null}
+        {tradeButton
+          ? <FlatButton
+              label="Trade"
+              secondary
+              style={buttonStyle}
+              icon={<TradeIcon style={{ width: 19 }} color={blue600} />}
+              labelPosition="before"
+              // onTouchTap={() => showTradeDialog(book.bookID, book.owners)}
             />
           : null}
       </div>
@@ -109,7 +125,10 @@ export default connect(null, dispatch => ({
   removeBook: bookID => {
     dispatch(sendRemoveBook(bookID));
   },
-  showDialog: (title, subtitle, text) => {
-    dispatch(showDialog(title, subtitle, text));
+  showInfoDialog: (title, subtitle, text) => {
+    dispatch(showInfoDialog(title, subtitle, text));
   },
+  // showTradeDialog: owners => {
+  //   dispatch(showTradeDialog(owners));
+  // }
 }))(BookCard);

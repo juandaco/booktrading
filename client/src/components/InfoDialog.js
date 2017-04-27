@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { hideDialog } from '../actions/ui';
+import { hideInfoDialog } from '../actions/ui';
 import { Dialog, FlatButton } from 'material-ui';
 import { white, blue600, blue300 } from 'material-ui/styles/colors';
 
@@ -14,17 +14,17 @@ class InfoDialog extends Component {
   }
 
   handleKeyDown = e => {
-    const { dialog, hideDialog } = this.props;
+    const { dialog, hideInfoDialog } = this.props;
     if (dialog) {
       e.preventDefault();
       if (e.keyCode === 27 || e.keyCode === 13) {
-        hideDialog();
+        hideInfoDialog();
       }
     }
   };
 
   render() {
-    const { title, subtitle, text, show, hideDialog } = this.props;
+    const { title, subtitle, text, show, hideInfoDialog } = this.props;
     const isComplex = /<\w+\/?>/g.test(text);
     let formattedText;
     if (isComplex) {
@@ -55,11 +55,11 @@ class InfoDialog extends Component {
             backgroundColor={blue600}
             hoverColor={blue300}
             labelStyle={{ color: white }}
-            onClick={hideDialog}
+            onClick={hideInfoDialog}
           />
         }
         open={show}
-        onRequestClose={() => this.props.hideDialog()}
+        onRequestClose={() => this.props.hideInfoDialog()}
         autoScrollBodyContent={true}
         actionsContainerStyle={{ border: 'none' }}
       >
@@ -71,14 +71,14 @@ class InfoDialog extends Component {
 
 export default connect(
   state => ({
-    show: state.ui.dialog.show,
-    title: state.ui.dialog.title,
-    subtitle: state.ui.dialog.subtitle,
-    text: state.ui.dialog.text,
+    show: state.ui.infoDialog.show,
+    title: state.ui.infoDialog.title,
+    subtitle: state.ui.infoDialog.subtitle,
+    text: state.ui.infoDialog.text,
   }),
   dispatch => ({
-    hideDialog: () => {
-      dispatch(hideDialog());
+    hideInfoDialog: () => {
+      dispatch(hideInfoDialog());
     },
   }),
 )(InfoDialog);

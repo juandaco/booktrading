@@ -5,6 +5,7 @@ import { showDialog } from '../actions/ui';
 import { CircularProgress } from 'material-ui';
 import BookCard from './BookCard';
 import InfoDialog from './InfoDialog';
+import TradeDialog from './TradeDialog';
 
 class AllBooks extends Component {
   componentDidMount() {
@@ -12,13 +13,15 @@ class AllBooks extends Component {
   }
 
   render() {
-    const { username, isFetching, books, showDialog } = this.props;
+    const { username, ownedBooks, isFetching, books, showDialog } = this.props;
+    // const trade = ownedBooks.includes
 
     let bookItems = books.map(book => (
       <BookCard
         key={`all-${username}-${book.bookID}`}
         book={book}
         showDialog={showDialog}
+        tradeButton={!ownedBooks.includes(book.bookID)}
       />
     ));
     return (
@@ -33,6 +36,7 @@ class AllBooks extends Component {
             : bookItems}
         </div>
         <InfoDialog />
+        <TradeDialog />
       </div>
     );
   }
@@ -41,12 +45,14 @@ class AllBooks extends Component {
 const mapStateToProps = (
   state = {
     username: '',
+    ownedBooks: [],
     isFetching: true,
     page: 0,
     books: [],
   },
 ) => ({
   username: state.user.username,
+  ownedBooks: state.user.ownedBooks,
   isFetching: state.books.isFetching,
   page: state.books.page,
   books: state.books.items,

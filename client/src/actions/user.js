@@ -1,4 +1,4 @@
-import { showDialog } from '../actions/ui';
+import { showInfoDialog } from '../actions/ui';
 import {
   addBook,
   removeBook,
@@ -61,7 +61,7 @@ export const sendLogin = (user, history) => dispatch => {
         history.push('/');
         dispatch(loginUser(resp.user));
       } else if (resp.errorMsg) {
-        dispatch(showDialog('Something Wrong', '', resp.errorMsg));
+        dispatch(showInfoDialog('Something Wrong', '', resp.errorMsg));
       }
     })
     .catch(err => {
@@ -84,7 +84,7 @@ export const signUp = (newUser, history) => dispatch => {
       if (resp.message) {
         dispatch(sendLogin(newUser, history));
       } else if (resp.errorMsg) {
-        dispatch(showDialog('Something Wrong', '', resp.errorMsg));
+        dispatch(showInfoDialog('Something Wrong', '', resp.errorMsg));
       }
     })
     .catch(err => {

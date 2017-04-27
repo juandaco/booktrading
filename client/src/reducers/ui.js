@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
-import { TOGGLE_DRAWER, SHOW_DIALOG, HIDE_DIALOG } from '../actions/ui';
+import { TOGGLE_DRAWER, SHOW_INFO_DIALOG, HIDE_INFO_DIALOG } from '../actions/ui';
 
-function dialog(
+function infoDialog(
   state = {
     show: false,
     title: '',
@@ -11,14 +11,14 @@ function dialog(
   action,
 ) {
   switch (action.type) {
-    case SHOW_DIALOG:
+    case SHOW_INFO_DIALOG:
       return {
         show: true,
         title: action.title,
         subtitle: action.subtitle,
         text: action.text,
       };
-    case HIDE_DIALOG:
+    case HIDE_INFO_DIALOG:
       return {
         ...state,
         show: false,
@@ -38,7 +38,7 @@ function drawer(state = false, action) {
 }
 
 const ui = combineReducers({
-  dialog,
+  infoDialog,
   drawer,
 });
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { signUp } from '../actions/user';
-import { hideDialog } from '../actions/ui';
+import { hideInfoDialog } from '../actions/ui';
 import { isPasswordValid, isUsernameValid } from '../helpers/inputValidation';
 import { TextField, RaisedButton } from 'material-ui';
 import InfoDialog from './InfoDialog';
@@ -31,7 +31,7 @@ class SignUp extends Component {
     if (this.props.showDialog) {
       e.preventDefault();
       if (e.keyCode === 27 || e.keyCode === 13) {
-        this.props.hideDialog();
+        this.props.hideInfoDialog();
       }
     }
   };
@@ -154,15 +154,15 @@ class SignUp extends Component {
 }
 
 const mapStateToProps = state => ({
-  showDialog: state.ui.dialog.show,
+  showDialog: state.ui.infoDialog.show,
 });
 
 const mapDispatchToProps = dispatch => ({
   signUp: (user, history) => {
     dispatch(signUp(user, history));
   },
-  hideDialog: () => {
-    dispatch(hideDialog());
+  hideInfoDialog: () => {
+    dispatch(hideInfoDialog());
   },
 });
 
