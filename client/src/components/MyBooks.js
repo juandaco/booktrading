@@ -4,6 +4,7 @@ import { fetchBooks } from '../actions/books';
 import { CircularProgress } from 'material-ui';
 import BookCard from './BookCard';
 import InfoDialog from './InfoDialog';
+import uuidV4 from 'uuid/v4';
 
 class MyBooks extends Component {
   componentDidMount() {
@@ -11,11 +12,11 @@ class MyBooks extends Component {
   }
 
   render() {
-    const { username, isFetching, userBooks } = this.props;
+    const { isFetching, userBooks } = this.props;
 
     let bookItems = userBooks.map(book => (
       // Unique Keys for Book Cards
-      <BookCard key={`my-${username}-${book.bookID}`} book={book} removeButton />
+      <BookCard key={uuidV4()} book={book} removeButton />
     ));
     return (
       <div className="books-container">
@@ -34,12 +35,10 @@ class MyBooks extends Component {
 
 const mapStateToProps = (
   state = {
-    username: '',
     isFetching: false,
     userBooks: [],
   },
 ) => ({
-  username: state.user.username,
   isFetching: state.books.isFetching,
   userBooks: state.books.items.filter(book =>
     state.user.ownedBooks.includes(book.bookID),
