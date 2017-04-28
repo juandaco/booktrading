@@ -24,7 +24,6 @@ class TradeDialog extends Component {
       e.preventDefault();
       if (e.keyCode === 13) {
         this.handleTradeRequest();
-        console.log('Send Trade Request');
       }
     }
   };

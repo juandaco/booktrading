@@ -20,6 +20,7 @@ const buttonStyle = {
 
 const BookCard = ({
   isUserLogged,
+  isRequested,
   book,
   addBook,
   addButton,
@@ -105,10 +106,15 @@ const BookCard = ({
           : null}
         {tradeButton && isUserLogged
           ? <FlatButton
-              label="Trade"
+              label={isRequested ? 'Requested' : 'Trade'}
               secondary
+              disabled={isRequested}
               style={buttonStyle}
-              icon={<TradeIcon style={{ width: 19 }} color={blue600} />}
+              icon={
+                isRequested
+                  ? null
+                  : <TradeIcon style={{ width: 19 }} color={blue600} />
+              }
               labelPosition="before"
               onTouchTap={() => sendShowTradeDialog(bookID)}
             />
@@ -124,8 +130,12 @@ export default connect(
     state = {
       isUserLogged: false,
     },
+    ownProps,
   ) => ({
     isUserLogged: Boolean(state.user.username),
+    isRequested: state.user.requestedBooks.findIndex(
+      trade => trade.bookID === ownProps.book.bookID,
+    ) > -1,
   }),
   dispatch => ({
     addBook(book) {

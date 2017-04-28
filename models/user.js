@@ -2,7 +2,16 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt');
 
-const BookTrade = new Schema(
+const InTrade = new Schema(
+  {
+    bookID: String,
+    user: String,
+    status: String,
+  },
+  { _id: false }
+);
+
+const Trade = new Schema(
   {
     bookID: String,
     owner: String,
@@ -16,6 +25,7 @@ const User = new Schema(
     username: {
       type: String,
       required: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -25,8 +35,8 @@ const User = new Schema(
     stateLocation: String,
     city: String,
     ownedBooks: [String], // By BookID
-    incomingRequests: [BookTrade],
-    requestedBooks: [BookTrade],
+    incomingRequests: [InTrade],
+    requestedBooks: [Trade],
     // messages: []
   },
   {

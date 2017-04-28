@@ -49,6 +49,10 @@ mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URL);
 const db = mongoose.connection;
 db.once('open', () => console.log('Connected to the Database'));
+// Mongo Debugging
+if (process.env.NODE_ENV === 'development') {
+  mongoose.set('debug', true);
+}
 
 /*
   Configure Middleware
