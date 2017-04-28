@@ -158,10 +158,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  signUp: (user, history) => {
+  signUp(user, history) {
     dispatch(signUp(user, history));
   },
-  hideInfoDialog: () => {
+  hideInfoDialog() {
     dispatch(hideInfoDialog());
   },
 });

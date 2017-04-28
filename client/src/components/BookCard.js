@@ -128,16 +128,16 @@ export default connect(
     isUserLogged: Boolean(state.user.username),
   }),
   dispatch => ({
-    addBook: book => {
+    addBook(book) {
       dispatch(sendAddBook(book));
     },
-    removeBook: bookID => {
+    removeBook(bookID) {
       dispatch(sendRemoveBook(bookID));
     },
-    showInfoDialog: (title, subtitle, text) => {
+    showInfoDialog(title, subtitle, text) {
       dispatch(showInfoDialog(title, subtitle, text));
     },
-    sendShowTradeDialog: bookID => {
+    sendShowTradeDialog(bookID) {
       dispatch(sendShowTradeDialog(bookID));
     },
   }),

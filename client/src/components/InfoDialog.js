@@ -77,7 +77,7 @@ export default connect(
     text: state.ui.infoDialog.text,
   }),
   dispatch => ({
-    hideInfoDialog: () => {
+    hideInfoDialog() {
       dispatch(hideInfoDialog());
     },
   }),

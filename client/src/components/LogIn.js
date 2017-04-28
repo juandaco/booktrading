@@ -120,10 +120,10 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  sendLogin: (user, history) => {
+  sendLogin(user, history) {
     dispatch(sendLogin(user, history));
   },
-  hideInfoDialog: () => {
+  hideInfoDialog() {
     dispatch(hideInfoDialog());
   },
 });

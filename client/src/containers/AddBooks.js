@@ -48,7 +48,6 @@ class AddBooks extends Component {
     let bookCards = items.map(book => (
       <BookCard
         key={uuidV4()}
-        id={book.bookID}
         book={book}
         addButton={!this.props.userBooks.includes(book.bookID)}
       />
@@ -107,10 +106,10 @@ const mapStateToProps = (
 };
 
 const mapDispatchToProps = dispatch => ({
-  searchBooks: term => {
+  searchBooks(term) {
     dispatch(fetchSearchBooks(term));
   },
-  clearSearch: () => {
+  clearSearch() {
     dispatch(clearSearch());
   },
 });

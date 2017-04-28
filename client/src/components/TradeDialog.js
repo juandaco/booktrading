@@ -109,10 +109,10 @@ export default connect(
     };
   },
   dispatch => ({
-    hideTradeDialog: () => {
+    hideTradeDialog() {
       dispatch(hideTradeDialog());
     },
-    requestTrade: (bookID, owner) => {
+    requestTrade(bookID, owner) {
       dispatch(sendTradeRequest(bookID, owner));
     }
   }),

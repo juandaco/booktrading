@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBooks } from '../actions/books';
-import { showDialog } from '../actions/ui';
 import { CircularProgress } from 'material-ui';
 import BookCard from './BookCard';
 import InfoDialog from './InfoDialog';
@@ -14,14 +13,13 @@ class AllBooks extends Component {
   }
 
   render() {
-    const { ownedBooks, isFetching, books, showDialog } = this.props;
+    const { ownedBooks, isFetching, books, } = this.props;
     // const trade = ownedBooks.includes
 
     let bookItems = books.map(book => (
       <BookCard
         key={uuidV4()}
         book={book}
-        showDialog={showDialog}
         tradeButton={!ownedBooks.includes(book.bookID)}
       />
     ));
@@ -58,11 +56,8 @@ const mapStateToProps = (
 });
 
 const mapDispatchToProps = dispatch => ({
-  fetchBooks: () => {
+  fetchBooks() {
     dispatch(fetchBooks());
-  },
-  showDialog: () => {
-    dispatch(showDialog());
   },
 });
 

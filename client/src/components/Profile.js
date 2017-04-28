@@ -99,7 +99,7 @@ export default connect(
     stateLocation: state.user.stateLocation,
   }),
   dispatch => ({
-    updateProfile: profile => {
+    updateProfile(profile) {
       dispatch(sendProfileUpdate(profile));
     },
   }),

@@ -83,10 +83,10 @@ export default connect(
     drawer: state.ui.drawer,
   }),
   dispatch => ({
-    toggleDrawer: () => {
+    toggleDrawer() {
       dispatch(toggleDrawer());
     },
-    logOut: () => {
+    logOut() {
       dispatch(sendLogout());
     },
   }),

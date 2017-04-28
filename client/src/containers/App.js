@@ -58,10 +58,10 @@ class App extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  getUserInSession: history => {
+  getUserInSession(history) {
     dispatch(getUserInSession(history));
   },
-  toggleDrawer: () => {
+  toggleDrawer() {
     dispatch(toggleDrawer());
   },
 });
