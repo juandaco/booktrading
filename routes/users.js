@@ -39,4 +39,25 @@ usersRouter.get('/details', verifyUser, function(req, res, next) {
     .catch(err => console.log(err));
 });
 
+usersRouter.put('/trade-request', verifyUser, function(req, res, next) {
+  const { bookID, owner, status } = req.body;
+  const trade = {
+    bookID,
+    owner,
+    status,
+  };
+  User.updateOne(
+    { _id: req.user._id },
+    { $addToSet: { requestedBooks: trade } }
+  )
+    .then(resp => {
+      if (resp.nModified) {
+        res.json({
+          message: 'Trade Requested',
+        });
+      }
+    })
+    .catch(err => console.log(err));
+});
+
 module.exports = usersRouter;

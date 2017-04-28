@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { sendTradeRequest } from '../actions/user';
 import { hideTradeDialog } from '../actions/ui';
 import { Dialog, FlatButton } from 'material-ui';
 import { white, blue600, blue300 } from 'material-ui/styles/colors';
@@ -22,11 +23,18 @@ class TradeDialog extends Component {
     if (this.props.show) {
       e.preventDefault();
       if (e.keyCode === 13) {
-        // sendTradeRequest();
+        this.handleTradeRequest();
         console.log('Send Trade Request');
       }
     }
   };
+
+  handleTradeRequest = () => {
+    const { bookID,  requestTrade, hideTradeDialog } = this.props;
+    const owner = this.refs.ownersGroup.state.selected;
+    requestTrade(bookID, owner);
+    hideTradeDialog();
+  }
 
   render() {
     const { show, bookID, owners, hideTradeDialog } = this.props;
@@ -66,7 +74,7 @@ class TradeDialog extends Component {
               backgroundColor={blue600}
               hoverColor={blue300}
               labelStyle={{ color: white }}
-              onClick={hideTradeDialog}
+              onClick={this.handleTradeRequest}
             />
           </div>
         }
@@ -77,6 +85,7 @@ class TradeDialog extends Component {
       >
         <RadioButtonGroup
           name="owner-choice"
+          ref="ownersGroup"
           defaultSelected={owners.length ? owners[0].username : ''}
           children={ownerChoice}
         />
@@ -103,5 +112,8 @@ export default connect(
     hideTradeDialog: () => {
       dispatch(hideTradeDialog());
     },
+    requestTrade: (bookID, owner) => {
+      dispatch(sendTradeRequest(bookID, owner));
+    }
   }),
 )(TradeDialog);

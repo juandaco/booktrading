@@ -5,6 +5,8 @@ import {
   ADD_USER_BOOK,
   REMOVE_USER_BOOK,
   UPDATE_PROFILE,
+  REQUEST_TRADE,
+  RECEIVE_TRADE_REQUEST,
 } from '../actions/user';
 import defaultUserState from '../helpers/defaultUserState';
 
@@ -32,6 +34,30 @@ const user = (state = defaultUserState, action) => {
         fullName,
         city,
         stateLocation,
+      };
+    case REQUEST_TRADE:
+      return {
+        ...state,
+        requestedBooks: [
+          ...state.requestedBooks,
+          {
+            bookID: action.bookID,
+            owner: action.owner,
+            status: 'pending',
+          },
+        ],
+      };
+    case RECEIVE_TRADE_REQUEST:
+      return {
+        ...state,
+        incomingRequests: [
+          ...state.incomingRequests,
+          {
+            bookID: action.bookID,
+            owner: action.owner,
+            status: 'pending',
+          },
+        ],
       };
     default:
       return state;

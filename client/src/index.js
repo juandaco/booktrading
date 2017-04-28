@@ -20,7 +20,7 @@ if (module.hot) {
     const NextRoot = require('./containers/Root').default;
     render(
       <AppContainer>
-        <NextRoot store={store}/>
+        <NextRoot store={store} />
       </AppContainer>,
       document.getElementById('root'),
     );

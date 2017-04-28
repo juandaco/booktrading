@@ -19,6 +19,7 @@ const buttonStyle = {
 };
 
 const BookCard = ({
+  isUserLogged,
   book,
   addBook,
   addButton,
@@ -102,7 +103,7 @@ const BookCard = ({
               onTouchTap={() => removeBook(book)}
             />
           : null}
-        {tradeButton
+        {tradeButton && isUserLogged
           ? <FlatButton
               label="Trade"
               secondary
@@ -118,17 +119,26 @@ const BookCard = ({
   );
 };
 
-export default connect(null, dispatch => ({
-  addBook: book => {
-    dispatch(sendAddBook(book));
-  },
-  removeBook: bookID => {
-    dispatch(sendRemoveBook(bookID));
-  },
-  showInfoDialog: (title, subtitle, text) => {
-    dispatch(showInfoDialog(title, subtitle, text));
-  },
-  sendShowTradeDialog: bookID => {
-    dispatch(sendShowTradeDialog(bookID));
-  },
-}))(BookCard);
+export default connect(
+  (
+    state = {
+      isUserLogged: false,
+    },
+  ) => ({
+    isUserLogged: Boolean(state.user.username),
+  }),
+  dispatch => ({
+    addBook: book => {
+      dispatch(sendAddBook(book));
+    },
+    removeBook: bookID => {
+      dispatch(sendRemoveBook(bookID));
+    },
+    showInfoDialog: (title, subtitle, text) => {
+      dispatch(showInfoDialog(title, subtitle, text));
+    },
+    sendShowTradeDialog: bookID => {
+      dispatch(sendShowTradeDialog(bookID));
+    },
+  }),
+)(BookCard);
