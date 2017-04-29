@@ -216,7 +216,7 @@ export const sendTradeRequest = (bookID, owner) => dispatch => {
     body: JSON.stringify({
       bookID,
       owner,
-      status: 'pending'
+      status: 'Pending'
     }),
     credentials: 'include',
   });

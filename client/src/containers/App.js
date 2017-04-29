@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 // Redux Actions
 import { getUserInSession } from '../actions/user';
 import { toggleDrawer } from '../actions/ui';
+import { fetchBooks } from '../actions/books';
 // Material UI Components
 import { AppBar, IconButton } from 'material-ui';
 // Material UI Icons
@@ -14,8 +15,9 @@ import routes from '../helpers/routes';
 
 class App extends Component {
   componentDidMount() {
-    // Verify User logged from the Server Session
-    this.props.getUserInSession(this.props.history);
+    const { getUserInSession, fetchBooks } = this.props;
+    getUserInSession(this.props.history);
+    fetchBooks();
   }
 
   render() {
@@ -63,6 +65,9 @@ const mapDispatchToProps = dispatch => ({
   },
   toggleDrawer() {
     dispatch(toggleDrawer());
+  },
+  fetchBooks() {
+    dispatch(fetchBooks());
   },
 });
 
