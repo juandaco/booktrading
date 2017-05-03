@@ -84,7 +84,7 @@ app.use('/api/books', booksRouter);
   Serve the Single Page App from React Build in Production
 */
 if (process.env.NODE_ENV === 'production') {
-  app.use(favicon(path.join(__dirname, 'client/build', 'favicon.ico')));
+  app.use(favicon(path.join(__dirname, 'client/build', 'favicon.png')));
   app.use(express.static('./client/build'));
 }
 
