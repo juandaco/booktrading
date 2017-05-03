@@ -32,6 +32,9 @@
   "devDependencies": {
     "concurrently": "^3.4.0"
   },
+  "engines": {
+    "node": "7.10.0"
+  },
   "description": "Book Trading Project for FreeCodeCamp",
   "main": "app.js",
   "repository": "https://github.com/juandaco/booktrading.git",
