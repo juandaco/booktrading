@@ -28,13 +28,15 @@ class AddBooks extends Component {
   };
 
   handleSearchClick = () => {
-    if (this.state.searchTerm) this.props.searchBooks(this.state.searchTerm);
+    const { searchBooks } = this.props;
+    if (this.state.searchTerm) searchBooks(this.state.searchTerm);
   };
 
   handleKeys = e => {
     if (e.keyCode === 13 && this.state.searchTerm) {
       e.target.blur();
-      this.props.searchBooks(this.state.searchTerm);
+      const { searchBooks } = this.props;
+      searchBooks(this.state.searchTerm);
     } else if (e.keyCode === 27) {
       this.setState({
         searchTerm: '',

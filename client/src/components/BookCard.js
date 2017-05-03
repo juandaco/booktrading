@@ -9,8 +9,6 @@ import AddIcon from 'material-ui/svg-icons/content/add-circle';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle';
 import InfoIcon from 'material-ui/svg-icons/action/info';
 import TradeIcon from 'material-ui/svg-icons/social/group-add';
-// import RemoveIcon from 'material-ui/svg-icons/navigation/close';
-// import DeleteIcon from 'material-ui/svg-icons/action/delete';
 import { blue600 } from 'material-ui/styles/colors';
 
 const buttonStyle = {

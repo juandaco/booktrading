@@ -5,7 +5,7 @@ import AllBooks from '../components/AllBooks';
 import MyBooks from '../components/MyBooks';
 import AddBooks from '../containers/AddBooks';
 import Profile from '../components/Profile';
-import TradeChart from '../components/TradeChart';
+import TradeRequests from '../components/TradeRequests';
 import About from '../components/About';
 import SignUp from '../components/SignUp';
 import LogIn from '../components/LogIn';
@@ -38,7 +38,7 @@ export default [
   {
     path: '/user/trade',
     exact: true,
-    main: TradeChart,
+    main: TradeRequests,
     title: () => <span>Trade Requests</span>,
   },
   {

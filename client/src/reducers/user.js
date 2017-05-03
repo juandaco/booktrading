@@ -43,7 +43,7 @@ const user = (state = defaultUserState, action) => {
           {
             bookID: action.bookID,
             owner: action.owner,
-            status: 'pending',
+            status: 'Pending',
           },
         ],
       };
@@ -55,7 +55,7 @@ const user = (state = defaultUserState, action) => {
           {
             bookID: action.bookID,
             owner: action.owner,
-            status: 'pending',
+            status: 'Pending',
           },
         ],
       };
