@@ -7,7 +7,7 @@ const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-// const favicon = require('express-favicon');
+const favicon = require('serve-favicon');
 const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
@@ -75,19 +75,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /*
+  Serve the Single Page App from React Build in Production
+*/
+if (process.env.NODE_ENV === 'production') {
+  app.use(favicon(path.join(__dirname, 'client/build', 'favicon.png')));
+  app.use(express.static('./client/build'));
+}
+
+/*
   User Routes
 */
 app.use('/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/books', booksRouter);
 
-/*
-  Serve the Single Page App from React Build in Production
-*/
-if (process.env.NODE_ENV === 'production') {
-  // app.use(favicon(path.join(__dirname, 'client/build', 'favicon.png')));
-  app.use(express.static('./client/build'));
-}
 
 /*
   Catch 404 (Not found) and forward to error handler
