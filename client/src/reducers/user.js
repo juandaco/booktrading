@@ -6,7 +6,8 @@ import {
   REMOVE_USER_BOOK,
   UPDATE_PROFILE,
   REQUEST_TRADE,
-  RECEIVE_TRADE_REQUEST,
+  ACCEPT_TRADE,
+  DECLINE_TRADE,
 } from '../actions/user';
 import defaultUserState from '../helpers/defaultUserState';
 
@@ -47,17 +48,25 @@ const user = (state = defaultUserState, action) => {
           },
         ],
       };
-    case RECEIVE_TRADE_REQUEST:
+    case ACCEPT_TRADE:
       return {
         ...state,
-        incomingRequests: [
-          ...state.incomingRequests,
-          {
-            bookID: action.bookID,
-            owner: action.owner,
-            status: 'Pending',
-          },
-        ],
+        incomingRequests: state.incomingRequests.map(trade => {
+          if (trade.bookID === action.bookID && trade.user === action.user) {
+            trade.status = 'Accepted';
+          }
+          return trade;
+        }),
+      };
+    case DECLINE_TRADE:
+      return {
+        ...state,
+        incomingRequests: state.incomingRequests.map(trade => {
+          if (trade.bookID === action.bookID && trade.user === action.user) {
+            trade.status = 'Rejected';
+          }
+          return trade;
+        }),
       };
     default:
       return state;

@@ -14,9 +14,8 @@ export const UPDATE_PROFILE = 'UPDATE_PROFILE';
 export const ADD_USER_BOOK = 'ADD_USER_BOOK';
 export const REMOVE_USER_BOOK = 'REMOVE_USER_BOOK';
 export const REQUEST_TRADE = 'REQUEST_TRADE';
-// export const RECEIVE_TRADE_REQUEST = 'RECEIVE_TRADE_REQUEST ';
-// export const ACCEPT_TRADE_REQUEST = 'ACCEPT_TRADE_REQUEST ';
-// export const DECLINE_TRADE_REQUEST = 'DECLINE_TRADE_REQUEST ';
+export const ACCEPT_TRADE = 'ACCEPT_TRADE';
+export const DECLINE_TRADE = 'DECLINE_TRADE';
 
 export const loginUser = user => ({
   type: LOGIN_USER,
@@ -52,13 +51,17 @@ export const requestTrade = (bookID, owner) => ({
   owner,
 });
 
-// export const receiveTradeRequest = trade => ({
-//   type: RECEIVE_TRADE_REQUEST,
-//   trade,
-// });
+export const acceptTrade = (bookID, user) => ({
+  type: ACCEPT_TRADE,
+  bookID,
+  user,
+});
 
-// Accept Trade Request
-// Decline Trade Request
+export const declineTrade = (bookID, user) => ({
+  type: DECLINE_TRADE,
+  bookID,
+  user,
+});
 
 /*
   Async Complex Actions
@@ -208,15 +211,16 @@ export const sendProfileUpdate = profile => dispatch => {
 };
 
 export const sendTradeRequest = (bookID, owner) => dispatch => {
-  const request = new Request('/api/users/trade-request', {
+  const request = new Request('/api/users/trade', {
     method: 'PUT',
     headers: new Headers({
       'Content-Type': 'application/json',
     }),
     body: JSON.stringify({
+      action: 'ADD',
       bookID,
       owner,
-      status: 'Pending'
+      status: 'Pending',
     }),
     credentials: 'include',
   });
@@ -225,6 +229,53 @@ export const sendTradeRequest = (bookID, owner) => dispatch => {
     .then(resp => {
       if (resp.message) {
         dispatch(requestTrade(bookID, owner));
+      }
+    })
+    .catch(err => console.log(err));
+};
+
+export const sendAcceptTrade = (bookID, user) => dispatch => {
+  const request = new Request('/api/users/trade', {
+    method: 'PUT',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({
+      action: 'ACCEPT',
+      bookID,
+      user,
+    }),
+    credentials: 'include',
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        dispatch(acceptTrade(bookID, user));
+      }
+    })
+    .catch(err => console.log(err));
+};
+
+
+export const sendDeclineTrade = (bookID, user) => dispatch => {
+  const request = new Request('/api/users/trade', {
+    method: 'PUT',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({
+      action: 'DECLINE',
+      bookID,
+      user,
+    }),
+    credentials: 'include',
+  });
+  return fetch(request)
+    .then(body => body.json())
+    .then(resp => {
+      if (resp.message) {
+        dispatch(declineTrade(bookID, user));
       }
     })
     .catch(err => console.log(err));

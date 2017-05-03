@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { sendAcceptTrade, sendDeclineTrade } from '../actions/user';
 import TradeCard from './TradeCard';
 import uuidV4 from 'uuid/v4';
 
 class TradeRequests extends Component {
-  componentDidMount() {
-    // console.log(object);
-    // this.props.getUserDetails()
-  }
-
   render() {
-    const { reqBooks, incBooks } = this.props;
+    const { reqBooks, incBooks, acceptTrade, declineTrade } = this.props;
     const reqBookCards = reqBooks.map(book => {
-      return <TradeCard key={uuidV4()} book={book} />;
+      return <TradeCard key={`req=${uuidV4()}`} book={book} />;
     });
     const incBookCards = incBooks.map(book => {
-      return <TradeCard key={uuidV4()} book={book} />;
+      return (
+        <TradeCard
+          key={`inc-${uuidV4()}`}
+          book={book}
+          accept={acceptTrade}
+          decline={declineTrade}
+        />
+      );
     });
     return (
       <div id="trades-container">
@@ -32,17 +35,27 @@ class TradeRequests extends Component {
   }
 }
 
-export default connect(state => ({
-  reqBooks: state.user.requestedBooks.map(trade => {
-    const book = state.books.items.find(book => trade.bookID === book.bookID);
-    book.userOwner = trade.owner;
-    book.status = trade.status;
-    return book;
+export default connect(
+  state => ({
+    reqBooks: state.user.requestedBooks.map(trade => {
+      const book = state.books.items.find(book => trade.bookID === book.bookID);
+      book.userOwner = trade.owner;
+      book.status = trade.status;
+      return book;
+    }),
+    incBooks: state.user.incomingRequests.map(trade => {
+      const book = state.books.items.find(book => trade.bookID === book.bookID);
+      book.userReq = trade.user;
+      book.status = trade.status;
+      return book;
+    }),
   }),
-  incBooks: state.user.incomingRequests.map(trade => {
-    const book = state.books.items.find(book => trade.bookID === book.bookID);
-    book.userReq = trade.user;
-    book.status = trade.status;
-    return book;
+  dispatch => ({
+    acceptTrade(bookID, user) {
+      dispatch(sendAcceptTrade(bookID, user));
+    },
+    declineTrade(bookID, user) {
+      dispatch(sendDeclineTrade(bookID, user));
+    },
   }),
-}))(TradeRequests);
+)(TradeRequests);
