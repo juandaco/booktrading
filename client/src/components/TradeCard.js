@@ -15,7 +15,7 @@ const TradeCard = ({ book, accept, decline }) => {
   switch (status) {
     case 'Accepted':
       statusStyle = {
-        color: 'green',
+        color: '#31c731',
       };
       break;
     case 'Rejected':

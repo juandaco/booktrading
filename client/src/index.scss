@@ -123,8 +123,8 @@ a {
 
 .book-info {
   width: 200px;
-  margin: 10px 0px 30px 0;
-  padding: 0 10px 0px 15px;
+  margin: 10px 0 30px 0;
+  padding: 0 10px 0 15px;
 }
 @media (max-width: 630px) {
   .book-info {
@@ -205,16 +205,25 @@ a {
 #trades-container {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
+
   width: 100vw;
+
+  flex-wrap: wrap;
 }
 
 #requests-container {
-  width:  50vw;
-  min-width: 320px;
+  width: 50vw;
 }
 
 #incoming-container {
   width: 50vw;
-  min-width: 320px;
+}
+
+@media (max-width: 630px) {
+  #requests-container {
+    width: 100vw;
+  }
+  #incoming-container {
+    width: 100vw;
+  }
 }
