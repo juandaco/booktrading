@@ -7,7 +7,7 @@ const express = require('express');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const favicon = require('express-favicon');
+// const favicon = require('express-favicon');
 const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
@@ -85,7 +85,7 @@ app.use('/api/books', booksRouter);
   Serve the Single Page App from React Build in Production
 */
 if (process.env.NODE_ENV === 'production') {
-  app.use(favicon(path.join(__dirname, 'client/build', 'favicon.png')));
+  // app.use(favicon(path.join(__dirname, 'client/build', 'favicon.png')));
   app.use(express.static('./client/build'));
 }
 
