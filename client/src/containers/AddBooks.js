@@ -82,7 +82,7 @@ class AddBooks extends Component {
                 size={60}
                 thickness={5}
               />
-            : error ? <p>Books not found</p> : bookCards}
+            : error ? <p>Books not found <i className="fa fa-frown-o fa-2x" aria-hidden="true"></i></p> : bookCards}
         </div>
         <InfoDialog />
       </div>
