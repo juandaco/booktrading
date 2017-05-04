@@ -15,7 +15,6 @@ class MyBooks extends Component {
     const { isFetching, userBooks } = this.props;
 
     let bookItems = userBooks.map(book => (
-      // Unique Keys for Book Cards
       <BookCard key={uuidV4()} book={book} removeButton />
     ));
     return (
@@ -26,7 +25,9 @@ class MyBooks extends Component {
               size={60}
               thickness={5}
             />
-          : bookItems}
+          : bookItems.length ?
+            bookItems: <p>You don't have books yet</p>
+          }
         <InfoDialog />
       </div>
     );

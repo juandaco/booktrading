@@ -10,6 +10,8 @@ import BooksIcon from 'material-ui/svg-icons/av/library-books';
 import AddBookIcon from 'material-ui/svg-icons/av/library-add';
 import PeopleIcon from 'material-ui/svg-icons/social/people';
 import AccountIcon from 'material-ui/svg-icons/action/account-box';
+import LoginIcon from 'material-ui/svg-icons/action/account-circle';
+import SignUpIcon from 'material-ui/svg-icons/social/person-add';
 import ExitIcon from 'material-ui/svg-icons/action/exit-to-app';
 
 const badgeStyle = {
@@ -75,6 +77,24 @@ class DrawerContainer extends Component {
               leftIcon={<BooksIcon />}
             />
           </Link>
+          {!isUserLogged
+            ? <div>
+                <Link to="/signup">
+                  <ListItem
+                    primaryText="Sign Up"
+                    onTouchTap={this.handleToggleDrawer}
+                    leftIcon={<SignUpIcon />}
+                  />
+                </Link>
+                <Link to="/login">
+                  <ListItem
+                    primaryText="Login"
+                    onTouchTap={this.handleToggleDrawer}
+                    leftIcon={<LoginIcon />}
+                  />
+                </Link>
+              </div>
+            : null}
           {isUserLogged
             ? <div>
                 <Link to="/user/books">
@@ -126,9 +146,23 @@ class DrawerContainer extends Component {
         <Link to="/about">
           <p style={aboutStyle} onTouchTap={this.handleToggleDrawer}>
             About
-            <span style={{marginLeft: 10, fontSize: '1.5em', fontWeight: 'bold'}} >T </span>{' '}
-            <i style={{fontSize: '1.3em', marginRight: 5}} className="fa fa-book" aria-hidden="true" />{'   '}
-            <i style={{fontSize: '1.3em'}} className="fa fa-university" aria-hidden="true"></i>
+            <span
+              style={{ marginLeft: 10, fontSize: '1.3em', fontWeight: 'bold' }}
+            >
+              T{' '}
+            </span>
+            {' '}
+            <i
+              style={{ fontSize: '1.5em', marginRight: 5 }}
+              className="fa fa-book"
+              aria-hidden="true"
+            />
+            {'   '}
+            <i
+              style={{ fontSize: '1.3em' }}
+              className="fa fa-university"
+              aria-hidden="true"
+            />
           </p>
         </Link>
       </Drawer>

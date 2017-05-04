@@ -58,7 +58,11 @@ class AddBooks extends Component {
       <div className="component-container">
         <div className="search-container">
           <TextField
-            className="search-text"
+            hintText="Search Books"
+            style={{
+              width: 220,
+              height: 53,
+            }}
             name="search-text"
             value={this.state.searchTerm}
             onChange={this.handleSearchChange}
@@ -66,12 +70,10 @@ class AddBooks extends Component {
             autoFocus
           />
           <FlatButton
-            label="Search"
+            style={{ width: 38, minWidth: 38 }}
             icon={<SearchIcon color={white} />}
-            labelPosition="after"
             backgroundColor={blue600}
             hoverColor={blue300}
-            labelStyle={{ color: white }}
             onClick={this.handleSearchClick}
           />
         </div>

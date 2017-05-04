@@ -28,30 +28,35 @@ booksRouter.get('/search', function(req, res) {
           errorMsg: 'Books not Found',
         });
       }
+      let bookErrors = 0;
       data.items.forEach(item => {
         // Get Data for each book Found
         fetch(`${item.selfLink}?key=${process.env.GOOGLE_BOOKS_API_KEY}`)
           .then(resp => resp.json())
           .then(book => {
-            const info = book.volumeInfo;
-            const isbn = getISBN(info.industryIdentifiers);
-            const newBook = {
-              bookID: book.id,
-              title: info.title,
-              subtitle: info.subtitle || '',
-              author: Array.isArray(info.authors) && info.authors.length
-                ? info.authors[0]
-                : '',
-              description: info.description,
-              pageCount: info.pageCount,
-              imageLink: info.imageLinks ? info.imageLinks.small : '',
-              isbn,
-              infoLink: info.infoLink,
-              publishedDate: info.publishedDate,
-            };
-            formattedBooks.push(newBook);
+            if (!book.error) {
+              const info = book.volumeInfo;
+              const isbn = getISBN(info.industryIdentifiers);
+              const newBook = {
+                bookID: book.id,
+                title: info.title,
+                subtitle: info.subtitle || '',
+                author: Array.isArray(info.authors) && info.authors.length
+                  ? info.authors[0]
+                  : '',
+                description: info.description,
+                pageCount: info.pageCount,
+                imageLink: info.imageLinks ? info.imageLinks.small : '',
+                isbn,
+                infoLink: info.infoLink,
+                publishedDate: info.publishedDate,
+              };
+              formattedBooks.push(newBook);
+            } else {
+              bookErrors++;
+            }
             // Send answer   when done with the last book
-            if (formattedBooks.length === data.items.length) {
+            if (formattedBooks.length + bookErrors === data.items.length) {
               res.json(formattedBooks);
             }
           })
