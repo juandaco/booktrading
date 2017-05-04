@@ -7,7 +7,7 @@
 /coverage
 
 # build (Remove for production deployment)
-/build
+# /build
 
 # remove CSS from development
 /src/*.css
