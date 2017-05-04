@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Sax Mono';
+
+  src: url(/fonts/saxmono.ttf);
+}
+
 html,
 body {
   font-family: 'Roboto', sans-serif;
@@ -24,6 +30,7 @@ a {
 
 #drawer-title {
   font-family: 'Cormorant SC', serif;
+
   margin-left: 20px;
 }
 
@@ -120,6 +127,8 @@ a {
   display: flex;
   flex-direction: column;
 
+  text-align: center;
+
   align-items: center;
 }
 
@@ -128,6 +137,8 @@ a {
   flex-direction: row;
 
   margin-top: 30px;
+
+  text-align: center;
 
   align-items: flex-start;
   flex-wrap: wrap;
@@ -271,4 +282,37 @@ a {
   #incoming-container {
     width: 100vw;
   }
+}
+
+
+#syntart-logo {
+  font-family: 'Shadows Into Light', cursive;
+  font-size: 5em;
+
+  margin-top: 0;
+  margin-bottom: 15px;
+
+  -ms-transform: rotate(-13deg);
+      transform: rotate(-13deg);
+  letter-spacing: 2px;
+
+  outline: none;
+  text-shadow: 3px 3px 9px rgba(0, 0, 0, 0.2), 2px 3px rgba(0, 0, 0, 0.1);
+
+  -webki: rotate(-13deg);
+}
+
+#freecodecamp-logo {
+  font-family: 'Sax Mono';
+  font-size: 2.3em;
+
+  margin-top: 5px;
+  margin-bottom: 20px;
+
+  color: darkgreen;
+  // text-shadow: 0 0 8px rgba(0, 100, 0, 0.2);
+}
+
+#powered-by {
+  line-height: 2;
 }
