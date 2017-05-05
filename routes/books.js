@@ -46,7 +46,7 @@ booksRouter.get('/search', function(req, res) {
                   : '',
                 description: info.description,
                 pageCount: info.pageCount,
-                imageLink: info.imageLinks ? info.imageLinks.small : '',
+                imageLink: info.imageLinks ? info.imageLinks.small.replace(/http:/g, 'https') : '',
                 isbn,
                 infoLink: info.infoLink,
                 publishedDate: info.publishedDate,
