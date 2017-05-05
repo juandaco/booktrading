@@ -54,7 +54,6 @@ class DrawerContainer extends Component {
       isUserLogged,
       drawer,
       toggleDrawer,
-      myBooksCount,
       tradeRequestsCount,
     } = this.props;
     return (
@@ -98,9 +97,6 @@ class DrawerContainer extends Component {
           {isUserLogged
             ? <div>
                 <Link to="/user/books">
-                  <div style={badgeStyle}>
-                    {myBooksCount}
-                  </div>
                   <ListItem
                     primaryText="My Books"
                     onTouchTap={this.handleToggleDrawer}
@@ -174,7 +170,6 @@ export default connect(
   state => ({
     isUserLogged: Boolean(state.user.username),
     drawer: state.ui.drawer,
-    myBooksCount: state.user.ownedBooks.length,
     tradeRequestsCount: state.user.incomingRequests.filter(
       req => req.status === 'Pending',
     ).length,
