@@ -42,7 +42,6 @@ if (process.env.NODE_ENV === 'development') {
   throw err;
 }
 
-
 /*
   Connect to the Database
 */
@@ -75,20 +74,23 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 /*
-  Serve the Single Page App from React Build in Production
-*/
-if (process.env.NODE_ENV === 'production') {
-  app.use(favicon(path.join(__dirname, 'client/build', 'favicon.ico')));
-  app.use('/*' ,express.static('./client/build'));
-}
-
-/*
   User Routes
 */
 app.use('/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/books', booksRouter);
 
+/*
+  Serve the Single Page App from React Build in Production
+*/
+if (process.env.NODE_ENV === 'production') {
+  app.use(favicon(path.join(__dirname, 'client/build', 'favicon.ico')));
+  app.use(express.static('./client/build'));
+  // Catch any other address and serve index.html
+  app.get('*', function(req, res) {
+    res.sendfile(__dirname + '/client/build/index.html');
+  });
+}
 
 /*
   Catch 404 (Not found) and forward to error handler
