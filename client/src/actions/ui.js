@@ -3,6 +3,8 @@ export const SHOW_INFO_DIALOG = 'SHOW_INFO_DIALOG';
 export const HIDE_INFO_DIALOG = 'HIDE_INFO_DIALOG';
 export const SHOW_TRADE_DIALOG = 'SHOW_TRADE_DIALOG';
 export const HIDE_TRADE_DIALOG = 'HIDE_TRADE_DIALOG';
+export const SHOW_REMOVE_DIALOG = 'SHOW_REMOVE_DIALOG ';
+export const HIDE_REMOVE_DIALOG = 'HIDE_REMOVE_DIALOG';
 
 export const toggleDrawer = () => ({
   type: TOGGLE_DRAWER,
@@ -27,6 +29,15 @@ export const showTradeDialog = (bookID, owners) => ({
 
 export const hideTradeDialog = () => ({
   type: HIDE_TRADE_DIALOG,
+});
+
+export const showRemoveDialog = bookID => ({
+  type: SHOW_REMOVE_DIALOG,
+  bookID,
+});
+
+export const hideRemoveDialog = () => ({
+  type: HIDE_REMOVE_DIALOG,
 });
 
 /*

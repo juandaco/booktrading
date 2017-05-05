@@ -4,6 +4,7 @@ import { fetchBooks } from '../actions/books';
 import { CircularProgress } from 'material-ui';
 import BookCard from './BookCard';
 import InfoDialog from './InfoDialog';
+import RemoveDialog from './RemoveDialog';
 import uuidV4 from 'uuid/v4';
 
 class MyBooks extends Component {
@@ -25,10 +26,11 @@ class MyBooks extends Component {
               size={60}
               thickness={5}
             />
-          : bookItems.length ?
+          : <bookItems className="length"></bookItems> ?
             bookItems: <p>You don't have books yet</p>
           }
         <InfoDialog />
+        <RemoveDialog />
       </div>
     );
   }

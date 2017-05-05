@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { sendAddBook, sendRemoveBook } from '../actions/user';
-import { showInfoDialog, sendShowTradeDialog } from '../actions/ui';
+import { sendAddBook } from '../actions/user';
+import { showInfoDialog, sendShowTradeDialog, showRemoveDialog } from '../actions/ui';
 // Material UI
 import { Paper } from 'material-ui';
 import { FlatButton } from 'material-ui';
@@ -22,7 +22,7 @@ const BookCard = ({
   book,
   addBook,
   addButton,
-  removeBook,
+  showRemoveDialog,
   removeButton,
   showInfoDialog,
   tradeButton,
@@ -99,7 +99,7 @@ const BookCard = ({
               style={buttonStyle}
               icon={<RemoveIcon style={{ width: 19 }} color={blue600} />}
               labelPosition="before"
-              onTouchTap={() => removeBook(book)}
+              onTouchTap={() => showRemoveDialog(bookID)}
             />
           : null}
         {tradeButton && isUserLogged
@@ -139,8 +139,8 @@ export default connect(
     addBook(book) {
       dispatch(sendAddBook(book));
     },
-    removeBook(bookID) {
-      dispatch(sendRemoveBook(bookID));
+    showRemoveDialog(bookID) {
+      dispatch(showRemoveDialog(bookID));
     },
     showInfoDialog(title, subtitle, text) {
       dispatch(showInfoDialog(title, subtitle, text));

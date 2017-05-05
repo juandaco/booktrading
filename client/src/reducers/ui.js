@@ -5,6 +5,8 @@ import {
   HIDE_INFO_DIALOG,
   SHOW_TRADE_DIALOG,
   HIDE_TRADE_DIALOG,
+  SHOW_REMOVE_DIALOG,
+  HIDE_REMOVE_DIALOG,
 } from '../actions/ui';
 
 function drawer(state = false, action) {
@@ -68,10 +70,31 @@ const tradeDialog = (
   }
 };
 
+const removeDialog = (state = {
+  show: false,
+  bookID: '',
+}, action) => {
+  switch(action.type) {
+    case SHOW_REMOVE_DIALOG:
+      return {
+        show: true,
+        bookID: action.bookID,
+      };
+    case HIDE_REMOVE_DIALOG:
+      return {
+        ...state,
+        show: false,
+      };
+    default:
+      return state;
+  } 
+};
+
 const ui = combineReducers({
   drawer,
   infoDialog,
   tradeDialog,
+  removeDialog,
 });
 
 export default ui;
