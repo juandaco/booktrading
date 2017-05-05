@@ -127,7 +127,6 @@ export const getUserInSession = history => dispatch => {
     .then(body => body.json())
     .then(resp => {
       if (resp.user) {
-        // history.push('/');
         dispatch(loginUser(resp.user));
       }
     })
