@@ -39,15 +39,17 @@ export default connect(
   state => ({
     reqBooks: state.user.requestedBooks.map(trade => {
       const book = state.books.items.find(book => trade.bookID === book.bookID);
-      book.userOwner = trade.owner;
-      book.status = trade.status;
-      return book;
+      let newBook = Object.assign({}, book);
+      newBook.userOwner = trade.owner;
+      newBook.status = trade.status;
+      return newBook;
     }),
     incBooks: state.user.incomingRequests.map(trade => {
       const book = state.books.items.find(book => trade.bookID === book.bookID);
-      book.userReq = trade.user;
-      book.status = trade.status;
-      return book;
+      let newBook = Object.assign({}, book);
+      newBook.userReq = trade.user;
+      newBook.status = trade.status;
+      return newBook;
     }),
   }),
   dispatch => ({

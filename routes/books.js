@@ -117,6 +117,14 @@ booksRouter.delete('/', verifyUser, function(req, res) {
     .then(resp => {
       // Error Checking befor Deleting Book
       if (!resp.nModified) throw new Error('');
+
+      // Remove Trade Requests Asociated with the Book
+      // User.updateMany({
+      //   requestedBooks: {
+      //     $elemMatch: { bookID: req.body.bookID, owner: req.user.username },
+      //   },
+      // });
+
       // Update the Books Collection
       Books.findOne({ bookID: req.body.bookID }).then(book => {
         if (book.owners.length === 1) {
