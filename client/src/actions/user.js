@@ -16,6 +16,7 @@ export const REMOVE_USER_BOOK = 'REMOVE_USER_BOOK';
 export const REQUEST_TRADE = 'REQUEST_TRADE';
 export const ACCEPT_TRADE = 'ACCEPT_TRADE';
 export const DECLINE_TRADE = 'DECLINE_TRADE';
+export const REMOVE_INCOMING_REQUESTS = 'REMOVE_INCOMING_REQUEST';
 
 export const loginUser = user => ({
   type: LOGIN_USER,
@@ -61,6 +62,11 @@ export const declineTrade = (bookID, user) => ({
   type: DECLINE_TRADE,
   bookID,
   user,
+});
+
+export const removeIncomingRequest = bookID => ({
+  type: REMOVE_INCOMING_REQUESTS,
+  bookID,
 });
 
 /*
@@ -180,6 +186,7 @@ export const sendRemoveBook = book => (dispatch, getState) => {
     .then(resp => {
       if (resp.message) {
         dispatch(removeUserBook(book.bookID));
+        dispatch(removeIncomingRequest(book.bookID));
       }
       if (resp.message === 'Book Deleted') {
         dispatch(removeBook(book.bookID));

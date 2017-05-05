@@ -60,7 +60,7 @@ class RemoveDialog extends Component {
         open={show}
         onRequestClose={() => hideRemoveDialog()}
       >
-        All incoming trade requests related to this book will also be removed. 
+        All incoming Trade Requests related to this book will also be removed. 
         This action cannot be undone. Are you sure that you want to continue?
       </Dialog>
     );

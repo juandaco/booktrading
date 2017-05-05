@@ -8,6 +8,7 @@ import {
   REQUEST_TRADE,
   ACCEPT_TRADE,
   DECLINE_TRADE,
+  REMOVE_INCOMING_REQUESTS,
 } from '../actions/user';
 import defaultUserState from '../helpers/defaultUserState';
 
@@ -67,6 +68,13 @@ const user = (state = defaultUserState, action) => {
           }
           return trade;
         }),
+      };
+    case REMOVE_INCOMING_REQUESTS:
+      return {
+        ...state,
+        incomingRequests: state.incomingRequests.filter(trade => 
+          trade.bookID !== action.bookID
+        ),
       };
     default:
       return state;

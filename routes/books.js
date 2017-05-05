@@ -109,51 +109,59 @@ booksRouter.post('/', verifyUser, function(req, res) {
 });
 
 booksRouter.delete('/', verifyUser, function(req, res) {
+  const { bookID } = req.body;
   // Delete book from User in session
   User.updateOne(
     { _id: req.user._id },
-    { $pull: { ownedBooks: req.body.bookID } }
-  )
-    .then(resp => {
-      // Error Checking befor Deleting Book
-      if (!resp.nModified) throw new Error('');
-
-      // Remove Trade Requests Asociated with the Book
-      // User.updateMany({
-      //   requestedBooks: {
-      //     $elemMatch: { bookID: req.body.bookID, owner: req.user.username },
-      //   },
-      // });
-
-      // Update the Books Collection
-      Books.findOne({ bookID: req.body.bookID }).then(book => {
-        if (book.owners.length === 1) {
-          book.remove(function(err) {
-            if (err) throw err;
-            res.json({
-              message: 'Book Deleted',
+    {
+      $pull: {
+        ownedBooks: bookID,
+        incomingRequests: { bookID },
+      },
+    }
+  ).then(resp => {
+    // Error Checking befor Deleting Book
+    if (!resp.nModified) throw new Error('');
+    // Remove Trade Requests Asociated with the Book
+    User.updateMany(
+      {},
+      {
+        $pull: {
+          requestedBooks: { bookID, owner: req.user.username },
+        },
+      }
+    )
+      .then(resp => {
+        // Update the Books Collection
+        Books.findOne({ bookID: req.body.bookID }).then(book => {
+          if (book.owners.length === 1) {
+            book.remove(function(err) {
+              if (err) throw err;
+              res.json({
+                message: 'Book Deleted',
+              });
             });
-          });
-        } else {
-          const ownerIndex = book.owners.findIndex(
-            owner => owner === req.user.username
-          );
-          if (ownerIndex > -1) book.owners.splice(ownerIndex, 1);
-          book.save(function(err) {
-            if (err) throw err;
-            res.json({
-              message: 'Owner Deleted',
+          } else {
+            const ownerIndex = book.owners.findIndex(
+              owner => owner === req.user.username
+            );
+            if (ownerIndex > -1) book.owners.splice(ownerIndex, 1);
+            book.save(function(err) {
+              if (err) throw err;
+              res.json({
+                message: 'Owner Deleted',
+              });
             });
-          });
-        }
+          }
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.json({
+          errorMsg: 'Book Not Deleted',
+        });
       });
-    })
-    .catch(err => {
-      console.log(err);
-      res.json({
-        errorMsg: 'Book Not Deleted',
-      });
-    });
+  });
 });
 
 booksRouter.get('/', function(req, res) {
