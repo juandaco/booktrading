@@ -3,7 +3,10 @@ import { connect } from 'react-redux';
 import { sendLogout } from '../actions/user';
 import { toggleDrawer } from '../actions/ui';
 import { Link } from 'react-router-dom';
+// Material UI
 import { Drawer, List, ListItem } from 'material-ui';
+import FaceIcon from 'material-ui/svg-icons/action/face';
+// Components
 import HomeIcon from 'material-ui/svg-icons/action/home';
 import BookIcon from 'material-ui/svg-icons/action/book';
 import BooksIcon from 'material-ui/svg-icons/av/library-books';
@@ -51,6 +54,7 @@ class DrawerContainer extends Component {
 
   render() {
     const {
+      username,
       isUserLogged,
       drawer,
       toggleDrawer,
@@ -62,7 +66,34 @@ class DrawerContainer extends Component {
         <Link to="/">
           <h1 id="drawer-title">The Book Club</h1>
         </Link>
-        <List>
+        {username
+          ? <div
+              style={{
+                marginTop: -15,
+                textAlign: 'right',
+                width: '100%',
+                height: 30,
+              }}
+            >
+              <p
+                style={{
+                  float: 'right',
+                  marginTop: 3,
+                  marginRight: 15,
+                  fontSize: 13,
+                }}
+              >
+                {username}
+              </p>
+              <FaceIcon
+                style={{
+                  float: 'right',
+                  height: 20,
+                }}
+              />
+            </div>
+          : null}
+        <List >
           <Link to="/">
             <ListItem
               primaryText="Home"
@@ -172,6 +203,7 @@ class DrawerContainer extends Component {
 
 export default connect(
   state => ({
+    username: state.user.username,
     isUserLogged: Boolean(state.user.username),
     drawer: state.ui.drawer,
     myBooksCount: state.user.ownedBooks.length,
