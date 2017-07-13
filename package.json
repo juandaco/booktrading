@@ -33,7 +33,7 @@
     "concurrently": "^3.4.0"
   },
   "engines": {
-    "node": "7.10.0"
+    "node": "8.1.4"
   },
   "description": "Book Trading Project for FreeCodeCamp",
   "main": "app.js",
